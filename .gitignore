@@ -129,6 +129,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+starfield-console-cg-env/
+
+#VS Code Workspace
+starfield-console-cg.code-workspace
 
 # Spyder project settings
 .spyderproject
