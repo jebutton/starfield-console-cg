@@ -4,3 +4,6 @@ A Python-based tool to generate console commands for items, resources, and modif
 Mostly created as an exercise to practice handling Microsoft Excel Files.
 
 All game data and item names copyright ZeniMax Media.
+
+
+Built using python 3.12.8
