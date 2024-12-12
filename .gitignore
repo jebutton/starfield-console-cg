@@ -133,6 +133,7 @@ starfield-console-cg-env/
 
 #VS Code Workspace
 starfield-console-cg.code-workspace
+settings.json
 
 # Spyder project settings
 .spyderproject
