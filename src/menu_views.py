@@ -45,7 +45,7 @@ class ItemMenu():
         This is a class to display a list of in-game items as a menu
         and provide a prompt for the user to choose them.
     """
-    def __init__(self, input_dict: dict, msg: str):
+    def __init__(self, input_dict: dict, title: str):
         """
         Initialize an ItemMenu object.
 
@@ -53,7 +53,7 @@ class ItemMenu():
         :param msg the message to display when the menu loads
         """
         self.input_dict = input_dict
-        self.msg = msg
+        self.title = title
         self.chunk_size = 8
         self.menu_items = self.get_menu_items()
         self.completer = AutoCompleteList(self.menu_items).completer
@@ -133,7 +133,7 @@ class ItemMenu():
         """
         finished = False
         while finished is not True:
-            print(self.msg)
+            print(self.title)
             for chunk in self.display_chunks:
 
                 if chunk != self.display_chunks[-1]:
@@ -177,20 +177,23 @@ class NavMenu():
         This is a class to display a list of navigation options as a menu
         and provide a prompt for the user to choose them.
     """
-    def __init__(self, menu_items: list, msg: str):
+    def __init__(self, menu_items: list, title: str, prompt: str):
         """
         Initialize an NavMenu object.
         """
         self.menu_items = [item.lower() for item in menu_items]
         self.completer = AutoCompleteList(self.menu_items).completer
-        self.msg = msg
+        self.title = title
+        self.text_prompt = prompt
 
     def __repr__(self):
         """
         Return a string representation of the NavMenu object.
         """
-        return "ItemMenu(menu_options='{}')".format(self.menu_items)
+        return_str = "NavMenu(menu_items='{}', completer={}, title={}, prompt={})".format(
+            self.menu_items, self.completer, self.title, self.prompt)
 
+        return 
     def display_menu(self):
         """
         Generate a visual menu list of items to select
@@ -202,12 +205,12 @@ class NavMenu():
 
         while finished is not True:
             valid_input = False
-            print(self.msg)
+            print(self.title)
 
             while valid_input is not True:
 
                 print(menu_str)
-                user_input = prompt("Type a Menu Option to type 'quit' to exit>",
+                user_input = prompt(self.text_prompt,
                                 completer=self.completer)
                 if user_input.lower() in self.menu_items:
                     valid_input = True
