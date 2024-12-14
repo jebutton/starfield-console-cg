@@ -28,7 +28,7 @@ class AutoCompleteList:
         """
         Return a string representation of the AutoCompleteList object.
         """
-        return "AutoCompleteList(input_structure='{}')".format(self.input_structure)
+        return "AutoCompleteList(input_structure='{}')".format(input_structure)
 
     def generate_wordcompleter_list(self, input_dict: dict):
         """
