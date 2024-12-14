@@ -40,6 +40,15 @@ class AutoCompleteList:
         return WordCompleter(keys_list)
 
 
+class AmountPrompt():
+    """
+        This is a class to allow prompting for item amounts
+    """
+    def __init__(self):
+        self.prompt_text = "How many items?>"
+    def get_amount(self):
+        return int(prompt(self.prompt_text))
+
 class ItemMenu():
     """
         This is a class to display a list of in-game items as a menu
@@ -59,6 +68,7 @@ class ItemMenu():
         self.completer = AutoCompleteList(self.menu_items).completer
         self.display_chunks = self.split_menu_items()
         self.completer = AutoCompleteList(self.input_dict).completer
+        self.amount = 0
     def __repr__(self):
         """
         Return a string representation of the ItemMenu object.
@@ -145,6 +155,8 @@ class ItemMenu():
                         if user_input in self.input_dict:
                             valid_input = True
                             finished = True
+                            amount = AmountPrompt().get_amount()
+                            return (user_input, amount)
                             return user_input
                         if user_input == "next":
                             valid_input = True
@@ -153,7 +165,6 @@ class ItemMenu():
 
                 else:
                     valid_input = False
-
                     while valid_input is not True:
                         print(chunk)
                         user_input = prompt("Type Item name, repeat to continue, or end to finish>",
@@ -161,11 +172,12 @@ class ItemMenu():
                         if user_input in self.input_dict:
                             finished = True
                             valid_input = True
-                            return user_input
+                            amount = AmountPrompt().get_amount()
+                            return (user_input, amount)
                         if user_input == "end":
                             finished = True
                             valid_input = True
-                            return "end"
+                            return ("end",0)
                         if user_input == "repeat":
                             valid_input = True
                         else:
@@ -221,3 +233,5 @@ class NavMenu():
                     return "quit"
                 else:
                     print("Incorrect User Input.")
+
+

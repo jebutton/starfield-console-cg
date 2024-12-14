@@ -16,10 +16,12 @@ while exited is not True:
     elif menu_selection.lower() == "ammo":
         ammo_menu = ItemMenu(items_workbook.ammo_data,
                               "Select Ammo Type:")
-        ammo_choice = ammo_menu.display_menu()
+        menu_result = ammo_menu.display_menu()
+        ammo_choice = menu_result[0]
+        ammo_amount = menu_result[1]
         if ammo_choice != "end":
             tgt_id = items_workbook.ammo_data[ammo_choice].ammo_id
-            print("player.additem {}".format(tgt_id))
+            print("player.additem {} {}".format(tgt_id, ammo_amount))
             exited = True
     else:
         exited = True
