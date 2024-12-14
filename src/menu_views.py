@@ -16,9 +16,9 @@ class AutoCompleteList:
 
         :param input_structure the data structure to be handled for auto completion
         """
-        if type(input_structure) is dict:
+        if isinstance(input_structure, dict):
             self.completer = self.generate_wordcompleter_list(input_structure)
-        elif type(input_structure) is list:
+        elif isinstance(input_structure, list):
             self.completer = WordCompleter(input_structure)
         else:
             # TODO handle exception properly
@@ -47,6 +47,9 @@ class AmountPrompt():
     def __init__(self):
         self.prompt_text = "How many items?>"
     def get_amount(self):
+        """
+            Prompts and returns the amount chosen.
+        """
         return int(prompt(self.prompt_text))
 
 class ItemMenu():
@@ -97,7 +100,7 @@ class ItemMenu():
                 segment_counter = self.chunk_size
                 temp_segment = ""
 
-                for segment in range(items_len / 8):
+                for segment in range(int(items_len / 8)):
 
                     if segment_counter == self.chunk_size:
                         temp_segment = self.menu_items[:self.chunk_size]
@@ -142,10 +145,10 @@ class ItemMenu():
         :return: The selected menu item name or "end" if the user wants to exit.
         """
         finished = False
+        result = (False, 0)
         while finished is not True:
             print(self.title)
             for chunk in self.display_chunks:
-
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
@@ -156,13 +159,13 @@ class ItemMenu():
                             valid_input = True
                             finished = True
                             amount = AmountPrompt().get_amount()
-                            return (user_input, amount)
-                            return user_input
-                        if user_input == "next":
+                            result = (user_input, amount)
+                        elif user_input == "next":
                             valid_input = True
                         else:
                             print("Incorrect User Input.")
-
+                    if finished is True:
+                        break
                 else:
                     valid_input = False
                     while valid_input is not True:
@@ -173,15 +176,19 @@ class ItemMenu():
                             finished = True
                             valid_input = True
                             amount = AmountPrompt().get_amount()
-                            return (user_input, amount)
-                        if user_input == "end":
+                            result = (user_input, amount)
+                        elif user_input == "end":
                             finished = True
                             valid_input = True
-                            return ("end",0)
-                        if user_input == "repeat":
+                            result = ("end",0)
+                            break
+                        elif user_input == "repeat":
                             valid_input = True
                         else:
                             print("Incorrect User Input.")
+                    if finished is True:
+                        break
+        return result
 
 
 class NavMenu():
@@ -189,23 +196,23 @@ class NavMenu():
         This is a class to display a list of navigation options as a menu
         and provide a prompt for the user to choose them.
     """
-    def __init__(self, menu_items: list, title: str, prompt: str):
+    def __init__(self, menu_items: list, title: str, text_prompt: str):
         """
         Initialize an NavMenu object.
         """
         self.menu_items = [item.lower() for item in menu_items]
         self.completer = AutoCompleteList(self.menu_items).completer
         self.title = title
-        self.text_prompt = prompt
+        self.text_prompt = text_prompt
 
     def __repr__(self):
         """
         Return a string representation of the NavMenu object.
         """
         return_str = "NavMenu(menu_items='{}', completer={}, title={}, prompt={})".format(
-            self.menu_items, self.completer, self.title, self.prompt)
+            self.menu_items, self.completer, self.title, self.text_prompt)
 
-        return 
+        return return_str
     def display_menu(self):
         """
         Generate a visual menu list of items to select
@@ -214,24 +221,22 @@ class NavMenu():
         """
         menu_str = "\n".join([item.capitalize() for item in self.menu_items])
         finished = False
-
+        result = ""
         while finished is not True:
             valid_input = False
             print(self.title)
 
             while valid_input is not True:
-
                 print(menu_str)
                 user_input = prompt(self.text_prompt,
                                 completer=self.completer)
                 if user_input.lower() in self.menu_items:
                     valid_input = True
                     finished = True
-                    return user_input
+                    result = user_input
                 if user_input.lower() == "quit":
                     valid_input = True
-                    return "quit"
+                    result = "quit"
                 else:
                     print("Incorrect User Input.")
-
-
+        return result

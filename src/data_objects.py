@@ -53,8 +53,8 @@ class AmmoItem(ItemType):
         :return: A dictionary representation of the AmmoItem object.
         """
         return {
-            "Ammo_Name": self.ammo_name,
-            "Ammo_ID": self.ammo_id
+            "ammo_name": self.ammo_name,
+            "ammo_id": self.ammo_id
         }
 
     def get_name(self):
@@ -72,3 +72,58 @@ class AmmoItem(ItemType):
         :return: A str of the ammo ID.
         """
         return self.ammo_id
+
+class SpacesuitItem(ItemType):
+    """
+        A class representing the data needed to deal with
+        a SpacesuitItem object without costly pandas overhead.
+    """
+
+    def __init__(self, spacesuit_name: str, spacesuit_id: int, dlc: bool):
+        """
+        Initialize an SpacesuitItem object.
+
+        :param spacesuit_name: The name of the spacesuit.
+        :param spacesuit_id: The ID of the spacesuit.
+        :param dlc: whether the item is a DLC item or not 
+        # TODO: Handle DLC Items
+        """
+        self.spacesuit_name = spacesuit_name
+        self.spacesuit_id = spacesuit_id
+        self.dlc = dlc
+
+    def __repr__(self):
+        """
+        Return a str representation of the SpacesuitItem object.
+        :return: str version of AmmoItem
+        """
+
+        return f"SpacesuitItem(spacesuit_name='{self.ammo_name}', spacesuit_id={self.ammo_id}, dlc={self.dlc})"
+
+    def to_dict(self):
+        """
+        Convert the SpacesuitItem object to a dictionary.
+
+        :return: A dictionary representation of the SpacesuitItem object.
+        """
+        return {
+            "spacesuit_name": self.spacesuit_name,
+            "spacesuit_id": self.spacesuit_id,
+            "dlc": self.dlc
+        }
+
+    def get_name(self):
+        """
+        Return the name of the spacesuit.
+        
+        :return: A str of the spacesuit name.
+        """
+        return self.spacesuit_name
+
+    def get_id(self):
+        """
+        Return the ID code of the spacesuit.
+        
+        :return: A str of the spacesuit ID.
+        """
+        return self.spacesuit_id

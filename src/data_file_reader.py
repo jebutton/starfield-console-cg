@@ -4,7 +4,7 @@
     of the program.
 """
 import pandas as pd
-from data_objects import AmmoItem
+from data_objects import AmmoItem, SpacesuitItem
 
 
 class DataFileReader:
@@ -24,6 +24,7 @@ class DataFileReader:
         ]
         self.datasheets = self.read_sheets()
         self.ammo_data = self.get_ammo_data()
+        self.spacesuit_data = self.get_spacesuit_data()
 
     def read_sheets(self):
         """
@@ -73,5 +74,21 @@ class DataFileReader:
             temp_row = self.datasheets["Ammo"].loc[row]
             temp_key = temp_row.iloc[0].strip().lower()
             temp_value = AmmoItem(temp_row.iloc[0].strip(), temp_row.iloc[1].strip())
+            output_dict[temp_key] = temp_value
+        return output_dict
+    def get_spacesuit_data(self):
+        """
+        Returns a dict containing all of the Spacesuit page data.
+
+        :return: a dict with all of the Spacesuit page data.
+        """
+        num_rows = self.datasheets["Spacesuits"].shape[0]
+        output_dict = {}
+        for row in range(num_rows):
+            temp_row = self.datasheets["Spacesuits"].loc[row]
+            temp_key = temp_row.iloc[0].strip().lower()
+            temp_value = SpacesuitItem(temp_row.iloc[0].strip(),
+                                  str(temp_row.iloc[1]).strip(),
+                                  bool(temp_row.iloc[2]))
             output_dict[temp_key] = temp_value
         return output_dict
