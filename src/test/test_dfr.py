@@ -1,4 +1,6 @@
-import pytest
+"""
+    Tests the data_file_reader module.
+"""
 import os
 from .context import data_file_reader as DFR
 
@@ -121,4 +123,3 @@ def test_weapon_status_mods_sheet_load():
                                             "Berserker",
                                             "Weapon_Status_Mod_ID").strip()
     assert test_value == "000F437E"
-
