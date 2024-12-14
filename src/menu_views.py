@@ -16,10 +16,11 @@ class AutoCompleteList:
 
         :param input_structure the data structure to be handled for auto completion
         """
-        if isinstance(input_structure, dict):
-            self.completer = self.generate_wordcompleter_list(input_structure)
+        self.input_structure = input_structure
+        if isinstance(self.input_structure, dict):
+            self.completer = self.generate_wordcompleter_list(self.input_structure)
         elif isinstance(input_structure, list):
-            self.completer = WordCompleter(input_structure)
+            self.completer = WordCompleter(self.input_structure)
         else:
             # TODO handle exception properly
             print("invalid datastructure type. Type is {}".format(type(input_structure)))
@@ -28,7 +29,7 @@ class AutoCompleteList:
         """
         Return a string representation of the AutoCompleteList object.
         """
-        return "AutoCompleteList(input_structure='{}')".format(input_structure)
+        return "AutoCompleteList(input_structure='{}')".format(self.input_structure)
 
     def generate_wordcompleter_list(self, input_dict: dict):
         """

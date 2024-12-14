@@ -13,14 +13,11 @@ class ItemType(ABC):
         """
         Return the item name, used for display purposes.
         """
-        pass
     @abstractmethod
     def get_id(self):
         """
         Return the item id, used for console code purposes.
         """
-        pass
-
 
 class AmmoItem(ItemType):
     """
@@ -98,7 +95,8 @@ class SpacesuitItem(ItemType):
         :return: str version of AmmoItem
         """
 
-        return f"SpacesuitItem(spacesuit_name='{self.ammo_name}', spacesuit_id={self.ammo_id}, dlc={self.dlc})"
+        return f"SpacesuitItem(spacesuit_name='{self.spacesuit_name}', \
+          spacesuit_id={self.spacesuit_id}, dlc={self.dlc})"
 
     def to_dict(self):
         """
