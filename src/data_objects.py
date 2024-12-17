@@ -74,7 +74,7 @@ class AmmoItem(ItemType):
         :return: A str of the ammo ID.
         """
         return self.ammo_id
-    
+
     def get_command(self, number: int):
         """
         Return the console command to be generated.
