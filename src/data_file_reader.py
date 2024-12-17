@@ -27,6 +27,15 @@ class DataFileReader:
         self.spacesuit_data = self.get_spacesuit_data()
         self.pack_data = self.get_pack_data()
         self.helmet_data = self.get_helmet_data()
+        
+        # To be implemented
+        self.weapon_data = {}
+        self.resource_data = {}
+        self.spacesuit_sets_data = {}
+        self.armor_status_mods_data = {}
+        self.weapon_status_mods_data = {}
+        self.armor_quality_mods_data = {}
+        self.weapon_quality_mods_data = {}
 
     def read_sheets(self):
         """

@@ -1,14 +1,21 @@
 """
     Tests the data_file_reader module.
 """
-
+import pytest
 from .context import data_file_reader as DFR
 
-AMMO_COUNT = 22 # Total Expected Types of Ammo
-SPACESUITS_COUNT = 64   # Total Expected Types of Spacesuits
-HELMETS_COUNT = 48  # Total Expected Types of Helmets
-PACKS_COUNT = 43    # Total Expected Types of Boost Packs
-
+AMMO_COUNT = 22 # Total Expec. Types of Ammo.
+SPACESUITS_COUNT = 64   # Total Expec. Types of Spacesuits.
+HELMETS_COUNT = 48  # Total Expec. Types of Helmets.
+PACKS_COUNT = 43    # Total Expec. Types of Boost Packs.
+SPACESUIT_SETS_COUNT = 85   # Total Expec. Types of Spacesuit Sets.
+WEAPONS_COUNT = 132 # Total Expec. Types of Weapons.
+RESOURCES_COUNT = 108   # Total Expec. Types of Resources.
+ARMOR_STATUS_MODS_COUNT = 32    # Total Expec. Armor Status Mods.
+WEAPON_STATUS_MODS_COUNT = 29   # Total Expec. Weapon Status Mods.
+ARMOR_QUALITY_MODS_COUNT = 5    # Total Expec. Armor Quality Mods.
+WEAPON_QUALITY_MODS_COUNT = 4   # Total Expec. Weapon Quality Mods.
+EXPECTED_SHEETS_COUNT = 11  # Total Expected Sheet Counts.
 
 def test_dfr_get_cell_value():
     """
@@ -128,6 +135,14 @@ def test_weapon_status_mods_sheet_load():
                                             "Weapon_Status_Mod_ID").strip()
     assert test_value == "000F437E"
 
+@pytest.mark.xfail
+def test_expected_sheet_names_count():
+    """
+        Tests that the expected number of sheets are being tracked.
+    """
+    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    assert len(test_reader.sheet_names) == EXPECTED_SHEETS_COUNT
+
 def test_ammo_item_count():
     """
         Tests that the expected amount of Ammo Types is present. 
@@ -135,7 +150,7 @@ def test_ammo_item_count():
     test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
     assert len(test_reader.ammo_data) == AMMO_COUNT
 
-def test_spacesuit_item_count():
+def test_spacesuits_item_count():
     """
         Tests that the expected amount of Spacesuit Types is present. 
     """
@@ -149,10 +164,69 @@ def test_packs_item_count():
     test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
     assert len(test_reader.pack_data) == PACKS_COUNT
 
-
 def test_helmets_item_count():
     """
         Tests that the expected amount of Helmet Types is present. 
     """
     test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
     assert len(test_reader.helmet_data) == HELMETS_COUNT
+
+@pytest.mark.xfail
+def test_weapons_item_count():
+    """
+        Tests that the expected amount of Weapon Types is present. 
+    """
+    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    assert len(test_reader.weapon_data) == WEAPONS_COUNT
+
+@pytest.mark.xfail
+def test_spacesuit_sets_item_count():
+    """
+        Tests that the expected amount of Spacesuit Set Types is present. 
+    """
+    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    assert len(test_reader.spacesuit_sets_data) == SPACESUIT_SETS_COUNT
+
+@pytest.mark.xfail
+def test_resources_count():
+    """
+        Tests that the expected amount of Resource Types is present. 
+    """
+    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    assert len(test_reader.resource_data) == RESOURCES_COUNT
+
+@pytest.mark.xfail
+def test_armor_status_mods_count():
+    """
+        Tests that the expected amount of Armor Status Mod
+        Types is present. 
+    """
+    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    assert len(test_reader.armor_status_mods_data) == ARMOR_STATUS_MODS_COUNT
+
+@pytest.mark.xfail
+def test_weapons_status_mods_count():
+    """
+        Tests that the expected amount of Weapon Status Mod
+        Types is present. 
+    """
+    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    assert len(test_reader.weapon_status_mods_data) == WEAPON_STATUS_MODS_COUNT
+
+@pytest.mark.xfail
+def test_armor_quality_mods_count():
+    """
+        Tests that the expected amount of Armor Quality Mod
+        Types is present. 
+    """
+    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    assert len(test_reader.armor_quality_mods_data) == ARMOR_STATUS_MODS_COUNT
+
+@pytest.mark.xfail
+def test_weapons_quality_mods_count():
+    """
+        Tests that the expected amount of Weapon Quality Mod
+        Types is present. 
+    """
+    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    assert len(test_reader.weapon_quality_mods_data) == WEAPON_QUALITY_MODS_COUNT
