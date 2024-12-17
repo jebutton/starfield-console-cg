@@ -18,6 +18,11 @@ class ItemType(ABC):
         """
         Return the item id, used for console code purposes.
         """
+    @abstractmethod
+    def get_command(self, number: int):
+        """
+        Return the console command to be generated.
+        """
 
 class AmmoItem(ItemType):
     """
@@ -69,6 +74,12 @@ class AmmoItem(ItemType):
         :return: A str of the ammo ID.
         """
         return self.ammo_id
+
+    def get_command(self, number: int):
+        """
+        Return the console command to be generated.
+        """
+        return f"player.additem {self.ammo_id} {number}"
 
 class SpacesuitItem(ItemType):
     """
@@ -125,3 +136,71 @@ class SpacesuitItem(ItemType):
         :return: A str of the spacesuit ID.
         """
         return self.spacesuit_id
+
+    def get_command(self, number: int):
+        """
+        Return the console command to be generated.
+        """
+        return f"player.additem {self.spacesuit_id} {number}"
+
+class PackItem(ItemType):
+    """
+        A class representing the data needed to deal with
+        a PackItem object without costly pandas overhead.
+    """
+
+    def __init__(self, pack_name: str, pack_id: int, dlc: bool):
+        """
+        Initialize an PackItem object.
+
+        :param pack_name: The name of the pack.
+        :param pack_id: The ID of the pack.
+        :param dlc: whether the item is a DLC item or not 
+        # TODO: Handle DLC Items
+        """
+        self.pack_name = pack_name
+        self.pack_id = pack_id
+        self.dlc = dlc
+
+    def __repr__(self):
+        """
+        Return a str representation of the PackItem object.
+        :return: str version of AmmoItem
+        """
+
+        return f"PackItem(pack_name='{self.pack_name}', \
+          pack_id={self.pack_id}, dlc={self.dlc})"
+
+    def to_dict(self):
+        """
+        Convert the PackItem object to a dictionary.
+
+        :return: A dictionary representation of the PackItem object.
+        """
+        return {
+            "pack_name": self.pack_name,
+            "pack_id": self.pack_id,
+            "dlc": self.dlc
+        }
+
+    def get_name(self):
+        """
+        Return the name of the pack.
+        
+        :return: A str of the pack name.
+        """
+        return self.pack_name
+
+    def get_id(self):
+        """
+        Return the ID code of the pack.
+        
+        :return: A str of the pack ID.
+        """
+        return self.pack_id
+
+    def get_command(self, number: int):
+        """
+        Return the console command to be generated.
+        """
+        return f"player.additem {self.pack_id} {number}"

@@ -35,6 +35,19 @@ def handle_spacesuits():
         print("player.additem {} {}".format(tgt_id, spacesuit_amount))
     return True
 
+def handle_packs():
+    """
+        Handles the pack menu
+    """
+    pack_menu = ItemMenu(items_workbook.pack_data,
+                              "Select Pack Type:")
+    menu_result = pack_menu.display_menu()
+    pack_choice = menu_result[0]
+    pack_amount = menu_result[1]
+    if pack_choice != "end":
+        tgt_id = items_workbook.pack_data[pack_choice].pack_id
+        print("player.additem {} {}".format(tgt_id, pack_amount))
+    return True
 
 def main():
     """
@@ -53,7 +66,7 @@ def main():
         elif menu_selection == "spacesuits":
             exited = handle_spacesuits()
         elif menu_selection == "packs":
-            print(not_built_str)
+            exited = handle_packs()
         elif menu_selection == "helmets":
             print(not_built_str)
         elif menu_selection == "resources":
