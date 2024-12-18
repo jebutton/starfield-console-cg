@@ -8,10 +8,12 @@ All game data and item names copyright ZeniMax Media.
 
 Built using python 3.12.8
 
-Version 0.12
+Version 0.13
 
 Updates:
 
-Version 0.11: Support for Ammo, Spacesuits, and Boost Packs
+Version 0.11: Support for Ammo, Spacesuits, and Boost Packs.
 
-Version 0.12: Support for Helmets and additional test coverage
+Version 0.12: Support for Helmets and additional test coverage.
+
+Version 0.13: Support for Spacesuit Sets has been added along with additional test coverage.
