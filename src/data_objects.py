@@ -103,7 +103,7 @@ class SpacesuitItem(ItemType):
     def __repr__(self):
         """
         Return a str representation of the SpacesuitItem object.
-        :return: str version of AmmoItem
+        :return: str version of SpacesuitItem
         """
 
         return f"SpacesuitItem(spacesuit_name='{self.spacesuit_name}', \
@@ -165,7 +165,7 @@ class PackItem(ItemType):
     def __repr__(self):
         """
         Return a str representation of the PackItem object.
-        :return: str version of AmmoItem
+        :return: str version of PackItem
         """
 
         return f"PackItem(pack_name='{self.pack_name}', \
@@ -227,7 +227,7 @@ class HelmetItem(ItemType):
     def __repr__(self):
         """
         Return a str representation of the HelmetItem object.
-        :return: str version of AmmoItem
+        :return: str version of HelmetItem
         """
 
         return f"HelmetItem(helmet_name='{self.helmet_name}', \
@@ -266,3 +266,129 @@ class HelmetItem(ItemType):
         Return the console command to be generated.
         """
         return f"player.additem {self.helmet_id} {number}"
+
+class SpacesuitSetItem(ItemType):
+    """
+        A class representing the data needed to deal with
+        a SpacesuitSetItem object without costly pandas overhead.
+    """
+
+    def __init__(self, spacesuit_set_name: str, dlc: bool):
+        """
+        Initialize an SpacesuitSetItem object.
+
+        :param spacesuit_set_name: The name of the spacesuit_set.
+        :param spacesuit: The spacesuit of the spacesuit_set.
+        :param helmet: The helmet of the spacesuit_set.
+        :param pack: The pack of the spacesuit_set.
+        :param faction: The faction of the spacesuit_set.
+        :param dlc: whether the item is a DLC item or not 
+        # TODO: Handle DLC Items
+        """
+        self.spacesuit_set_name = spacesuit_set_name
+        self.dlc = dlc
+        self.spacesuit = None
+        self.helmet = None
+        self.pack = None
+        self.faction = None
+        self.spacesuit_set_id = None
+
+    def __repr__(self):
+        """
+        Return a str representation of the Spacesuit_SetItem object.
+        :return: str version of SpaceSuitItem
+        """
+
+        return f"SpacesuitSetItem(spacesuit_set_name='{self.spacesuit_set_name}', \
+          spacesuit={self.spacesuit}, helmet= {self.helmet}, pack={self.pack}, \
+            dlc={self.dlc}, faction={self.faction})"
+
+    def to_dict(self):
+        """
+        Convert the SpacesuitSetItem object to a dictionary.
+
+        :return: A dictionary representation of the SpacesuitSetItem object.
+        """
+        return {
+            "spacesuit_set_name": self.spacesuit_set_name,
+            "spacesuit": self.spacesuit,
+            "helmet": self.helmet,
+            "pack": self.pack,
+            "dlc": self.dlc,
+            "faction": self.faction
+        }
+    def set_id(self):
+        """
+            Sets the spacesuit_set_id value.
+        """
+        self.spacesuit_set_id = self.get_id()
+
+    def set_spacesuit(self, spacesuit: SpacesuitItem):
+        """
+            Sets the spacesuit.
+        """
+        self.spacesuit = spacesuit
+        self.set_id()
+
+    def set_helmet(self, helmet: HelmetItem):
+        """
+            Sets the helmet.
+        """
+        self.helmet = helmet
+        self.set_id()
+
+    def set_pack(self, pack: PackItem):
+        """
+            Sets the pack.
+        """
+        self.pack = pack
+        self.set_id()
+
+    def set_faction(self, faction: str):
+        """
+            Sets the faction.
+        """
+        self.faction = faction
+
+    def get_name(self):
+        """
+        Return the name of the SpacesuitSetItem.
+        
+        :return: A str of the SpacesuitSetItem name.
+        """
+        return self.spacesuit_set_name
+
+    def get_id(self):
+        """
+        Return the ID code of all of the 
+        items in the spacesuit_set.
+        
+        :return: A str of the spacesuit_set ID.
+        """
+        if self.spacesuit is not None:
+            spacesuit_id = self.spacesuit.spacesuit_id
+        else:
+            spacesuit_id = None
+        if self.helmet is not None:
+            helmet_id = self.helmet.helmet_id
+        else:
+            helmet_id = None
+        if self.pack is not None:
+            pack_id = self.pack.pack_id
+        else:
+            pack_id = None
+
+        return (spacesuit_id,
+                helmet_id,
+                pack_id)
+
+    def get_command(self, number: int):
+        """
+        Return the console command to be generated.
+        """
+        output_str_list = []
+        for item_id in self.get_id():
+            if item_id is not None:
+                output_str_list.append(f"player.additem {item_id} {number}")
+        output_str = "\n".join(output_str_list)
+        return output_str

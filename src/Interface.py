@@ -63,6 +63,20 @@ def handle_helmets():
         print("player.additem {} {}".format(tgt_id, helmet_amount))
     return True
 
+def handle_spacesuit_sets():
+    """
+        Handles the spacesuit_set menu
+    """
+    spacesuit_set_menu = ItemMenu(items_workbook.spacesuit_set_data,
+                              "Select Spacesuit Set Type:")
+    menu_result = spacesuit_set_menu.display_menu()
+    spacesuit_set_choice = menu_result[0]
+    spacesuit_set_amount = menu_result[1]
+    if spacesuit_set_choice != "end":
+        print(items_workbook.spacesuit_set_data[spacesuit_set_choice]
+              .get_command(spacesuit_set_amount))
+    return True
+
 def main():
     """
         Main loop of program
@@ -88,7 +102,7 @@ def main():
         elif menu_selection == "weapons":
             print(not_built_str)
         elif menu_selection == "spacesuit_sets":
-            print(not_built_str)
+            exited = handle_spacesuit_sets()
         elif menu_selection == "armor_status_mods":
             print(not_built_str)
         elif menu_selection == "weapon_status_mods":
