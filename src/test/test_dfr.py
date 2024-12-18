@@ -8,7 +8,7 @@ AMMO_COUNT = 22 # Total Expec. Types of Ammo.
 SPACESUITS_COUNT = 64   # Total Expec. Types of Spacesuits.
 HELMETS_COUNT = 48  # Total Expec. Types of Helmets.
 PACKS_COUNT = 43    # Total Expec. Types of Boost Packs.
-SPACESUIT_SETS_COUNT = 85   # Total Expec. Types of Spacesuit Sets.
+SPACESUIT_SETS_COUNT = 86   # Total Expec. Types of Spacesuit Sets.
 WEAPONS_COUNT = 132 # Total Expec. Types of Weapons.
 RESOURCES_COUNT = 108   # Total Expec. Types of Resources.
 ARMOR_STATUS_MODS_COUNT = 32    # Total Expec. Armor Status Mods.
@@ -84,7 +84,7 @@ def test_spacesuit_sets_sheet_load():
     test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
     spacesuits_sets_data = test_reader.datasheets.get("Spacesuit_Sets")
     test_value = test_reader.get_cell_value(spacesuits_sets_data,
-                                            "Set_Name", "Deimos",
+                                            "Set_Name", "Deimos 1",
                                             "Suit_Name").strip()
     assert test_value == "Deimos Spacesuit"
 
@@ -179,13 +179,12 @@ def test_weapons_item_count():
     test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
     assert len(test_reader.weapon_data) == WEAPONS_COUNT
 
-@pytest.mark.xfail
 def test_spacesuit_sets_item_count():
     """
         Tests that the expected amount of Spacesuit Set Types is present. 
     """
     test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
-    assert len(test_reader.spacesuit_sets_data) == SPACESUIT_SETS_COUNT
+    assert len(test_reader.spacesuit_set_data) == SPACESUIT_SETS_COUNT
 
 @pytest.mark.xfail
 def test_resources_count():
