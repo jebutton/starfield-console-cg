@@ -12,5 +12,5 @@ Version 0.12
 
 Updates:
 
-Version 0.11: Support for Ammo, Spacesuits, and Boost Packs
+Version 0.11: Support for Ammo, Spacesuits, and Boost Packs.
 Version 0.12: Support for Helmets and additional test coverage.
