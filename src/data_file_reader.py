@@ -4,7 +4,7 @@
     of the program.
 """
 import pandas as pd
-from data_objects import AmmoItem, SpacesuitItem, PackItem
+from data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem
 
 
 class DataFileReader:
@@ -26,6 +26,16 @@ class DataFileReader:
         self.ammo_data = self.get_ammo_data()
         self.spacesuit_data = self.get_spacesuit_data()
         self.pack_data = self.get_pack_data()
+        self.helmet_data = self.get_helmet_data()
+        
+        # To be implemented
+        self.weapon_data = {}
+        self.resource_data = {}
+        self.spacesuit_sets_data = {}
+        self.armor_status_mods_data = {}
+        self.weapon_status_mods_data = {}
+        self.armor_quality_mods_data = {}
+        self.weapon_quality_mods_data = {}
 
     def read_sheets(self):
         """
@@ -107,6 +117,23 @@ class DataFileReader:
             temp_row = self.datasheets["Packs"].loc[row]
             temp_key = temp_row.iloc[0].strip().lower()
             temp_value = PackItem(temp_row.iloc[0].strip(),
+                                  str(temp_row.iloc[1]).strip(),
+                                  bool(temp_row.iloc[2]))
+            output_dict[temp_key] = temp_value
+        return output_dict
+
+    def get_helmet_data(self):
+        """
+        Returns a dict containing all of the Helmet page data.
+
+        :return: a dict with all of the Helmet page data.
+        """
+        num_rows = self.datasheets["Helmets"].shape[0]
+        output_dict = {}
+        for row in range(num_rows):
+            temp_row = self.datasheets["Helmets"].loc[row]
+            temp_key = temp_row.iloc[0].strip().lower()
+            temp_value = HelmetItem(temp_row.iloc[0].strip(),
                                   str(temp_row.iloc[1]).strip(),
                                   bool(temp_row.iloc[2]))
             output_dict[temp_key] = temp_value

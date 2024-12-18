@@ -49,6 +49,20 @@ def handle_packs():
         print("player.additem {} {}".format(tgt_id, pack_amount))
     return True
 
+def handle_helmets():
+    """
+        Handles the helmet menu
+    """
+    helmet_menu = ItemMenu(items_workbook.helmet_data,
+                              "Select Helmet Type:")
+    menu_result = helmet_menu.display_menu()
+    helmet_choice = menu_result[0]
+    helmet_amount = menu_result[1]
+    if helmet_choice != "end":
+        tgt_id = items_workbook.helmet_data[helmet_choice].helmet_id
+        print("player.additem {} {}".format(tgt_id, helmet_amount))
+    return True
+
 def main():
     """
         Main loop of program
@@ -68,7 +82,7 @@ def main():
         elif menu_selection == "packs":
             exited = handle_packs()
         elif menu_selection == "helmets":
-            print(not_built_str)
+            exited = handle_helmets()
         elif menu_selection == "resources":
             print(not_built_str)
         elif menu_selection == "weapons":
