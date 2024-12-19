@@ -3,6 +3,8 @@
 """
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
+from abc import ABC, abstractmethod
+import os
 
 class AutoCompleteList:
     """
@@ -53,7 +55,26 @@ class AmountPrompt():
         """
         return int(prompt(self.prompt_text))
 
-class ItemMenu():
+class BaseMenu(ABC):
+    """
+        Represents the most basic menu.
+    """
+    def __init__(self, title: str):
+        self.title = title
+
+    def clear_screen(self):
+        """
+            Clears the screen
+        """
+        os.system("cls")
+
+    @abstractmethod
+    def display_menu(self):
+        """
+            Display the Menu
+        """
+
+class ItemMenu(BaseMenu):
     """
         This is a class to display a list of in-game items as a menu
         and provide a prompt for the user to choose them.
@@ -65,14 +86,15 @@ class ItemMenu():
         :param input_dict the dictionary of objects to be displayed for the menu
         :param msg the message to display when the menu loads
         """
+        super().__init__(title)
         self.input_dict = input_dict
-        self.title = title
-        self.chunk_size = 8
+        self.chunk_size = 12
         self.menu_items = self.get_menu_items()
         self.completer = AutoCompleteList(self.menu_items).completer
         self.display_chunks = self.split_menu_items()
         self.completer = AutoCompleteList(self.input_dict).completer
         self.amount = 0
+
     def __repr__(self):
         """
         Return a string representation of the ItemMenu object.
@@ -148,8 +170,9 @@ class ItemMenu():
         finished = False
         result = (False, 0)
         while finished is not True:
-            print(self.title)
             for chunk in self.display_chunks:
+                self.clear_screen()
+                print(self.title)
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
@@ -192,7 +215,7 @@ class ItemMenu():
         return result
 
 
-class NavMenu():
+class NavMenu(BaseMenu):
     """
         This is a class to display a list of navigation options as a menu
         and provide a prompt for the user to choose them.
@@ -201,9 +224,9 @@ class NavMenu():
         """
         Initialize an NavMenu object.
         """
+        super().__init__(title)
         self.menu_items = [item.lower() for item in menu_items]
         self.completer = AutoCompleteList(self.menu_items).completer
-        self.title = title
         self.text_prompt = text_prompt
 
     def __repr__(self):
@@ -225,9 +248,9 @@ class NavMenu():
         result = ""
         while finished is not True:
             valid_input = False
-            print(self.title)
-
             while valid_input is not True:
+                self.clear_screen()
+                print(self.title)
                 print(menu_str)
                 user_input = prompt(self.text_prompt,
                                 completer=self.completer)
@@ -237,6 +260,7 @@ class NavMenu():
                     result = user_input
                 if user_input.lower() == "quit":
                     valid_input = True
+                    finished = True
                     result = "quit"
                 else:
                     print("Incorrect User Input.")
