@@ -6,3 +6,4 @@ six==1.5
 tzdata==2022.7
 pandas==2.2.3
 prompt-toolkit==3.0.48
+Sphinx==8.1.3
