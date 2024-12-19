@@ -1,6 +1,7 @@
 """
     Execution part of the program.
 """
+# pylint: disable=import-error
 from data_file_reader import DataFileReader as DFR
 from menu_views import ItemMenu, NavMenu
 
