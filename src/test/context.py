@@ -1,9 +1,30 @@
 """
     Makes it so that the tests have the context of the ../src directory.
 """
-import os
+
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-import data_file_reader
-import data_objects
+from os import path as OSPATH
+sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '..')))
+sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../..')))
+# pylint: disable=wrong-import-position
+# pylint: disable=import-error
+# pylint: disable=unused-import
+import src.data_file_reader as DFR
+import src.data_objects as DO
+import src.menu_views as MV
+
+class SCCGTestContext():
+    """
+        A class to handle all of the contextual information that the test classes need.
+    """
+    PATH_TO_DATASHEET = OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
+                                                  '../data/Starfield_Datatable.xls'))
+    @staticmethod
+    def get_a_dfr():
+        """
+        Static Method, returns a DataFileReader object that uses the correct path 
+        to the datasheet.
+
+        :return: A DataFileReader object that likely works.
+        """
+        return DFR.DataFileReader(SCCGTestContext.PATH_TO_DATASHEET)

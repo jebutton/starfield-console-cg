@@ -1,2 +1,2 @@
-start python ./src/interface.py
+python -m src
 pause

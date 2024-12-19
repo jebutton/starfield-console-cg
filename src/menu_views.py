@@ -1,6 +1,8 @@
 """
     A module contain classes for menus.
 """
+from abc import ABC, abstractmethod
+import os
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 
@@ -14,85 +16,131 @@ class AutoCompleteList:
         """
         Initialize an AutoCompleteList object.
 
-        :param input_structure the data structure to be handled for auto completion
+        :param input_structure: The data structure to be handled for auto completion
         """
+
         self.input_structure = input_structure
+        self.wrong_input_str = f"Invalid datastructure type. Type is {type(input_structure)}"
+
         if isinstance(self.input_structure, dict):
             self.completer = self.generate_wordcompleter_list(self.input_structure)
         elif isinstance(input_structure, list):
             self.completer = WordCompleter(self.input_structure)
         else:
             # TODO handle exception properly
-            print("invalid datastructure type. Type is {}".format(type(input_structure)))
+            print(self.wrong_input_str)
 
     def __repr__(self):
         """
-        Return a string representation of the AutoCompleteList object.
+        Return a str representation of the AutoCompleteList object.
+
+        :return: A str representation of and AutoCompleteList object.
         """
-        return "AutoCompleteList(input_structure='{}')".format(self.input_structure)
+
+        return f"AutoCompleteList(input_structure='{self.input_structure}')"
 
     def generate_wordcompleter_list(self, input_dict: dict):
         """
         Returns a WordCompleter Object for all the keys in the input_dict
 
-        :return: a WordCompleter object with all the items in the input_dict
+        :param input_dict: A dict with the input data for the autocomplete list.
+        :return: A WordCompleter object with all the items in the input_dict
         """
+
         keys_list = input_dict.keys()
+
         return WordCompleter(keys_list)
 
 
 class AmountPrompt():
     """
-        This is a class to allow prompting for item amounts
+        This is a class to allow prompting for item amounts.
     """
+
     def __init__(self):
+
         self.prompt_text = "How many items?>"
     def get_amount(self):
         """
             Prompts and returns the amount chosen.
         """
+
         return int(prompt(self.prompt_text))
 
-class ItemMenu():
+class BaseMenu(ABC):
+    """
+        Represents the most basic menu.
+    """
+
+    def __init__(self, title: str):
+        """
+            The constructor.
+            :param title: The str title for the menu.
+        """
+
+        self.title = title
+
+    def clear_screen(self):
+        """
+            Clears the screen.
+        """
+
+        os.system("cls")
+
+    @abstractmethod
+    def display_menu(self):
+        """
+            Display the Menu.
+        """
+
+class ItemMenu(BaseMenu):
     """
         This is a class to display a list of in-game items as a menu
         and provide a prompt for the user to choose them.
     """
+
     def __init__(self, input_dict: dict, title: str):
         """
         Initialize an ItemMenu object.
 
-        :param input_dict the dictionary of objects to be displayed for the menu
-        :param msg the message to display when the menu loads
+        :param input_dict: The dict of objects to be displayed for the menu.
+        :param title: The str message to display when the menu loads.
         """
+
+        super().__init__(title)
         self.input_dict = input_dict
-        self.title = title
-        self.chunk_size = 8
+        self.chunk_size = 12
         self.menu_items = self.get_menu_items()
         self.completer = AutoCompleteList(self.menu_items).completer
         self.display_chunks = self.split_menu_items()
         self.completer = AutoCompleteList(self.input_dict).completer
         self.amount = 0
+
     def __repr__(self):
         """
-        Return a string representation of the ItemMenu object.
+        Return a str representation of the ItemMenu object.
+
+        :return: A str representation of the ItemMenu object.
         """
-        return "ItemMenu(input_dict='{}')".format(self.input_dict)
+
+        return f"ItemMenu(input_dict='{self.input_dict}')"
 
     def get_menu_items(self):
         """
         Return a list of all the menu items to select from
 
-        :return: a list of all the menu items to select from.
+        :return: A list of all the menu items to select from.
         """
+
         return [item[1].get_name() for item in self.input_dict.items()]
 
     def split_menu_items(self):
         """
-        Return a list containing all of the menu items split into chunks
+        Return a list containing all of the menu items split into chunks.
 
-        :return: a list of all the menu items split into string chunks with linebreaks.
+        :return: A list of all the menu items split into str chunks with linebreaks.
         """
+
         output_list = []
         items_len = len(self.menu_items)
         if items_len > self.chunk_size:
@@ -141,15 +189,17 @@ class ItemMenu():
 
     def display_menu(self):
         """
-        Generate a visual menu list of items to select
+        Generate a visual menu list of items to select.
         
-        :return: The selected menu item name or "end" if the user wants to exit.
+        :return: The selected menu item str name or "end" if the user wants to exit.
         """
+
         finished = False
         result = (False, 0)
         while finished is not True:
-            print(self.title)
             for chunk in self.display_chunks:
+                self.clear_screen()
+                print(self.title)
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
@@ -192,27 +242,35 @@ class ItemMenu():
         return result
 
 
-class NavMenu():
+class NavMenu(BaseMenu):
     """
         This is a class to display a list of navigation options as a menu
         and provide a prompt for the user to choose them.
     """
+
     def __init__(self, menu_items: list, title: str, text_prompt: str):
         """
         Initialize an NavMenu object.
+        
+        :param menu_items: The list of menu items to display.
+        :param title: The str message to display when the menu loads.
+        :param text_prompt: The str text of the prompt at the bottom of the menu.
         """
+
+        super().__init__(title)
         self.menu_items = [item.lower() for item in menu_items]
         self.completer = AutoCompleteList(self.menu_items).completer
-        self.title = title
         self.text_prompt = text_prompt
 
     def __repr__(self):
         """
-        Return a string representation of the NavMenu object.
-        """
-        return_str = "NavMenu(menu_items='{}', completer={}, title={}, prompt={})".format(
-            self.menu_items, self.completer, self.title, self.text_prompt)
+        Return a str representation of the NavMenu object.
 
+        :return: A str representation of a NavMenu object.
+        """
+
+        return_str = f"NavMenu(menu_items='{self.menu_items}', completer={self.completer},"
+        return_str += f" title='{self.title}', prompt='{self.text_prompt}')"
         return return_str
     def display_menu(self):
         """
@@ -220,14 +278,15 @@ class NavMenu():
         
         :return: The selected menu item name or "quit" if the user quits
         """
+
         menu_str = "\n".join([item.capitalize() for item in self.menu_items])
         finished = False
         result = ""
         while finished is not True:
             valid_input = False
-            print(self.title)
-
             while valid_input is not True:
+                self.clear_screen()
+                print(self.title)
                 print(menu_str)
                 user_input = prompt(self.text_prompt,
                                 completer=self.completer)
@@ -237,6 +296,7 @@ class NavMenu():
                     result = user_input
                 if user_input.lower() == "quit":
                     valid_input = True
+                    finished = True
                     result = "quit"
                 else:
                     print("Incorrect User Input.")
