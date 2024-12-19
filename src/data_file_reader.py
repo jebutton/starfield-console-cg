@@ -4,8 +4,8 @@
     of the program.
 """
 import pandas as pd
-# pylint: disable=import-error
-from data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem, SpacesuitSetItem
+from src.data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem, SpacesuitSetItem
+
 
 
 class DataFileReader:
@@ -17,7 +17,7 @@ class DataFileReader:
         """
         Initialize the DataFileReader with the file path.
 
-        :param file_path: Path to the .xls file.
+        :param file_path: The str filepath to the data table.
         """
 
         self.file_path = file_path
@@ -45,12 +45,13 @@ class DataFileReader:
         """
         Read the specified sheets from the Excel file.
 
-        :return: A dictionary where keys are sheet names and values are DataFrames.
+        :return: A dict where keys are sheet names and values are DataFrames.
         """
 
         data = {}
         try:
             for sheet in self.sheet_names:
+                print(sheet)
                 data[sheet] = pd.read_excel(self.file_path, sheet_name=sheet)
         except Exception as e:
             print(f"Error reading Excel file: {e}")
@@ -63,9 +64,9 @@ class DataFileReader:
         Return the row index of particular value in a particular sheet given the DataFrame ref,
         the name of the column, and the value you're searching for.
         
-        :param dataframe_ref: pandas.DataFrame reference to the dataframe name.
-        :param search_column_name: str Column Name to search for.
-        :param search_column_val: str the value in that column to search to get the row number.
+        :param dataframe_ref: A pandas.DataFrame reference to the dataframe name.
+        :param search_column_name: A str Column Name to search for.
+        :param search_column_val: A str the value in that column to search to get the row number.
 
         :return: an integer with the row number for pandas.
         """
@@ -79,12 +80,12 @@ class DataFileReader:
         Return a cell's value based on a DataFrame ref, a column name to search in, a value
         in that column to search for, and the name of the column you want to return.
 
-        :param dataframe_ref: pandas.DataFrame reference to the dataframe name.
-        :param search_column_name: str Column Name to search for.
-        :param search_column_val: str the value in that column to search to get the row number.
-        :param target_column_name: str The column name to pull the actual value from.
+        :param dataframe_ref: A pandas.DataFrame reference to the dataframe name.
+        :param search_column_name: A str Column Name to search for.
+        :param search_column_val: A str the value in that column to search to get the row number.
+        :param target_column_name: A str The column name to pull the actual value from.
         
-        :return: a str with that cells's data.
+        :return: A str with that cells's data.
         """
 
         return dataframe_ref.at[self.get_row_index(
@@ -94,7 +95,7 @@ class DataFileReader:
         """
         Return a dict containing all of the Ammo page data.
 
-        :return: a dict with all of the Ammo page data.
+        :return: A dict with all of the Ammo page data.
         """
 
         # TODO: Handle DLC Items
@@ -113,7 +114,7 @@ class DataFileReader:
         """
         Return a dict containing all of the Spacesuit page data.
 
-        :return: a dict with all of the Spacesuit page data.
+        :return: A dict with all of the Spacesuit page data.
         """
 
         # TODO: Handle DLC Items
@@ -134,7 +135,7 @@ class DataFileReader:
         """
         Return a dict containing all of the Pack page data.
 
-        :return: a dict with all of the Pack page data.
+        :return: A dict with all of the Pack page data.
         """
 
         # TODO: Handle DLC Items
@@ -155,7 +156,7 @@ class DataFileReader:
         """
         Return a dict containing all of the Helmet page data.
 
-        :return: a dict with all of the Helmet page data.
+        :return: A dict with all of the Helmet page data.
         """
 
         # TODO: Handle DLC Items
@@ -177,11 +178,11 @@ class DataFileReader:
         """
         Return a dict of all of the spacesuit sets
 
-        :param spacesuits: dict The dict with all of the SpacesuitItem objects in it.
-        :param helmets: dict The dict with all of the HelmetItem objects in it.
-        :param packs: dict The dict with all of the PackItem objects in it.
+        :param spacesuits: A dict The dict with all of the SpacesuitItem objects in it.
+        :param helmets: A dict The dict with all of the HelmetItem objects in it.
+        :param packs: A dict The dict with all of the PackItem objects in it.
 
-        :return: a dict with all of the spacesuit sets.
+        :return: A dict with all of the spacesuit sets.
         """
 
         # TODO: Handle DLC Items

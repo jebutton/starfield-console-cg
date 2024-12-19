@@ -4,7 +4,7 @@
 
 """
 import pytest
-from .context import data_file_reader as DFR
+from .context import SCCGTestContext as STC
 
 
 def output_all_of_object_dict(object_dict: dict):
@@ -21,7 +21,7 @@ def test_dump_ammo():
         Prints all ammo data commands for testing.
     """
 
-    items_workbook = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    test_reader = STC.get_a_dfr()
     output_all_of_object_dict(items_workbook.ammo_data)
 
 @pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
@@ -30,7 +30,7 @@ def test_dump_spacesuits():
         Prints all spacesuit data commands for testing.
     """
 
-    items_workbook = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    test_reader = STC.get_a_dfr()
     output_all_of_object_dict(items_workbook.spacesuit_data)
 
 @pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
@@ -39,7 +39,7 @@ def test_dump_packs():
         Prints all pack data commands for testing.
     """
 
-    items_workbook = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    test_reader = STC.get_a_dfr()
     output_all_of_object_dict(items_workbook.pack_data)
 
 @pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
@@ -48,5 +48,5 @@ def test_dump_spacesuit_sets():
         Prints all spacesuit set data commands for testing.
     """
 
-    items_workbook = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    test_reader = STC.get_a_dfr()
     output_all_of_object_dict(items_workbook.spacesuit_set_data)

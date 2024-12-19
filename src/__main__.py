@@ -1,11 +1,12 @@
 """
     Execution part of the program.
 """
-# pylint: disable=import-error
-from data_file_reader import DataFileReader as DFR
-from menu_views import ItemMenu, NavMenu
+import os
+from src.data_file_reader import DataFileReader as DFR
+from src.menu_views import ItemMenu, NavMenu
 
-items_workbook = DFR("./data/Starfield_Datatable.xls")
+items_workbook = DFR(os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                                  './data/Starfield_Datatable.xls')))
 print("Datasheets Loaded!")
 
 def handle_ammo():

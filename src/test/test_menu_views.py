@@ -3,8 +3,8 @@
 """
 # pylint: disable=unused-import
 import pytest
-from .context import data_file_reader as DFR
-from .context import menu_views as MV
+from .context import MV
+from .context import SCCGTestContext as STC
 
 def test_autocompletelist_repr():
     """
@@ -13,7 +13,7 @@ def test_autocompletelist_repr():
     """
     # pylint: disable=consider-using-f-string
 
-    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    test_reader = STC.get_a_dfr()
     spacesuits_data = test_reader.spacesuit_data
     test_itemmenu = MV.ItemMenu(spacesuits_data, "Test Menu")
     test_autocompletelist = MV.AutoCompleteList(test_itemmenu.input_dict)
@@ -42,7 +42,7 @@ def test_itemmenu_repr():
     """
     # pylint: disable=consider-using-f-string
 
-    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    test_reader = STC.get_a_dfr()
     spacesuits_data = test_reader.spacesuit_data
     test_itemmenu = MV.ItemMenu(spacesuits_data, "Test Menu")
 
@@ -56,7 +56,7 @@ def test_navmenu_repr():
     """
     # pylint: disable=consider-using-f-string
 
-    test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
+    test_reader = STC.get_a_dfr()
     test_navmenu = MV.NavMenu(sorted(test_reader.sheet_names),
                             "Main Menu:", "Test Menu")
     expected_str = "NavMenu(menu_items='{}', completer={}, title='{}', prompt='{}')".format(

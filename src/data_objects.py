@@ -5,10 +5,9 @@ from abc import ABC, abstractmethod
 
 class ItemType(ABC):
     """
-        A abstract class to ensure all of the item classes
+        An abstract class to ensure all of the item classes
         have the minimum fields to make the menus work.
     """
-
     @abstractmethod
     def get_name(self):
         """
@@ -43,10 +42,15 @@ class AmmoItem(ItemType):
 
     def __init__(self, ammo_name: str, ammo_id: int):
         """
-        Initialize an AmmoItem object.
+        The constructor for the AmmoItem Class
 
         :param ammo_name: The name of the ammunition.
         :param ammo_id: The ID of the ammunition.
+
+        to_dict(): Convert the AmmoItem object to a dict.
+        get_name(): Return the name of the ammunition.
+        get_id(): Get the ID of the ammunition.
+        get_command(): Get the console command to add the item in game.
         """
 
         self.ammo_name = ammo_name
@@ -375,7 +379,7 @@ class SpacesuitSetItem(ItemType):
 
     def set_id(self):
         """
-            Sets the spacesuit_set_id value.
+            Sets the spacesuit_set_id value based on internal values.
         """
 
         self.spacesuit_set_id = self.get_id()
@@ -403,7 +407,8 @@ class SpacesuitSetItem(ItemType):
     def set_pack(self, pack: PackItem):
         """
             Sets the pack.
-            :param helmet: A HelmetItem for the Helmet in the set.
+
+            :param pack: A PackItem for the Helmet in the set.
         """
 
         self.pack = pack
