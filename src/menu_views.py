@@ -20,7 +20,7 @@ class AutoCompleteList:
         """
         self.input_structure = input_structure
         self.wrong_input_str = f"Invalid datastructure type. Type is {type(input_structure)}"
-       
+
         if isinstance(self.input_structure, dict):
             self.completer = self.generate_wordcompleter_list(self.input_structure)
         elif isinstance(input_structure, list):

@@ -1,6 +1,7 @@
 """
     Tests the data_file_reader module.
 """
+# pylint: disable=unused-import
 import pytest
 from .context import data_file_reader as DFR
 from .context import menu_views as MV
@@ -54,7 +55,7 @@ def test_navmenu_repr():
         to make sure it matches the old .format() method.
     """
     # pylint: disable=consider-using-f-string
-    
+
     test_reader = DFR.DataFileReader("./data/Starfield_Datatable.xls")
     test_navmenu = MV.NavMenu(sorted(test_reader.sheet_names),
                             "Main Menu:", "Test Menu")

@@ -4,6 +4,7 @@
     of the program.
 """
 import pandas as pd
+# pylint: disable=import-error
 from data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem, SpacesuitSetItem
 
 
