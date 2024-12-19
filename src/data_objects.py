@@ -8,20 +8,31 @@ class ItemType(ABC):
         A abstract class to ensure all of the item classes
         have the minimum fields to make the menus work.
     """
+
     @abstractmethod
     def get_name(self):
         """
         Return the item name, used for display purposes.
+        
+        :return: A str of the item name.
         """
+
     @abstractmethod
     def get_id(self):
         """
         Return the item id, used for console code purposes.
+        
+        :return: A str of the item ID
         """
+
     @abstractmethod
     def get_command(self, number: int):
         """
         Return the console command to be generated.
+        
+        :param number: A int of how many items you want to generate.
+            
+        :return: A str of the console command.
         """
 
 class AmmoItem(ItemType):
@@ -37,23 +48,26 @@ class AmmoItem(ItemType):
         :param ammo_name: The name of the ammunition.
         :param ammo_id: The ID of the ammunition.
         """
+
         self.ammo_name = ammo_name
         self.ammo_id = ammo_id
 
     def __repr__(self):
         """
         Return a str representation of the AmmoItem object.
-        :return: str version of AmmoItem
+
+        :return: A str version of AmmoItem.
         """
 
         return f"AmmoItem(ammo_name='{self.ammo_name}', ammo_id={self.ammo_id})"
 
     def to_dict(self):
         """
-        Convert the AmmoItem object to a dictionary.
+        Convert the AmmoItem object to a dict.
 
-        :return: A dictionary representation of the AmmoItem object.
+        :return: A dict representation of the AmmoItem object.
         """
+
         return {
             "ammo_name": self.ammo_name,
             "ammo_id": self.ammo_id
@@ -65,6 +79,7 @@ class AmmoItem(ItemType):
         
         :return: A str of the ammo name.
         """
+
         return self.ammo_name
 
     def get_id(self):
@@ -73,12 +88,18 @@ class AmmoItem(ItemType):
         
         :return: A str of the ammo ID.
         """
+
         return self.ammo_id
 
     def get_command(self, number: int):
         """
         Return the console command to be generated.
+        
+        :param number: A int of how many items you want to generate.
+            
+        :return: A str of the console command.
         """
+
         return f"player.additem {self.ammo_id} {number}"
 
 class SpacesuitItem(ItemType):
@@ -93,17 +114,19 @@ class SpacesuitItem(ItemType):
 
         :param spacesuit_name: The name of the spacesuit.
         :param spacesuit_id: The ID of the spacesuit.
-        :param dlc: whether the item is a DLC item or not 
-        # TODO: Handle DLC Items
+        :param dlc: A bool of whether the item is a DLC item or not.
         """
         self.spacesuit_name = spacesuit_name
         self.spacesuit_id = spacesuit_id
+
+        # TODO: Handle DLC Items
         self.dlc = dlc
 
     def __repr__(self):
         """
         Return a str representation of the SpacesuitItem object.
-        :return: str version of SpacesuitItem
+
+        :return: A str version of SpacesuitItem.
         """
 
         return f"SpacesuitItem(spacesuit_name='{self.spacesuit_name}', \
@@ -111,10 +134,11 @@ class SpacesuitItem(ItemType):
 
     def to_dict(self):
         """
-        Convert the SpacesuitItem object to a dictionary.
+        Convert the SpacesuitItem object to a dict.
 
-        :return: A dictionary representation of the SpacesuitItem object.
+        :return: A dict representation of the SpacesuitItem object.
         """
+
         return {
             "spacesuit_name": self.spacesuit_name,
             "spacesuit_id": self.spacesuit_id,
@@ -127,6 +151,7 @@ class SpacesuitItem(ItemType):
         
         :return: A str of the spacesuit name.
         """
+
         return self.spacesuit_name
 
     def get_id(self):
@@ -135,12 +160,18 @@ class SpacesuitItem(ItemType):
         
         :return: A str of the spacesuit ID.
         """
+
         return self.spacesuit_id
 
     def get_command(self, number: int):
         """
         Return the console command to be generated.
+
+        :param number: A int of how many items you want to generate.
+            
+        :return: A str of the console command.
         """
+
         return f"player.additem {self.spacesuit_id} {number}"
 
 class PackItem(ItemType):
@@ -155,17 +186,20 @@ class PackItem(ItemType):
 
         :param pack_name: The name of the pack.
         :param pack_id: The ID of the pack.
-        :param dlc: whether the item is a DLC item or not 
-        # TODO: Handle DLC Items
+        :param dlc: A bool of whether the item is a DLC item or not.
         """
+
         self.pack_name = pack_name
         self.pack_id = pack_id
+
+        # TODO: Handle DLC Items
         self.dlc = dlc
 
     def __repr__(self):
         """
         Return a str representation of the PackItem object.
-        :return: str version of PackItem
+
+        :return: A str version of PackItem.
         """
 
         return f"PackItem(pack_name='{self.pack_name}', \
@@ -173,10 +207,11 @@ class PackItem(ItemType):
 
     def to_dict(self):
         """
-        Convert the PackItem object to a dictionary.
+        Convert the PackItem object to a dict.
 
-        :return: A dictionary representation of the PackItem object.
+        :return: A dict representation of the PackItem object.
         """
+
         return {
             "pack_name": self.pack_name,
             "pack_id": self.pack_id,
@@ -189,6 +224,7 @@ class PackItem(ItemType):
         
         :return: A str of the pack name.
         """
+
         return self.pack_name
 
     def get_id(self):
@@ -197,12 +233,18 @@ class PackItem(ItemType):
         
         :return: A str of the pack ID.
         """
+
         return self.pack_id
 
     def get_command(self, number: int):
         """
         Return the console command to be generated.
+
+        :param number: A int of how many items you want to generate.
+           
+        :return: A str of the console command.
         """
+
         return f"player.additem {self.pack_id} {number}"
 
 class HelmetItem(ItemType):
@@ -217,17 +259,20 @@ class HelmetItem(ItemType):
 
         :param helmet_name: The name of the helmet.
         :param helmet_id: The ID of the helmet.
-        :param dlc: whether the item is a DLC item or not 
-        # TODO: Handle DLC Items
+        :param dlc: A bool of whether the item is a DLC item or not. 
         """
+
         self.helmet_name = helmet_name
         self.helmet_id = helmet_id
+
+        # TODO: Handle DLC Items
         self.dlc = dlc
 
     def __repr__(self):
         """
         Return a str representation of the HelmetItem object.
-        :return: str version of HelmetItem
+
+        :return: A str version of HelmetItem
         """
 
         return f"HelmetItem(helmet_name='{self.helmet_name}', \
@@ -235,10 +280,11 @@ class HelmetItem(ItemType):
 
     def to_dict(self):
         """
-        Convert the HelmetItem object to a dictionary.
+        Convert the HelmetItem object to a dict.
 
-        :return: A dictionary representation of the HelmetItem object.
+        :return: A dict representation of the HelmetItem object.
         """
+
         return {
             "helmet_name": self.helmet_name,
             "helmet_id": self.helmet_id,
@@ -251,6 +297,7 @@ class HelmetItem(ItemType):
         
         :return: A str of the helmet name.
         """
+
         return self.helmet_name
 
     def get_id(self):
@@ -259,12 +306,19 @@ class HelmetItem(ItemType):
         
         :return: A str of the helmet ID.
         """
+
         return self.helmet_id
 
     def get_command(self, number: int):
         """
         Return the console command to be generated.
+
+        :param number: A int of how many items you want to generate.
+
+        :return: A str of the console command.
         """
+
+
         return f"player.additem {self.helmet_id} {number}"
 
 class SpacesuitSetItem(ItemType):
@@ -278,15 +332,14 @@ class SpacesuitSetItem(ItemType):
         Initialize an SpacesuitSetItem object.
 
         :param spacesuit_set_name: The name of the spacesuit_set.
-        :param spacesuit: The spacesuit of the spacesuit_set.
-        :param helmet: The helmet of the spacesuit_set.
-        :param pack: The pack of the spacesuit_set.
-        :param faction: The faction of the spacesuit_set.
-        :param dlc: whether the item is a DLC item or not 
-        # TODO: Handle DLC Items
+        :param dlc: A bool of whether the item is a DLC item or not.
         """
+
         self.spacesuit_set_name = spacesuit_set_name
+
+        # TODO: Handle DLC Items
         self.dlc = dlc
+
         self.spacesuit = None
         self.helmet = None
         self.pack = None
@@ -296,7 +349,8 @@ class SpacesuitSetItem(ItemType):
     def __repr__(self):
         """
         Return a str representation of the Spacesuit_SetItem object.
-        :return: str version of SpaceSuitItem
+
+        :return: A str version of SpaceSuitItem.
         """
 
         return f"SpacesuitSetItem(spacesuit_set_name='{self.spacesuit_set_name}', \
@@ -305,10 +359,11 @@ class SpacesuitSetItem(ItemType):
 
     def to_dict(self):
         """
-        Convert the SpacesuitSetItem object to a dictionary.
+        Convert the SpacesuitSetItem object to a dict.
 
-        :return: A dictionary representation of the SpacesuitSetItem object.
+        :return: A dict representation of the SpacesuitSetItem object.
         """
+
         return {
             "spacesuit_set_name": self.spacesuit_set_name,
             "spacesuit": self.spacesuit,
@@ -317,37 +372,49 @@ class SpacesuitSetItem(ItemType):
             "dlc": self.dlc,
             "faction": self.faction
         }
+
     def set_id(self):
         """
             Sets the spacesuit_set_id value.
         """
+
         self.spacesuit_set_id = self.get_id()
 
     def set_spacesuit(self, spacesuit: SpacesuitItem):
         """
             Sets the spacesuit.
+
+            :param spacesuit: A SpacesuitItem for the spacesuit in the set.
         """
+
         self.spacesuit = spacesuit
         self.set_id()
 
     def set_helmet(self, helmet: HelmetItem):
         """
             Sets the helmet.
+        
+            :param helmet: A HelmetItem for the helmet in the set.
         """
+
         self.helmet = helmet
         self.set_id()
 
     def set_pack(self, pack: PackItem):
         """
             Sets the pack.
+            :param helmet: A HelmetItem for the Helmet in the set.
         """
+
         self.pack = pack
         self.set_id()
 
     def set_faction(self, faction: str):
         """
             Sets the faction.
+            :param faction: A str for the name of the faction in the set.
         """
+
         self.faction = faction
 
     def get_name(self):
@@ -356,6 +423,7 @@ class SpacesuitSetItem(ItemType):
         
         :return: A str of the SpacesuitSetItem name.
         """
+
         return self.spacesuit_set_name
 
     def get_id(self):
@@ -365,6 +433,7 @@ class SpacesuitSetItem(ItemType):
         
         :return: A str of the spacesuit_set ID.
         """
+
         if self.spacesuit is not None:
             spacesuit_id = self.spacesuit.spacesuit_id
         else:
@@ -385,10 +454,16 @@ class SpacesuitSetItem(ItemType):
     def get_command(self, number: int):
         """
         Return the console command to be generated.
+
+        :param number: A int of how many items you want to generate.
+
+        :return: A str of the console command.
         """
+
         output_str_list = []
         for item_id in self.get_id():
             if item_id is not None:
                 output_str_list.append(f"player.additem {item_id} {number}")
         output_str = "\n".join(output_str_list)
+
         return output_str
