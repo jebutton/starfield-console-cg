@@ -1,10 +1,10 @@
 """
     A module contain classes for menus.
 """
-from prompt_toolkit import prompt
-from prompt_toolkit.completion import WordCompleter
 from abc import ABC, abstractmethod
 import os
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import WordCompleter
 
 class AutoCompleteList:
     """
@@ -19,19 +19,21 @@ class AutoCompleteList:
         :param input_structure the data structure to be handled for auto completion
         """
         self.input_structure = input_structure
+        self.wrong_input_str = f"Invalid datastructure type. Type is {type(input_structure)}"
+       
         if isinstance(self.input_structure, dict):
             self.completer = self.generate_wordcompleter_list(self.input_structure)
         elif isinstance(input_structure, list):
             self.completer = WordCompleter(self.input_structure)
         else:
             # TODO handle exception properly
-            print("invalid datastructure type. Type is {}".format(type(input_structure)))
+            print(self.wrong_input_str)
 
     def __repr__(self):
         """
         Return a string representation of the AutoCompleteList object.
         """
-        return "AutoCompleteList(input_structure='{}')".format(self.input_structure)
+        return f"AutoCompleteList(input_structure='{self.input_structure}')"
 
     def generate_wordcompleter_list(self, input_dict: dict):
         """
@@ -99,7 +101,7 @@ class ItemMenu(BaseMenu):
         """
         Return a string representation of the ItemMenu object.
         """
-        return "ItemMenu(input_dict='{}')".format(self.input_dict)
+        return f"ItemMenu(input_dict='{self.input_dict}')"
 
     def get_menu_items(self):
         """
@@ -233,9 +235,8 @@ class NavMenu(BaseMenu):
         """
         Return a string representation of the NavMenu object.
         """
-        return_str = "NavMenu(menu_items='{}', completer={}, title={}, prompt={})".format(
-            self.menu_items, self.completer, self.title, self.text_prompt)
-
+        return_str = f"NavMenu(menu_items='{self.menu_items}', completer={self.completer},"
+        return_str += f" title='{self.title}', prompt='{self.text_prompt}')"
         return return_str
     def display_menu(self):
         """
