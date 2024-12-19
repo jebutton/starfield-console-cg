@@ -16,8 +16,9 @@ class AutoCompleteList:
         """
         Initialize an AutoCompleteList object.
 
-        :param input_structure the data structure to be handled for auto completion
+        :param input_structure: The data structure to be handled for auto completion
         """
+
         self.input_structure = input_structure
         self.wrong_input_str = f"Invalid datastructure type. Type is {type(input_structure)}"
 
@@ -31,49 +32,65 @@ class AutoCompleteList:
 
     def __repr__(self):
         """
-        Return a string representation of the AutoCompleteList object.
+        Return a str representation of the AutoCompleteList object.
+
+        :return: A str representation of and AutoCompleteList object.
         """
+
         return f"AutoCompleteList(input_structure='{self.input_structure}')"
 
     def generate_wordcompleter_list(self, input_dict: dict):
         """
         Returns a WordCompleter Object for all the keys in the input_dict
 
-        :return: a WordCompleter object with all the items in the input_dict
+        :param input_dict: A dict with the input data for the autocomplete list.
+        :return: A WordCompleter object with all the items in the input_dict
         """
+
         keys_list = input_dict.keys()
+
         return WordCompleter(keys_list)
 
 
 class AmountPrompt():
     """
-        This is a class to allow prompting for item amounts
+        This is a class to allow prompting for item amounts.
     """
+
     def __init__(self):
+
         self.prompt_text = "How many items?>"
     def get_amount(self):
         """
             Prompts and returns the amount chosen.
         """
+
         return int(prompt(self.prompt_text))
 
 class BaseMenu(ABC):
     """
         Represents the most basic menu.
     """
+
     def __init__(self, title: str):
+        """
+            The constructor.
+            :param title: The str title for the menu.
+        """
+
         self.title = title
 
     def clear_screen(self):
         """
-            Clears the screen
+            Clears the screen.
         """
+
         os.system("cls")
 
     @abstractmethod
     def display_menu(self):
         """
-            Display the Menu
+            Display the Menu.
         """
 
 class ItemMenu(BaseMenu):
@@ -81,13 +98,15 @@ class ItemMenu(BaseMenu):
         This is a class to display a list of in-game items as a menu
         and provide a prompt for the user to choose them.
     """
+
     def __init__(self, input_dict: dict, title: str):
         """
         Initialize an ItemMenu object.
 
-        :param input_dict the dictionary of objects to be displayed for the menu
-        :param msg the message to display when the menu loads
+        :param input_dict: The dict of objects to be displayed for the menu.
+        :param title: The str message to display when the menu loads.
         """
+
         super().__init__(title)
         self.input_dict = input_dict
         self.chunk_size = 12
@@ -99,24 +118,29 @@ class ItemMenu(BaseMenu):
 
     def __repr__(self):
         """
-        Return a string representation of the ItemMenu object.
+        Return a str representation of the ItemMenu object.
+
+        :return: A str representation of the ItemMenu object.
         """
+
         return f"ItemMenu(input_dict='{self.input_dict}')"
 
     def get_menu_items(self):
         """
         Return a list of all the menu items to select from
 
-        :return: a list of all the menu items to select from.
+        :return: A list of all the menu items to select from.
         """
+
         return [item[1].get_name() for item in self.input_dict.items()]
 
     def split_menu_items(self):
         """
-        Return a list containing all of the menu items split into chunks
+        Return a list containing all of the menu items split into chunks.
 
-        :return: a list of all the menu items split into string chunks with linebreaks.
+        :return: A list of all the menu items split into str chunks with linebreaks.
         """
+
         output_list = []
         items_len = len(self.menu_items)
         if items_len > self.chunk_size:
@@ -165,10 +189,11 @@ class ItemMenu(BaseMenu):
 
     def display_menu(self):
         """
-        Generate a visual menu list of items to select
+        Generate a visual menu list of items to select.
         
-        :return: The selected menu item name or "end" if the user wants to exit.
+        :return: The selected menu item str name or "end" if the user wants to exit.
         """
+
         finished = False
         result = (False, 0)
         while finished is not True:
@@ -222,10 +247,16 @@ class NavMenu(BaseMenu):
         This is a class to display a list of navigation options as a menu
         and provide a prompt for the user to choose them.
     """
+
     def __init__(self, menu_items: list, title: str, text_prompt: str):
         """
         Initialize an NavMenu object.
+        
+        :param menu_items: The list of menu items to display.
+        :param title: The str message to display when the menu loads.
+        :param text_prompt: The str text of the prompt at the bottom of the menu.
         """
+
         super().__init__(title)
         self.menu_items = [item.lower() for item in menu_items]
         self.completer = AutoCompleteList(self.menu_items).completer
@@ -233,8 +264,11 @@ class NavMenu(BaseMenu):
 
     def __repr__(self):
         """
-        Return a string representation of the NavMenu object.
+        Return a str representation of the NavMenu object.
+
+        :return: A str representation of a NavMenu object.
         """
+
         return_str = f"NavMenu(menu_items='{self.menu_items}', completer={self.completer},"
         return_str += f" title='{self.title}', prompt='{self.text_prompt}')"
         return return_str
@@ -244,6 +278,7 @@ class NavMenu(BaseMenu):
         
         :return: The selected menu item name or "quit" if the user quits
         """
+
         menu_str = "\n".join([item.capitalize() for item in self.menu_items])
         finished = False
         result = ""
