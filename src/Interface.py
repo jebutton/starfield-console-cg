@@ -17,8 +17,8 @@ def handle_ammo():
     ammo_choice = menu_result[0]
     ammo_amount = menu_result[1]
     if ammo_choice != "end":
-        tgt_id = items_workbook.ammo_data[ammo_choice].ammo_id
-        print("player.additem {} {}".format(tgt_id, ammo_amount))
+        print(items_workbook.ammo_data[ammo_choice]
+              .get_command(ammo_amount))
     return True
 
 def handle_spacesuits():
@@ -31,8 +31,8 @@ def handle_spacesuits():
     spacesuit_choice = menu_result[0]
     spacesuit_amount = menu_result[1]
     if spacesuit_choice != "end":
-        tgt_id = items_workbook.spacesuit_data[spacesuit_choice].spacesuit_id
-        print("player.additem {} {}".format(tgt_id, spacesuit_amount))
+        print(items_workbook.spacesuit_data[spacesuit_choice]
+              .get_command(spacesuit_amount))
     return True
 
 def handle_packs():
@@ -45,8 +45,8 @@ def handle_packs():
     pack_choice = menu_result[0]
     pack_amount = menu_result[1]
     if pack_choice != "end":
-        tgt_id = items_workbook.pack_data[pack_choice].pack_id
-        print("player.additem {} {}".format(tgt_id, pack_amount))
+        print(items_workbook.pack_data[pack_choice]
+              .get_command(pack_amount))
     return True
 
 def handle_helmets():
@@ -59,8 +59,8 @@ def handle_helmets():
     helmet_choice = menu_result[0]
     helmet_amount = menu_result[1]
     if helmet_choice != "end":
-        tgt_id = items_workbook.helmet_data[helmet_choice].helmet_id
-        print("player.additem {} {}".format(tgt_id, helmet_amount))
+        print(items_workbook.helmet_data[helmet_choice]
+              .get_command(helmet_amount))
     return True
 
 def handle_spacesuit_sets():
