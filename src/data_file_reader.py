@@ -12,12 +12,14 @@ class DataFileReader:
     """
         Handles the reading of all of the sheets in the datasheet.
     """
+
     def __init__(self, file_path: str):
         """
         Initialize the DataFileReader with the file path.
 
         :param file_path: Path to the .xls file.
         """
+
         self.file_path = file_path
         self.sheet_names = [
             "Resources", "Spacesuits", "Helmets", "Packs",
@@ -45,42 +47,58 @@ class DataFileReader:
 
         :return: A dictionary where keys are sheet names and values are DataFrames.
         """
+
         data = {}
         try:
             for sheet in self.sheet_names:
                 data[sheet] = pd.read_excel(self.file_path, sheet_name=sheet)
         except Exception as e:
             print(f"Error reading Excel file: {e}")
+
         return data
 
-    def get_row_index(self, dataframe_ref: str, search_column_name: str, search_column_value: str):
+    def get_row_index(self, dataframe_ref: pd.DataFrame, search_column_name: str,
+                      search_column_val: str):
         """
-        Returns the row index of particular value in a particular sheet given the DataFrame ref,
+        Return the row index of particular value in a particular sheet given the DataFrame ref,
         the name of the column, and the value you're searching for.
         
+        :param dataframe_ref: pandas.DataFrame reference to the dataframe name.
+        :param search_column_name: str Column Name to search for.
+        :param search_column_val: str the value in that column to search to get the row number.
+
         :return: an integer with the row number for pandas.
         """
-        return dataframe_ref[search_column_name].array.tolist().index(search_column_value)
 
-    def get_cell_value(self, dataframe_ref: str,
+        return dataframe_ref[search_column_name].array.tolist().index(search_column_val)
+
+    def get_cell_value(self, dataframe_ref: pd.DataFrame,
                        search_column_name: str, search_column_value: str,
-                       target_column_name: str):
+                       tgt_column_name: str):
         """
-        Returns a cell's value based on a DataFrame ref, a column name to search in, a value
+        Return a cell's value based on a DataFrame ref, a column name to search in, a value
         in that column to search for, and the name of the column you want to return.
 
+        :param dataframe_ref: pandas.DataFrame reference to the dataframe name.
+        :param search_column_name: str Column Name to search for.
+        :param search_column_val: str the value in that column to search to get the row number.
+        :param target_column_name: str The column name to pull the actual value from.
+        
         :return: a str with that cells's data.
         """
 
         return dataframe_ref.at[self.get_row_index(
-            dataframe_ref, search_column_name, search_column_value), target_column_name]
+            dataframe_ref, search_column_name, search_column_value), tgt_column_name]
 
     def get_ammo_data(self):
         """
-        Returns a dict containing all of the Ammo page data.
+        Return a dict containing all of the Ammo page data.
 
         :return: a dict with all of the Ammo page data.
         """
+
+        # TODO: Handle DLC Items
+
         num_rows = self.datasheets["Ammo"].shape[0]
         output_dict = {}
         for row in range(num_rows):
@@ -88,14 +106,18 @@ class DataFileReader:
             temp_key = temp_row.iloc[0].strip().lower()
             temp_value = AmmoItem(temp_row.iloc[0].strip(), temp_row.iloc[1].strip())
             output_dict[temp_key] = temp_value
+
         return output_dict
 
     def get_spacesuit_data(self):
         """
-        Returns a dict containing all of the Spacesuit page data.
+        Return a dict containing all of the Spacesuit page data.
 
         :return: a dict with all of the Spacesuit page data.
         """
+
+        # TODO: Handle DLC Items
+
         num_rows = self.datasheets["Spacesuits"].shape[0]
         output_dict = {}
         for row in range(num_rows):
@@ -105,14 +127,18 @@ class DataFileReader:
                                   str(temp_row.iloc[1]).strip(),
                                   bool(temp_row.iloc[2]))
             output_dict[temp_key] = temp_value
+
         return output_dict
 
     def get_pack_data(self):
         """
-        Returns a dict containing all of the Pack page data.
+        Return a dict containing all of the Pack page data.
 
         :return: a dict with all of the Pack page data.
         """
+
+        # TODO: Handle DLC Items
+
         num_rows = self.datasheets["Packs"].shape[0]
         output_dict = {}
         for row in range(num_rows):
@@ -122,14 +148,18 @@ class DataFileReader:
                                   str(temp_row.iloc[1]).strip(),
                                   bool(temp_row.iloc[2]))
             output_dict[temp_key] = temp_value
+
         return output_dict
 
     def get_helmet_data(self):
         """
-        Returns a dict containing all of the Helmet page data.
+        Return a dict containing all of the Helmet page data.
 
         :return: a dict with all of the Helmet page data.
         """
+
+        # TODO: Handle DLC Items
+
         num_rows = self.datasheets["Helmets"].shape[0]
         output_dict = {}
         for row in range(num_rows):
@@ -139,15 +169,26 @@ class DataFileReader:
                                   str(temp_row.iloc[1]).strip(),
                                   bool(temp_row.iloc[2]))
             output_dict[temp_key] = temp_value
+
         return output_dict
 
     def get_spacesuit_set_data(self, spacesuits: dict,
                                 helmets: dict, packs: dict):
         """
-        Returns a dict of all of the spacesuit sets
+        Return a dict of all of the spacesuit sets
+
+        :param spacesuits: dict The dict with all of the SpacesuitItem objects in it.
+        :param helmets: dict The dict with all of the HelmetItem objects in it.
+        :param packs: dict The dict with all of the PackItem objects in it.
+
+        :return: a dict with all of the spacesuit sets.
         """
+
+        # TODO: Handle DLC Items
+
         num_rows = self.datasheets["Spacesuit_Sets"].shape[0]
         output_dict = {}
+
         for row in range(num_rows):
             temp_row = self.datasheets["Spacesuit_Sets"].loc[row]
             temp_key = temp_row.iloc[0].strip().lower()
@@ -165,4 +206,5 @@ class DataFileReader:
             if pd.isna(temp_row.iloc[4]) is not True:
                 temp_value.set_faction(str(temp_row.iloc[4]).strip().lower())
             output_dict[temp_key] = temp_value
+
         return output_dict
