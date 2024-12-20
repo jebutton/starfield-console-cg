@@ -472,3 +472,82 @@ class SpacesuitSetItem(ItemType):
         output_str = "\n".join(output_str_list)
 
         return output_str
+
+class WeaponItem(ItemType):
+    """
+        A class representing the data needed to deal with
+        a WeaponItem object without costly pandas overhead.
+    """
+
+    def __init__(self, weapon_name: str, weapon_id: int, dlc: bool, unique: bool):
+        """
+        Initialize an WeaponItem object.
+
+        :param weapon_name: The name of the weapon.
+        :param weapon_id: The ID of the weapon.
+        :param dlc: A bool of whether the item is a DLC item or not. 
+        :param unique: A bool of whether the item is a unique weapon or not.
+        """
+
+        self.weapon_name = weapon_name
+        self.weapon_id = weapon_id
+
+        # TODO: Handle DLC Items
+        self.dlc = dlc
+
+        # TODO: Handle unique weapons.
+        self.unique = unique
+
+    def __repr__(self):
+        """
+        Return a str representation of the WeaponItem object.
+
+        :return: A str version of WeaponItem
+        """
+
+        return f"WeaponItem(weapon_name='{self.weapon_name}', \
+          weapon_id={self.weapon_id}, dlc={self.dlc})"
+
+    def to_dict(self):
+        """
+        Convert the WeaponItem object to a dict.
+
+        :return: A dict representation of the WeaponItem object.
+        """
+
+        return {
+            "weapon_name": self.weapon_name,
+            "weapon_id": self.weapon_id,
+            "dlc": self.dlc,
+            "unique": self.unique
+        }
+
+    def get_name(self):
+        """
+        Return the name of the weapon.
+        
+        :return: A str of the weapon name.
+        """
+
+        return self.weapon_name
+
+    def get_id(self):
+        """
+        Return the ID code of the weapon.
+        
+        :return: A str of the weapon ID.
+        """
+
+        return self.weapon_id
+
+    def get_command(self, number: int):
+        """
+        Return the console command to be generated.
+
+        :param number: A int of how many items you want to generate.
+
+        :return: A str of the console command.
+        """
+
+
+        return f"player.additem {self.weapon_id} {number}"
