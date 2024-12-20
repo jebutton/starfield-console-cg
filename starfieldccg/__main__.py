@@ -97,6 +97,23 @@ def handle_spacesuit_sets():
 
     return True
 
+def handle_weapons():
+    """
+        Handles the weapons menu.
+    """
+
+    weapon_menu = ItemMenu(items_workbook.weapon_data,
+                              "Select Weapon Type:")
+    menu_result = weapon_menu.display_menu()
+    weapon_choice = menu_result[0]
+    weapon_amount = menu_result[1]
+
+    if weapon_choice != "end":
+        print(items_workbook.weapon_data[weapon_choice]
+              .get_command(weapon_amount))
+
+    return True
+
 def main():
     """
         Main loop of program.
@@ -123,7 +140,7 @@ def main():
         elif menu_selection == "resources":
             print(not_built_str)
         elif menu_selection == "weapons":
-            print(not_built_str)
+            exited = handle_weapons()
         elif menu_selection == "spacesuit_sets":
             exited = handle_spacesuit_sets()
         elif menu_selection == "armor_status_mods":

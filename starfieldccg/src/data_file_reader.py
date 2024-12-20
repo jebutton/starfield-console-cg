@@ -4,7 +4,8 @@
     of the program.
 """
 import pandas as pd
-from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem, SpacesuitSetItem
+from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem
+from .data_objects import SpacesuitSetItem, WeaponItem
 
 class DataFileReader:
     """
@@ -31,8 +32,9 @@ class DataFileReader:
         self.spacesuit_set_data = self.get_spacesuit_set_data(self.spacesuit_data,
                                                                 self.helmet_data,
                                                                 self.pack_data)
+        self.weapon_data = self.get_weapon_data()
+
         # To be implemented
-        self.weapon_data = {}
         self.resource_data = {}
         self.armor_status_mods_data = {}
         self.weapon_status_mods_data = {}
@@ -204,6 +206,27 @@ class DataFileReader:
                 temp_value.set_pack(packs[str(temp_row.iloc[3]).strip().lower()])
             if pd.isna(temp_row.iloc[4]) is not True:
                 temp_value.set_faction(str(temp_row.iloc[4]).strip().lower())
+            output_dict[temp_key] = temp_value
+
+        return output_dict
+
+    def get_weapon_data(self):
+        """
+        Return a dict containing all of the Weapon page data.
+
+        :return: A dict with all of the Weapon page data.
+        """
+
+        # TODO: Handle DLC Items
+        num_rows = self.datasheets["Weapons"].shape[0]
+        output_dict = {}
+        for row in range(num_rows):
+            temp_row = self.datasheets["Weapons"].loc[row]
+            temp_key = temp_row.iloc[0].strip().lower()
+            temp_value = WeaponItem(temp_row.iloc[0].strip(),
+                                  str(temp_row.iloc[1]).strip(),
+                                  bool(temp_row.iloc[2]),
+                                  bool(temp_row.iloc[3]))
             output_dict[temp_key] = temp_value
 
         return output_dict
