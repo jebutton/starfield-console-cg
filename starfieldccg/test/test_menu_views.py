@@ -5,6 +5,23 @@
 import pytest
 from .context import MV
 from .context import SCCGTestContext as STC
+from .context import DO
+
+@staticmethod
+def generate_fake_data_for_item_menus(num_items: int):
+    """
+        Generates a fake dataset for use in testing menu chunking.
+
+        :param num_items: The size of the values to generate.
+        :return: A dict of fake data.
+    """
+    test_data = {}
+    for counter in range (1, num_items + 1):
+        fake_item = DO.AmmoItem(f"fake {counter}", f"ZZ{counter}")
+        #print(fake_item)
+        test_data[f"fake {counter}"] = fake_item
+    #print(test_data)
+    return test_data
 
 def test_autocompletelist_repr():
     """
@@ -20,7 +37,6 @@ def test_autocompletelist_repr():
     expected_str = "AutoCompleteList(input_structure='{}')".format(
         test_autocompletelist.input_structure)
     assert str(test_autocompletelist) == expected_str
-
 
 def test_autocompletelist_wrong_input():
     """
@@ -63,3 +79,140 @@ def test_navmenu_repr():
             test_navmenu.menu_items, test_navmenu.completer, test_navmenu.title,
             test_navmenu.text_prompt)
     assert str(test_navmenu) == expected_str
+
+def test_itemmenu_chunks_resources():
+    """
+        Verifies that the resources menu is split into the correct number of chunks
+    """
+    test_reader = STC.get_a_dfr()
+    resources_menu = MV.ItemMenu(test_reader.resource_data,
+                                  "Test Menu")
+
+    assert len(resources_menu.display_chunks) == 9
+
+def test_itemmenu_chunks_spacesuits():
+    """
+        Verifies that the spacesuits menu is split into the correct number of chunks
+    """
+    test_reader = STC.get_a_dfr()
+    spacesuits_menu = MV.ItemMenu(test_reader.spacesuit_data,
+                                  "Test Menu")
+
+    assert len(spacesuits_menu.display_chunks) == 6
+
+def test_itemmenu_chunks_helmets():
+    """
+        Verifies that the helmets menu is split into the correct number of chunks
+    """
+    test_reader = STC.get_a_dfr()
+    helmets_menu = MV.ItemMenu(test_reader.helmet_data,
+                                "Test Menu")
+
+    assert len(helmets_menu.display_chunks) == 4
+
+def test_itemmenu_chunks_packs():
+    """
+        Verifies that the packs menu is split into the correct number of chunks
+    """
+    test_reader = STC.get_a_dfr()
+    packs_menu = MV.ItemMenu(test_reader.pack_data,
+                                  "Test Menu")
+
+    assert len(packs_menu.display_chunks) == 4
+
+def test_itemmenu_chunks_spacesuit_sets():
+    """
+        Verifies that the spacesuit_sets menu is split into the correct number of chunks
+    """
+    test_reader = STC.get_a_dfr()
+    spacesuit_sets_menu = MV.ItemMenu(test_reader.spacesuit_set_data,
+                                  "Test Menu")
+
+    assert len(spacesuit_sets_menu.display_chunks) == 8
+
+def test_itemmenu_chunks_weapons():
+    """
+        Verifies that the weapons menu is split into the correct number of chunks
+    """
+    test_reader = STC.get_a_dfr()
+    weapons_menu = MV.ItemMenu(test_reader.weapon_data,
+                                  "Test Menu")
+
+    assert len(weapons_menu.display_chunks) == 12
+
+def test_itemmenu_chunks_one():
+    """
+        Verifies that a hypothetical ItemMenu with a list size of one
+        has the correct chunking.
+    """
+
+    test_itemmenu = MV.ItemMenu(generate_fake_data_for_item_menus(1), "Test Menu")
+    assert len(test_itemmenu.display_chunks) == 1
+    assert test_itemmenu.display_chunks[0][5] == "1"
+
+
+def test_itemmenu_chunks_two():
+    """
+        Verifies that a hypothetical ItemMenu with a list size of one
+        has the correct chunking.
+    """
+
+    test_itemmenu = MV.ItemMenu(generate_fake_data_for_item_menus(2), "Test Menu")
+    assert len(test_itemmenu.display_chunks) == 1
+    assert test_itemmenu.display_chunks[0][12] == "2"
+
+def test_itemmenu_chunks_chunksize():
+    """
+        Verifies that a hypothetical ItemMenu with a list size of one
+        has the correct chunking.
+    """
+    chunk_size = MV.ItemMenu.CHUNK_SIZE
+    test_itemmenu = MV.ItemMenu(generate_fake_data_for_item_menus(chunk_size),
+                                 "Test Menu")
+    assert len(test_itemmenu.display_chunks) == 1
+    assert test_itemmenu.display_chunks[0][5:7] == "1\n"
+    assert test_itemmenu.display_chunks[0][84:86] == "12"
+
+
+def test_itemmenu_chunks_size_two():
+    """
+        Verifies that a hypothetical ItemMenu with a list size of one
+        has the correct chunking.
+    """
+    chunk_size = MV.ItemMenu.CHUNK_SIZE * 2
+    test_itemmenu = MV.ItemMenu(generate_fake_data_for_item_menus(chunk_size),
+                                 "Test Menu")
+    assert len(test_itemmenu.display_chunks) == 2
+    assert test_itemmenu.display_chunks[0][5:7] == "1\n"
+    assert test_itemmenu.display_chunks[1][5:8] == "13\n"
+
+def test_itemmenu_chunks_size_two_half():
+    """
+        Verifies that a hypothetical ItemMenu with a list size of one
+        has the correct chunking.
+    """
+    chunk_size = int(MV.ItemMenu.CHUNK_SIZE * 2.5)
+    test_itemmenu = MV.ItemMenu(generate_fake_data_for_item_menus(chunk_size),
+                                 "Test Menu")
+    # print(f"len: {len(test_itemmenu.menu_items)} items: {test_itemmenu.menu_items}")
+    # print(test_itemmenu.display_chunks)
+    assert len(test_itemmenu.display_chunks) == 3
+    assert test_itemmenu.display_chunks[0][5:7] == "1\n"
+    assert test_itemmenu.display_chunks[1][5:8] == "13\n"
+    assert test_itemmenu.display_chunks[2][5:8] == "25\n"
+
+def test_itemmenu_chunks_size_3_half():
+    """
+        Verifies that a hypothetical ItemMenu with a list size of one
+        has the correct chunking.
+    """
+    chunk_size = int(MV.ItemMenu.CHUNK_SIZE * 3.5)
+    test_itemmenu = MV.ItemMenu(generate_fake_data_for_item_menus(chunk_size),
+                                 "Test Menu")
+    # print(f"len: {len(test_itemmenu.menu_items)} items: {test_itemmenu.menu_items}")
+    # print(test_itemmenu.display_chunks)
+    assert len(test_itemmenu.display_chunks) == 4
+    assert test_itemmenu.display_chunks[0][5:7] == "1\n"
+    assert test_itemmenu.display_chunks[1][5:8] == "13\n"
+    assert test_itemmenu.display_chunks[2][5:8] == "25\n"
+    assert test_itemmenu.display_chunks[3][5:8] == "37\n"

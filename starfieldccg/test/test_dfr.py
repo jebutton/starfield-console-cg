@@ -188,7 +188,6 @@ def test_spacesuit_sets_item_count():
     test_reader = STC.get_a_dfr()
     assert len(test_reader.spacesuit_set_data) == SPACESUIT_SETS_COUNT
 
-@pytest.mark.xfail
 def test_resources_count():
     """
         Tests that the expected amount of Resource Types is present. 

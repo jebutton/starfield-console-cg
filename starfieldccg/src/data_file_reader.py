@@ -5,7 +5,7 @@
 """
 import pandas as pd
 from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem
-from .data_objects import SpacesuitSetItem, WeaponItem
+from .data_objects import SpacesuitSetItem, WeaponItem, ResourceItem
 
 class DataFileReader:
     """
@@ -33,9 +33,9 @@ class DataFileReader:
                                                                 self.helmet_data,
                                                                 self.pack_data)
         self.weapon_data = self.get_weapon_data()
+        self.resource_data = self.get_resource_data()
 
         # To be implemented
-        self.resource_data = {}
         self.armor_status_mods_data = {}
         self.weapon_status_mods_data = {}
         self.armor_quality_mods_data = {}
@@ -51,8 +51,9 @@ class DataFileReader:
         data = {}
         try:
             for sheet in self.sheet_names:
-                print(sheet)
+                # print(sheet)
                 data[sheet] = pd.read_excel(self.file_path, sheet_name=sheet)
+        
         except Exception as e:
             print(f"Error reading Excel file: {e}")
 
@@ -227,6 +228,23 @@ class DataFileReader:
                                   str(temp_row.iloc[1]).strip(),
                                   bool(temp_row.iloc[2]),
                                   bool(temp_row.iloc[3]))
+            output_dict[temp_key] = temp_value
+
+        return output_dict
+
+    def get_resource_data(self):
+        """
+        Return a dict containing all of the Resource page data.
+
+        :return: A dict with all of the Resource page data.
+        """
+
+        num_rows = self.datasheets["Resources"].shape[0]
+        output_dict = {}
+        for row in range(num_rows):
+            temp_row = self.datasheets["Resources"].loc[row]
+            temp_key = temp_row.iloc[0].strip().lower()
+            temp_value = ResourceItem(temp_row.iloc[0].strip(), temp_row.iloc[1].strip())
             output_dict[temp_key] = temp_value
 
         return output_dict
