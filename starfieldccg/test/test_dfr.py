@@ -9,7 +9,7 @@ SPACESUITS_COUNT = 64   # Total Expec. Types of Spacesuits.
 HELMETS_COUNT = 48  # Total Expec. Types of Helmets.
 PACKS_COUNT = 43    # Total Expec. Types of Boost Packs.
 SPACESUIT_SETS_COUNT = 86   # Total Expec. Types of Spacesuit Sets.
-WEAPONS_COUNT = 132 # Total Expec. Types of Weapons.
+WEAPONS_COUNT = 133 # Total Expec. Types of Weapons.
 RESOURCES_COUNT = 108   # Total Expec. Types of Resources.
 ARMOR_STATUS_MODS_COUNT = 32    # Total Expec. Armor Status Mods.
 WEAPON_STATUS_MODS_COUNT = 29   # Total Expec. Weapon Status Mods.
@@ -41,7 +41,7 @@ def test_resources_sheet_load():
     test_value = test_reader.get_cell_value(resources_data,
                                             "Resource_Name", "Titanium",
                                             "Resource_ID").strip()
-    assert test_value == "556D"
+    assert test_value == "0000556D"
 
 def test_spacesuits_sheet_load():
     """
@@ -173,7 +173,7 @@ def test_helmets_item_count():
     test_reader = STC.get_a_dfr()
     assert len(test_reader.helmet_data) == HELMETS_COUNT
 
-@pytest.mark.xfail
+
 def test_weapons_item_count():
     """
         Tests that the expected amount of Weapon Types is present. 
