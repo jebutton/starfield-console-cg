@@ -99,6 +99,7 @@ class ItemMenu(BaseMenu):
         and provide a prompt for the user to choose them.
     """
 
+    CHUNK_SIZE = 12
     def __init__(self, input_dict: dict, title: str):
         """
         Initialize an ItemMenu object.
@@ -109,11 +110,10 @@ class ItemMenu(BaseMenu):
 
         super().__init__(title)
         self.input_dict = input_dict
-        self.chunk_size = 12
+        
         self.menu_items = self.get_menu_items()
         self.completer = AutoCompleteList(self.menu_items).completer
         self.display_chunks = self.split_menu_items()
-        self.completer = AutoCompleteList(self.input_dict).completer
         self.amount = 0
 
     def __repr__(self):
@@ -143,41 +143,42 @@ class ItemMenu(BaseMenu):
 
         output_list = []
         items_len = len(self.menu_items)
-        if items_len > self.chunk_size:
+        if items_len > ItemMenu.CHUNK_SIZE:
 
-            if items_len % self.chunk_size == 0:
-                segment_counter = self.chunk_size
+            if items_len % ItemMenu.CHUNK_SIZE == 0:
+                segment_counter = 0
                 temp_segment = ""
 
-                for segment in range(int(items_len / 8)):
+                for segment in range(int(items_len / ItemMenu.CHUNK_SIZE)):
+                    if segment_counter <= ItemMenu.CHUNK_SIZE:
+                        temp_segment = self.menu_items[segment_counter: 
+                                                       segment_counter + ItemMenu.CHUNK_SIZE]
+                        segment_counter += ItemMenu.CHUNK_SIZE
+                        output_list.append("\n".join(temp_segment))
 
-                    if segment_counter == self.chunk_size:
-                        temp_segment = self.menu_items[:self.chunk_size]
-                        segment_counter += self.chunk_size
-
-                    else:
+                    elif segment_counter <= items_len:
                         temp_segment = self.menu_items[segment_counter:segment_counter
-                                                        + self.chunk_size]
-                        segment_counter += self.chunk_size
-                    output_list.append("\n".join(temp_segment))
+                                                        + ItemMenu.CHUNK_SIZE]
+                        segment_counter += ItemMenu.CHUNK_SIZE
+                        output_list.append("\n".join(temp_segment))
 
-            elif items_len / self.chunk_size > 1.0:
-                loop_length = int((items_len - items_len % self.chunk_size) / 8)
-                segment_counter = self.chunk_size
+            elif items_len / ItemMenu.CHUNK_SIZE > 1.0:
+                loop_length = int((items_len - items_len % ItemMenu.CHUNK_SIZE) / ItemMenu.CHUNK_SIZE)
+                segment_counter = 0
                 temp_segment = ""
 
                 for segment in range(loop_length):
-
-                    if segment_counter == self.chunk_size:
-                        temp_segment = self.menu_items[:self.chunk_size]
+                    if segment_counter <= ItemMenu.CHUNK_SIZE:
+                        temp_segment = self.menu_items[segment_counter:
+                                                       segment_counter + ItemMenu.CHUNK_SIZE]
                         output_list.append("\n".join(temp_segment))
-                        segment_counter += self.chunk_size
+                        segment_counter += ItemMenu.CHUNK_SIZE
 
-                    elif items_len - segment_counter >= self.chunk_size:
+                    elif items_len - segment_counter >= ItemMenu.CHUNK_SIZE:
                         temp_segment = self.menu_items[segment_counter:segment_counter
-                                                        + self.chunk_size]
+                                                        + ItemMenu.CHUNK_SIZE]
                         output_list.append("\n".join(temp_segment))
-                        segment_counter += self.chunk_size
+                        segment_counter += ItemMenu.CHUNK_SIZE
 
                 temp_segment = self.menu_items[segment_counter: items_len]
                 output_list.append("\n".join(temp_segment))
@@ -185,6 +186,7 @@ class ItemMenu(BaseMenu):
         else:
             temp_segment = self.menu_items[:items_len]
             output_list.append("\n".join(temp_segment))
+
         return output_list
 
     def display_menu(self):
@@ -197,6 +199,7 @@ class ItemMenu(BaseMenu):
         finished = False
         result = (False, 0)
         while finished is not True:
+            print(self.display_chunks)
             for chunk in self.display_chunks:
                 self.clear_screen()
                 print(self.title)
@@ -294,7 +297,7 @@ class NavMenu(BaseMenu):
                     valid_input = True
                     finished = True
                     result = user_input
-                if user_input.lower() == "quit":
+                elif user_input.lower() == "quit":
                     valid_input = True
                     finished = True
                     result = "quit"

@@ -18,7 +18,7 @@ sys.path.insert(0, path.abspath('..'))
 project = 'starfield-console-cg'
 copyright = '2024, Jacqueline Button'
 author = 'Jacqueline Button'
-release = '0.0.14'
+release = '0.0.16'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

@@ -114,6 +114,23 @@ def handle_weapons():
 
     return True
 
+def handle_resources():
+    """
+        Handles the resources menu.
+    """
+
+    resource_menu = ItemMenu(items_workbook.resource_data,
+                              "Select Resource Type:")
+    menu_result = resource_menu.display_menu()
+    resource_choice = menu_result[0]
+    resource_amount = menu_result[1]
+
+    if resource_choice != "end":
+        print(items_workbook.resource_data[resource_choice]
+              .get_command(resource_amount))
+
+    return True
+
 def main():
     """
         Main loop of program.
@@ -129,6 +146,8 @@ def main():
 
         if menu_selection == "quit":
             exited = True
+        if menu_selection == "exit":
+            exited = True
         elif menu_selection == "ammo":
             exited = handle_ammo()
         elif menu_selection == "spacesuits":
@@ -138,7 +157,7 @@ def main():
         elif menu_selection == "helmets":
             exited = handle_helmets()
         elif menu_selection == "resources":
-            print(not_built_str)
+            exited = handle_resources()
         elif menu_selection == "weapons":
             exited = handle_weapons()
         elif menu_selection == "spacesuit_sets":

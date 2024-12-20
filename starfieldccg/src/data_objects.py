@@ -322,7 +322,6 @@ class HelmetItem(ItemType):
         :return: A str of the console command.
         """
 
-
         return f"player.additem {self.helmet_id} {number}"
 
 class SpacesuitSetItem(ItemType):
@@ -551,3 +550,73 @@ class WeaponItem(ItemType):
 
 
         return f"player.additem {self.weapon_id} {number}"
+
+class ResourceItem(ItemType):
+    """
+        A class representing the data needed to deal with
+        a ResourceItem object without costly pandas overhead.
+    """
+
+    def __init__(self, resource_name: str, resource_id: int):
+        """
+        Initialize an ResourceItem object.
+
+        :param resource_name: The name of the resource.
+        :param resource_id: The ID of the resource.
+        :param dlc: A bool of whether the item is a DLC item or not. 
+        """
+
+        self.resource_name = resource_name
+        self.resource_id = resource_id
+
+
+    def __repr__(self):
+        """
+        Return a str representation of the ResourceItem object.
+
+        :return: A str version of ResourceItem
+        """
+
+        return f"ResourceItem(resource_name='{self.resource_name}', \
+          resource_id={self.resource_id})"
+
+    def to_dict(self):
+        """
+        Convert the ResourceItem object to a dict.
+
+        :return: A dict representation of the ResourceItem object.
+        """
+
+        return {
+            "resource_name": self.resource_name,
+            "resource_id": self.resource_id
+        }
+
+    def get_name(self):
+        """
+        Return the name of the resource.
+        
+        :return: A str of the resource name.
+        """
+
+        return self.resource_name
+
+    def get_id(self):
+        """
+        Return the ID code of the resource.
+        
+        :return: A str of the resource ID.
+        """
+
+        return self.resource_id
+
+    def get_command(self, number: int):
+        """
+        Return the console command to be generated.
+
+        :param number: A int of how many items you want to generate.
+
+        :return: A str of the console command.
+        """
+
+        return f"player.additem {self.resource_id} {number}"
