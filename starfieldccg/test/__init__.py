@@ -1,5 +1,5 @@
 """
-    The package containing all of the tests.
+    This the package containing all of the tests.
 """
 __all__ =[
     'context',

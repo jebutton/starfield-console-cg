@@ -1,5 +1,6 @@
 """
-    Init file for the src package.
+    Contains the majority of the code for the
+    starfieldccg package.
 """
 
 __all__ =[
