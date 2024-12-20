@@ -19,7 +19,7 @@ class SCCGTestContext():
         A class to handle all of the contextual information that the test classes need.
     """
     PATH_TO_DATASHEET = OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
-                                                  '../src/data/Starfield_Datatable.xls'))
+                                                  '../data/Starfield_Datatable.xls'))
     @staticmethod
     def get_a_dfr():
         """

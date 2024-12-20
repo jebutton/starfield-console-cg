@@ -9,7 +9,7 @@ from .src.menu_views import ItemMenu, NavMenu
 from .src.data_file_reader import DataFileReader as DFR
 
 items_workbook = DFR(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
-                                                  './src/data/Starfield_Datatable.xls')))
+                                                  './data/Starfield_Datatable.xls')))
 print("Datasheets Loaded!")
 
 def handle_ammo():
