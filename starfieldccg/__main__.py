@@ -1,12 +1,15 @@
 """
     Execution part of the program.
 """
-import os
-from src.data_file_reader import DataFileReader as DFR
-from src.menu_views import ItemMenu, NavMenu
+from os import path as OSPATH
+import sys
+sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
+# pylint: disable=wrong-import-position
+from .src.menu_views import ItemMenu, NavMenu
+from .src.data_file_reader import DataFileReader as DFR
 
-items_workbook = DFR(os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                  './data/Starfield_Datatable.xls')))
+items_workbook = DFR(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
+                                                  './src/data/Starfield_Datatable.xls')))
 print("Datasheets Loaded!")
 
 def handle_ammo():
