@@ -4,8 +4,9 @@
 
 import sys
 from os import path as OSPATH
-sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '..')))
-sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../..')))
+sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../.')))
+print(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../src')))
+# sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../..')))
 # pylint: disable=wrong-import-position
 # pylint: disable=import-error
 # pylint: disable=unused-import
@@ -18,7 +19,7 @@ class SCCGTestContext():
         A class to handle all of the contextual information that the test classes need.
     """
     PATH_TO_DATASHEET = OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
-                                                  '../data/Starfield_Datatable.xls'))
+                                                  '../src/data/Starfield_Datatable.xls'))
     @staticmethod
     def get_a_dfr():
         """

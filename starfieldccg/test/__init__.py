@@ -1,5 +1,5 @@
 """
-    init file for the source code.
+    The package containing all of the tests.
 """
 __all__ =[
     'context',
