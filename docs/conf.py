@@ -1,7 +1,11 @@
+"""
+    Configuration file for Sphinx.
+"""
+
 from os import path
 import sys
 sys.path.insert(0, path.abspath('..'))
-print(sys.path)
+
 
 # Configuration file for the Sphinx documentation builder.
 #

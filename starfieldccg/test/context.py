@@ -4,8 +4,9 @@
 
 import sys
 from os import path as OSPATH
-sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '..')))
-sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../..')))
+sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../.')))
+print(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../src')))
+# sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../..')))
 # pylint: disable=wrong-import-position
 # pylint: disable=import-error
 # pylint: disable=unused-import

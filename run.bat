@@ -1,2 +1,2 @@
-python -m src
+python -m starfieldccg
 pause

@@ -4,9 +4,7 @@
     of the program.
 """
 import pandas as pd
-from src.data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem, SpacesuitSetItem
-
-
+from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem, SpacesuitSetItem
 
 class DataFileReader:
     """
