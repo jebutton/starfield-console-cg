@@ -216,3 +216,49 @@ def test_itemmenu_chunks_size_3_half():
     assert test_itemmenu.display_chunks[1][5:8] == "13\n"
     assert test_itemmenu.display_chunks[2][5:8] == "25\n"
     assert test_itemmenu.display_chunks[3][5:8] == "37\n"
+
+def test_statusmodmenu_weapons_chunks_one():
+    """
+    Test that there should be three sets of chunks for a
+    weapons status mod menu.
+    """
+
+    test_reader = STC.get_a_dfr()
+    weapons_status_mod_menu = MV.StatusModMenu(test_reader.weapon_status_mods_data,
+                                  "Test Menu")
+    assert len(weapons_status_mod_menu.display_chunks) == 3
+
+def test_statusmodmenu_weapons_chunks_two():
+    """
+    Test that each chunk sof a StatusModMenu for 
+    weapon status mods has the correct item for the first item
+    """
+
+    test_reader = STC.get_a_dfr()
+    weapons_status_mod_menu = MV.StatusModMenu(test_reader.weapon_status_mods_data,
+                                  "Test Menu")
+
+    command_one = weapons_status_mod_menu.input_dict[weapons_status_mod_menu. \
+    trim_menu_selection(weapons_status_mod_menu.display_chunks[0][0]).lower()].get_command()
+    command_two = weapons_status_mod_menu.input_dict[weapons_status_mod_menu. \
+    trim_menu_selection(weapons_status_mod_menu.display_chunks[1][0]).lower()].get_command()
+    command_three = weapons_status_mod_menu.input_dict[weapons_status_mod_menu. \
+    trim_menu_selection(weapons_status_mod_menu.display_chunks[2][0]).lower()].get_command()
+
+    assert command_one == ".amod 000FF442"
+    assert command_two == ".amod 0008AB47"
+    assert command_three == ".amod 000FBD3C"
+
+def test_statusmodmenu_weapons_chunks_three():
+    """
+    Test that each chunk list of a StatusModMenu for 
+    weapon status mods has the correct number of chunks.
+    """
+
+    test_reader = STC.get_a_dfr()
+    weapons_status_mod_menu = MV.StatusModMenu(test_reader.weapon_status_mods_data,
+                                  "Test Menu")
+
+    assert len(weapons_status_mod_menu.display_chunks[0]) == 1
+    assert len(weapons_status_mod_menu.display_chunks[1]) == 1
+    assert len(weapons_status_mod_menu.display_chunks[2]) == 1

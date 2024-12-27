@@ -562,8 +562,7 @@ class ResourceItem(ItemType):
         Initialize an ResourceItem object.
 
         :param resource_name: The name of the resource.
-        :param resource_id: The ID of the resource.
-        :param dlc: A bool of whether the item is a DLC item or not. 
+        :param resource_id: The ID of the resource. 
         """
 
         self.resource_name = resource_name
@@ -620,3 +619,99 @@ class ResourceItem(ItemType):
         """
 
         return f"player.additem {self.resource_id} {number}"
+
+class StatusModType():
+    """
+    A class representing the data needed to deal with
+    a StatusModType object without costly pandas overhead.
+    """
+
+    def __init__(self, status_mod_name: str, status_mod_id: int,
+                 status_mod_desc: str, mod_slot: int):
+        """
+        Initialize an StatusModType object.
+
+        :param status_mod_name: The name of the weapon status mod.
+        :param status_mod_id: The ID of the weapon status mod.
+        :param status_mod_desc: The description of the weapon status mod.
+        :param mod_slot: The slot for the mod (one of three) 
+        """
+
+        self.status_mod_name = status_mod_name
+        self.status_mod_id = status_mod_id
+        self.status_mod_desc = status_mod_desc
+        self.mod_slot = mod_slot
+
+        if self.mod_slot not in [1,2,3]:
+            raise ValueError(f"Invalid mod_slot value: {self.mod_slot} is not in list \
+                      [1,2,3]")
+
+    def __repr__(self):
+        """
+        Return a str representation of the WeaponStatusModType object.
+
+        :return: A str version of StatusModType
+        """
+
+        return f"StatusModType(status_mod_name='{self.status_mod_name}', \
+            status_mod_id='{self.status_mod_id}', \
+            status_mod_desc='{self.status_mod_desc}', \
+            mod_slot={self.mod_slot})"
+
+    def to_dict(self):
+        """
+        Convert the StatusModType object to a dict.
+
+        :return: A dict representation of the StatusModType object.
+        """
+
+        return {
+            "status_mod_name": self.status_mod_name,
+            "status_mod_id": self.status_mod_id,
+            "status_mod_desc": self.status_mod_id,
+            "mod_slot": self.mod_slot
+        }
+
+    def get_name(self):
+        """
+        Return the name of the StatusModType.
+        
+        :return: A str of the StatusModType name.
+        """
+
+        return self.status_mod_name
+
+    def get_id(self):
+        """
+        Return the ID code of the status_mod.
+        
+        :return: A str of the status_mod ID.
+        """
+
+        return self.status_mod_id
+
+    def get_description(self):
+        """
+        Returns the description of the mod.
+
+        :return: A str of the mod description
+        """
+        return self.status_mod_desc
+
+    def get_mod_slot(self):
+        """
+        Returns the mod slot
+
+        :return: An int of the mod slot.
+        """
+
+        return self.mod_slot
+
+    def get_command(self):
+        """
+        Return the console command to be generated.
+
+        :return: A str of the console command.
+        """
+
+        return f".amod {self.status_mod_id}"
