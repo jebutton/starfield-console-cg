@@ -204,7 +204,6 @@ def test_armor_status_mods_count():
     test_reader = STC.get_a_dfr()
     assert len(test_reader.armor_status_mods_data) == ARMOR_STATUS_MODS_COUNT
 
-@pytest.mark.xfail
 def test_weapons_status_mods_count():
     """
         Tests that the expected amount of Weapon Status Mod
@@ -230,3 +229,11 @@ def test_weapons_quality_mods_count():
     """
     test_reader = STC.get_a_dfr()
     assert len(test_reader.weapon_quality_mods_data) == WEAPON_QUALITY_MODS_COUNT
+
+def test_status_mods_by_slot():
+    """
+    Tests that the get_status_mods_by_mod_slot() function works correctly.
+    """
+    test_reader = STC.get_a_dfr()
+    test_dict = test_reader.get_status_mods_by_mod_slot(1, test_reader.weapon_status_mods_data)
+    assert len(test_dict) == 10

@@ -5,7 +5,7 @@
 """
 import pandas as pd
 from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem
-from .data_objects import SpacesuitSetItem, WeaponItem, ResourceItem
+from .data_objects import SpacesuitSetItem, WeaponItem, ResourceItem, StatusModType
 
 class DataFileReader:
     """
@@ -34,10 +34,11 @@ class DataFileReader:
                                                                 self.pack_data)
         self.weapon_data = self.get_weapon_data()
         self.resource_data = self.get_resource_data()
+        self.weapon_status_mods_data = self.get_weapon_status_mod_data()
 
         # To be implemented
         self.armor_status_mods_data = {}
-        self.weapon_status_mods_data = {}
+
         self.armor_quality_mods_data = {}
         self.weapon_quality_mods_data = {}
 
@@ -53,7 +54,7 @@ class DataFileReader:
             for sheet in self.sheet_names:
                 # print(sheet)
                 data[sheet] = pd.read_excel(self.file_path, sheet_name=sheet)
-        
+
         except Exception as e:
             print(f"Error reading Excel file: {e}")
 
@@ -247,4 +248,40 @@ class DataFileReader:
             temp_value = ResourceItem(temp_row.iloc[0].strip(), temp_row.iloc[1].strip())
             output_dict[temp_key] = temp_value
 
+        return output_dict
+    @staticmethod
+    def get_status_mods_by_mod_slot(slot: int, mod_dict: dict):
+        """
+        Return a dict containing all a StatusModType objects with 
+        a specific mod_slot value
+
+        :param slot: An int value for the target slot.
+        :param mod_dict: a dict[strm StatusModType()] containing the status mods.
+        
+        :return: A dict with a subset of a StatusModType dict containing
+        only items with a specific modslot.
+        """
+        output_dict = {}
+        for status_mod in mod_dict.values():
+            if status_mod.get_mod_slot() == slot:
+                output_dict[status_mod.get_name().lower()] = status_mod
+        return output_dict
+
+    def get_weapon_status_mod_data(self):
+        """
+        Return a dict containing all of the Weapon_Status_Mods page data.
+
+        :return: A dict with all of the Weapon_Status_Mods page data
+        """
+
+        num_rows = self.datasheets["Weapon_Status_Mods"].shape[0]
+        output_dict = {}
+        for row in range(num_rows):
+            temp_row = self.datasheets["Weapon_Status_Mods"].loc[row]
+            temp_key = temp_row.iloc[0].strip().lower()
+            temp_value = StatusModType(temp_row.iloc[0].strip(),
+                                        temp_row.iloc[1].strip(),
+                                        temp_row.iloc[2].strip(),
+                                        temp_row.iloc[3])
+            output_dict[temp_key] = temp_value
         return output_dict

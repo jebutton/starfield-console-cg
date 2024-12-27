@@ -5,7 +5,7 @@ from os import path as OSPATH
 import sys
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
 # pylint: disable=wrong-import-position
-from .src.menu_views import ItemMenu, NavMenu
+from .src.menu_views import ItemMenu, NavMenu, StatusModMenu
 from .src.data_file_reader import DataFileReader as DFR
 
 items_workbook = DFR(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
@@ -131,6 +131,24 @@ def handle_resources():
 
     return True
 
+def handle_weapon_status_mods():
+    """
+        Handles the weapon status mods menu.
+    """
+
+    resource_menu = StatusModMenu(items_workbook.weapon_status_mods_data,
+                              "Select Weapon Status Mod Type from Slot")
+    menu_result = resource_menu.display_menu()
+    mod_choices = menu_result
+
+    if "end" not in mod_choices:
+        for i, choice in enumerate(mod_choices):
+            if choice != "skip":
+                print(items_workbook.weapon_status_mods_data[mod_choices[i]]
+              .get_command())
+
+    return True
+
 def main():
     """
         Main loop of program.
@@ -165,6 +183,6 @@ def main():
         elif menu_selection == "armor_status_mods":
             print(not_built_str)
         elif menu_selection == "weapon_status_mods":
-            print(not_built_str)
+            exited = handle_weapon_status_mods()
 
 main()
