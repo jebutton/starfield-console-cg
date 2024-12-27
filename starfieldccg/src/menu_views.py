@@ -21,15 +21,13 @@ class AutoCompleteList:
         """
 
         self.input_structure = input_structure
-        self.wrong_input_str = f"Invalid datastructure type. Type is {type(input_structure)}"
 
         if isinstance(self.input_structure, dict):
             self.completer = self.generate_wordcompleter_list(self.input_structure)
         elif isinstance(input_structure, list):
             self.completer = WordCompleter(self.input_structure)
         else:
-            # TODO handle exception properly
-            print(self.wrong_input_str)
+            raise TypeError(f"Invalid datastructure type. Type is {type(input_structure)}")
 
     def __repr__(self):
         """
@@ -58,9 +56,12 @@ class AmountPrompt():
         This is a class to allow prompting for item amounts.
     """
 
+    # TODO: Make this class a function in the BaseMenu Class and remove it.
+
     def __init__(self):
 
         self.prompt_text = "How many items?> "
+
     def get_amount(self):
         """
             Prompts and returns the amount chosen.
@@ -142,6 +143,9 @@ class ItemMenu(BaseMenu):
         :return: A list of all the menu items split into str chunks with linebreaks.
         """
 
+        # pylint: disable=too-many-branches
+        # pylint: disable=unused-variable
+
         output_list = []
         items_len = len(self.menu_items)
         if items_len > ItemMenu.CHUNK_SIZE:
@@ -197,6 +201,8 @@ class ItemMenu(BaseMenu):
         
         :return: The selected menu item str name or "end" if the user wants to exit.
         """
+
+        # pylint: disable=too-many-branches
 
         finished = False
         result = (False, 0)
@@ -330,6 +336,10 @@ class StatusModMenu(BaseMenu):
 
         super().__init__(title)
         self.input_dict = input_dict
+
+        if isinstance(self.input_dict, dict) is not True:
+            raise TypeError(f"input_dict is not a dict. input_dict is type {type(input_dict)}")
+
         self.menu_items = self.get_menu_items()
         self.completers = (AutoCompleteList(
                                 [self.trim_menu_selection(item) for \
@@ -374,6 +384,10 @@ class StatusModMenu(BaseMenu):
 
         :return: A list of all the menu items split into str chunks with linebreaks.
         """
+
+        # pylint: disable=unused-variable
+        # pylint: disable=too-many-statements
+        # pylint: disable=too-many-branches
 
         output_list = []
         items_len = len(tgt_list)
@@ -447,6 +461,11 @@ class StatusModMenu(BaseMenu):
         
         :return: The selected mod str names in a tuple or "end" if the user wants to exit.
         """
+
+        # pylint: disable=unused-variable
+        # pylint: disable=too-many-statements
+        # pylint: disable=too-many-branches
+        # pylint: disable=too-many-nested-blocks
 
         finished = False
         result_list = ["", "", ""]

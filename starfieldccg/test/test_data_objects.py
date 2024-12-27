@@ -10,6 +10,9 @@ def test_status_mod_slot_exception():
     Tests that the StatusModType throws a ValueError Exception
     when you supply it with an incorrect mod_slot value.
     """
+
+    # pylint: disable=unused-variable
+
     with pytest.raises(ValueError) as ve:
         bad_mod_slot_status_mod = DO.StatusModType("bad_slot",
                                               "FFFFFFFF",
