@@ -138,40 +138,26 @@ def handle_resources():
 
     return True
 
-def handle_weapon_status_mods():
+def handle_status_mods(title: str, data_dict: dict):
     """
-        Handles the Weapon Status Mods menu.
+    Handles the Status Mods menu.
+
+    :param title: A str with the title of the prompt.
+    :param prompt: A str with a prompt to display.
+    :param data_dict: A dict with the type of data to search through.
+
     """
 
-    weapon_status_menu = StatusModMenu(items_workbook.weapon_status_mods_data,
-                              "Select Weapon Status Mod Type from Slot")
-    menu_result = weapon_status_menu.display_menu()
+    status_menu = StatusModMenu(data_dict,
+                              title)
+    menu_result = status_menu.display_menu()
     mod_choices = menu_result
 
     if "end" not in mod_choices:
         print("\n")
         for i, choice in enumerate(mod_choices):
             if choice != "skip":
-                print(items_workbook.weapon_status_mods_data[mod_choices[i]] \
-              .get_command())
-
-    return True
-
-def handle_armor_status_mods():
-    """
-        Handles the Armor Status Mods menu.
-    """
-
-    armor_status_menu = StatusModMenu(items_workbook.armor_status_mods_data,
-                              "Select Armor Status Mod Type from Slot")
-    menu_result = armor_status_menu.display_menu()
-    mod_choices = menu_result
-
-    if "end" not in mod_choices:
-        print("\n")
-        for i, choice in enumerate(mod_choices):
-            if choice != "skip":
-                print(items_workbook.armor_status_mods_data[mod_choices[i]]
+                print(data_dict[mod_choices[i]]
               .get_command())
 
     return True
@@ -180,6 +166,7 @@ def handle_quality_mods(title: str, prompt: str, data_dict: dict):
     """
     Handles a quality mod menu by passing a prompt to it.
 
+    :param title: A str with the title of the prompt.
     :param prompt: A str with a prompt to display.
     :param data_dict: A dict with the type of data to search through.
     """
@@ -229,9 +216,11 @@ def main():
         elif menu_selection == "spacesuit sets":
             exited = handle_spacesuit_sets()
         elif menu_selection == "armor status mods":
-            exited = handle_armor_status_mods()
+            exited = handle_status_mods("Select Armor Status Mod Type from Slot",
+                                        items_workbook.armor_status_mods_data)
         elif menu_selection == "weapon status mods":
-            exited = handle_weapon_status_mods()
+            exited = handle_status_mods("Select Weapon Status Mod Type from Slot",
+                                        items_workbook.weapon_status_mods_data)
         elif menu_selection == "armor quality mods":
             exited = handle_quality_mods("Select Armor Quality Mod Level:",
                                          "Type Mod name or type quit to exit> ",
