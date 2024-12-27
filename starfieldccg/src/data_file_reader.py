@@ -6,6 +6,7 @@
 import pandas as pd
 from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem
 from .data_objects import SpacesuitSetItem, WeaponItem, ResourceItem, StatusModType
+from .data_objects import QualityModType
 
 class DataFileReader:
     """
@@ -22,8 +23,11 @@ class DataFileReader:
         self.file_path = file_path
         self.sheet_names = [
             "Resources", "Spacesuits", "Helmets", "Packs",
-            "Spacesuit_Sets", "Weapons", "Ammo", "Armor_Status_Mods", "Weapon_Status_Mods"
+            "Spacesuit_Sets", "Weapons", "Ammo", "Armor_Status_Mods", "Weapon_Status_Mods",
+            "Armor_Quality_Mods", "Weapon_Quality_Mods"
         ]
+
+        self.pretty_sheet_names = [name.replace("_", " ") for name in self.sheet_names]
         self.datasheets = self.read_sheets()
         self.ammo_data = self.get_ammo_data()
         self.spacesuit_data = self.get_spacesuit_data()
@@ -34,13 +38,10 @@ class DataFileReader:
                                                                 self.pack_data)
         self.weapon_data = self.get_weapon_data()
         self.resource_data = self.get_resource_data()
-        self.weapon_status_mods_data = self.get_weapon_status_mod_data()
-
-        # To be implemented
-        self.armor_status_mods_data = {}
-
-        self.armor_quality_mods_data = {}
-        self.weapon_quality_mods_data = {}
+        self.weapon_status_mods_data = self.get_status_mod_data("Weapon_Status_Mods")
+        self.armor_status_mods_data = self.get_status_mod_data("Armor_Status_Mods")
+        self.armor_quality_mods_data = self.get_quality_mod_data("Armor_Quality_Mods")
+        self.weapon_quality_mods_data = self.get_quality_mod_data("Weapon_Quality_Mods")
 
     def read_sheets(self):
         """
@@ -249,6 +250,7 @@ class DataFileReader:
             output_dict[temp_key] = temp_value
 
         return output_dict
+
     @staticmethod
     def get_status_mods_by_mod_slot(slot: int, mod_dict: dict):
         """
@@ -267,21 +269,41 @@ class DataFileReader:
                 output_dict[status_mod.get_name().lower()] = status_mod
         return output_dict
 
-    def get_weapon_status_mod_data(self):
+    def get_status_mod_data(self, sheet_name: str):
         """
         Return a dict containing all of the Weapon_Status_Mods page data.
+        
+        :param sheet_name: The str of the name of the sheet to pull the data from.
 
         :return: A dict with all of the Weapon_Status_Mods page data
         """
 
-        num_rows = self.datasheets["Weapon_Status_Mods"].shape[0]
+        num_rows = self.datasheets[sheet_name].shape[0]
         output_dict = {}
         for row in range(num_rows):
-            temp_row = self.datasheets["Weapon_Status_Mods"].loc[row]
+            temp_row = self.datasheets[sheet_name].loc[row]
             temp_key = temp_row.iloc[0].strip().lower()
             temp_value = StatusModType(temp_row.iloc[0].strip(),
                                         temp_row.iloc[1].strip(),
                                         temp_row.iloc[2].strip(),
                                         temp_row.iloc[3])
+            output_dict[temp_key] = temp_value
+        return output_dict
+
+    def get_quality_mod_data(self, sheet_name: str):
+        """
+        Return a dict containing all of the data for a quality mod.
+
+        :param sheet_name: The str of the name of the sheet to pull the data from.
+        :return: A dict with all of a quality mod page's data.
+        """
+
+        num_rows = self.datasheets[sheet_name].shape[0]
+        output_dict = {}
+        for row in range(num_rows):
+            temp_row = self.datasheets[sheet_name].loc[row]
+            temp_key = temp_row.iloc[0].strip().lower()
+            temp_value = QualityModType(temp_row.iloc[0].strip(),
+                                        temp_row.iloc[1].strip())
             output_dict[temp_key] = temp_value
         return output_dict

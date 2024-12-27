@@ -5,7 +5,7 @@ from os import path as OSPATH
 import sys
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
 # pylint: disable=wrong-import-position
-from .src.menu_views import ItemMenu, NavMenu, StatusModMenu
+from .src.menu_views import ItemMenu, NavMenu, StatusModMenu, QualityMenu
 from .src.data_file_reader import DataFileReader as DFR
 
 items_workbook = DFR(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
@@ -24,6 +24,7 @@ def handle_ammo():
     ammo_amount = menu_result[1]
 
     if ammo_choice != "end":
+        print("\n")
         print(items_workbook.ammo_data[ammo_choice]
               .get_command(ammo_amount))
 
@@ -41,6 +42,7 @@ def handle_spacesuits():
     spacesuit_amount = menu_result[1]
 
     if spacesuit_choice != "end":
+        print("\n")
         print(items_workbook.spacesuit_data[spacesuit_choice]
               .get_command(spacesuit_amount))
 
@@ -58,6 +60,7 @@ def handle_packs():
     pack_amount = menu_result[1]
 
     if pack_choice != "end":
+        print("\n")
         print(items_workbook.pack_data[pack_choice]
               .get_command(pack_amount))
 
@@ -75,6 +78,7 @@ def handle_helmets():
     helmet_amount = menu_result[1]
 
     if helmet_choice != "end":
+        print("\n")
         print(items_workbook.helmet_data[helmet_choice]
               .get_command(helmet_amount))
 
@@ -92,6 +96,7 @@ def handle_spacesuit_sets():
     spacesuit_set_amount = menu_result[1]
 
     if spacesuit_set_choice != "end":
+        print("\n")
         print(items_workbook.spacesuit_set_data[spacesuit_set_choice]
               .get_command(spacesuit_set_amount))
 
@@ -109,6 +114,7 @@ def handle_weapons():
     weapon_amount = menu_result[1]
 
     if weapon_choice != "end":
+        print("\n")
         print(items_workbook.weapon_data[weapon_choice]
               .get_command(weapon_amount))
 
@@ -126,28 +132,58 @@ def handle_resources():
     resource_amount = menu_result[1]
 
     if resource_choice != "end":
+        print("\n")
         print(items_workbook.resource_data[resource_choice]
               .get_command(resource_amount))
 
     return True
 
-def handle_weapon_status_mods():
+def handle_status_mods(title: str, data_dict: dict):
     """
-        Handles the weapon status mods menu.
+    Handles the Status Mods menu.
+
+    :param title: A str with the title of the prompt.
+    :param prompt: A str with a prompt to display.
+    :param data_dict: A dict with the type of data to search through.
+
     """
 
-    resource_menu = StatusModMenu(items_workbook.weapon_status_mods_data,
-                              "Select Weapon Status Mod Type from Slot")
-    menu_result = resource_menu.display_menu()
+    status_menu = StatusModMenu(data_dict,
+                              title)
+    menu_result = status_menu.display_menu()
     mod_choices = menu_result
 
     if "end" not in mod_choices:
+        print("\n")
         for i, choice in enumerate(mod_choices):
             if choice != "skip":
-                print(items_workbook.weapon_status_mods_data[mod_choices[i]]
+                print(data_dict[mod_choices[i]]
               .get_command())
 
     return True
+
+def handle_quality_mods(title: str, prompt: str, data_dict: dict):
+    """
+    Handles a quality mod menu by passing a prompt to it.
+
+    :param title: A str with the title of the prompt.
+    :param prompt: A str with a prompt to display.
+    :param data_dict: A dict with the type of data to search through.
+    """
+
+    quality_menu = QualityMenu(data_dict, title,
+                              prompt)
+    print(data_dict)
+    menu_result = quality_menu.display_menu()
+    mod_choice = menu_result
+
+    if mod_choice != "quit":
+        print("\n")
+        print(data_dict[mod_choice]
+        .get_command())
+
+    return True
+
 
 def main():
     """
@@ -155,10 +191,9 @@ def main():
     """
 
     exited = False
-    not_built_str = "Option Not Built Yet. Try another."
 
     while exited is False:
-        main_menu = NavMenu(sorted(items_workbook.sheet_names),
+        main_menu = NavMenu(items_workbook.pretty_sheet_names,
                             "Main Menu:", "Select an option or type quit to exit>")
         menu_selection = main_menu.display_menu().lower()
 
@@ -178,11 +213,21 @@ def main():
             exited = handle_resources()
         elif menu_selection == "weapons":
             exited = handle_weapons()
-        elif menu_selection == "spacesuit_sets":
+        elif menu_selection == "spacesuit sets":
             exited = handle_spacesuit_sets()
-        elif menu_selection == "armor_status_mods":
-            print(not_built_str)
-        elif menu_selection == "weapon_status_mods":
-            exited = handle_weapon_status_mods()
+        elif menu_selection == "armor status mods":
+            exited = handle_status_mods("Select Armor Status Mod Type from Slot",
+                                        items_workbook.armor_status_mods_data)
+        elif menu_selection == "weapon status mods":
+            exited = handle_status_mods("Select Weapon Status Mod Type from Slot",
+                                        items_workbook.weapon_status_mods_data)
+        elif menu_selection == "armor quality mods":
+            exited = handle_quality_mods("Select Armor Quality Mod Level:",
+                                         "Type Mod name or type quit to exit> ",
+                                         items_workbook.armor_quality_mods_data)
+        elif menu_selection == "weapon quality mods":
+            exited = handle_quality_mods("Select Weapon Quality Mod Level:",
+                                         "Type Mod name or type quit to exit> ",
+                                         items_workbook.weapon_quality_mods_data)
 
 main()

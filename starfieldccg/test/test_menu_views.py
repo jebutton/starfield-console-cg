@@ -41,15 +41,13 @@ def test_autocompletelist_repr():
 def test_autocompletelist_wrong_input():
     """
         Tests the error_handling logic of the AutoCompleteList class's
-        checks for inputs to make sure it matches the old .format() method.
+        checks for wrong type input.
     """
-    # pylint: disable=consider-using-f-string
+    # pylint: disable=unused-variable
 
     wrong_input = ("test1", "test2", "test3")
-    test_autocompletelist = MV.AutoCompleteList(wrong_input)
-    expected_str = "Invalid datastructure type. Type is {}".format(
-        str(type(wrong_input)))
-    assert test_autocompletelist.wrong_input_str == expected_str
+    with pytest.raises(TypeError) as te:
+        test_autocompletelist = MV.AutoCompleteList(wrong_input)
 
 def test_itemmenu_repr():
     """
@@ -262,3 +260,37 @@ def test_statusmodmenu_weapons_chunks_three():
     assert len(weapons_status_mod_menu.display_chunks[0]) == 1
     assert len(weapons_status_mod_menu.display_chunks[1]) == 1
     assert len(weapons_status_mod_menu.display_chunks[2]) == 1
+
+def test_qualitymenu_options_weapons():
+    """
+    Tests that the quality menu has the right amount of options
+    for weapon quality options
+    """
+
+    test_reader = STC.get_a_dfr()
+    weapons_quality_menu = MV.QualityMenu(test_reader.weapon_quality_mods_data,
+                                          "Test Weapons Quality","Test Prompt")
+    assert len(weapons_quality_menu.menu_items) == 3
+
+def test_qualitymenu_options_armor():
+    """
+    Tests that the quality menu has the right amount of options
+    for armor quality options
+    """
+
+    test_reader = STC.get_a_dfr()
+    armor_quality_menu = MV.QualityMenu(test_reader.armor_quality_mods_data,
+                                          "Test Armor Quality","Test Prompt")
+    assert len(armor_quality_menu.menu_items) == 4
+
+def test_status_menu_wrong_dict_type():
+    """
+    Verifies That the StatusMenu class throws a TypeError
+    when it isn't passed a dict. 
+    """
+
+    # pylint: disable=unused-variable
+
+    with pytest.raises(TypeError) as te:
+        bad_mod_menu = MV.StatusModMenu("invalid data type as str",
+                                  "Test Menu")

@@ -7,7 +7,7 @@ _All game data and item names copyright ZeniMax Media._
 
 Built using python 3.12.8
 
-**Version 0.0.17**
+**Version 0.0.18**
 
 ## To Run:
 
@@ -46,3 +46,9 @@ Built using python 3.12.8
     - Weapon Status Mods support added.
     - Additional test coverage created.
     - _README.md_ was structured better and new information was added to it.
+
+- Version 0.0.18:
+    - Armor Status Mods support added.
+    - Armor Quality Mods support added.
+    - Weapon Quality Mods suport added.
+    - Fixed menu bugs and removed underscores from main menu.
