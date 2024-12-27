@@ -715,3 +715,56 @@ class StatusModType():
         """
 
         return f".amod {self.status_mod_id}"
+
+class QualityModType():
+    """
+    Represents a Quality mod for weapons or armor.
+    """
+
+    def __init__(self, mod_name: str, mod_id: str):
+        """
+        Creates a QualityModType object for storing quality mods.
+
+        :param mod_name A str representing the name of the mod.
+        :param mod_id A str representing the id of the mod.
+        """
+
+        self.mod_name = mod_name
+        self.mod_id = mod_id
+
+    def __repr__(self):
+        """
+        Return a str representation of the QualityModType object.
+
+        :return: A str version of QualityModType
+        """
+
+        return f"QualityModType(mod_name='{self.mod_name}', \
+mod_id='{self.mod_id}')"
+
+    def get_name(self):
+        """
+        Return the name of the QualityModType.
+        
+        :return: A str of the QualityModType name.
+        """
+
+        return self.mod_name
+
+    def get_id(self):
+        """
+        Return the ID code of the QualityModType.
+        
+        :return: A str of the QualityModType ID.
+        """
+
+        return self.mod_id
+
+    def get_command(self):
+        """
+        Return the console command to be generated.
+
+        :return: A str of the console command.
+        """
+
+        return f".amod {self.mod_id}"

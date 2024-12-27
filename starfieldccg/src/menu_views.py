@@ -200,14 +200,13 @@ class ItemMenu(BaseMenu):
 
         finished = False
         result = (False, 0)
+        self.clear_screen()
         while finished is not True:
-            print(self.display_chunks)
             for chunk in self.display_chunks:
-                self.clear_screen()
-                print(self.title)
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
+                        print(self.title)
                         print(chunk)
                         user_input = prompt("Type Item name or type next to continue> ",
                                         completer=self.completer).lower()
@@ -219,6 +218,7 @@ class ItemMenu(BaseMenu):
                         elif user_input == "next":
                             valid_input = True
                         else:
+                            self.clear_screen()
                             print("Incorrect User Input.")
                     if finished is True:
                         break
@@ -241,6 +241,7 @@ class ItemMenu(BaseMenu):
                         elif user_input == "repeat":
                             valid_input = True
                         else:
+                            self.clear_screen()
                             print("Incorrect User Input.")
                     if finished is True:
                         break
@@ -277,6 +278,7 @@ class NavMenu(BaseMenu):
         return_str = f"NavMenu(menu_items='{self.menu_items}', completer={self.completer},"
         return_str += f" title='{self.title}', prompt='{self.text_prompt}')"
         return return_str
+
     def display_menu(self):
         """
         Generate a visual menu list of items to select
@@ -287,10 +289,10 @@ class NavMenu(BaseMenu):
         menu_str = "\n".join([item.capitalize() for item in self.menu_items])
         finished = False
         result = ""
+        self.clear_screen()
         while finished is not True:
             valid_input = False
             while valid_input is not True:
-                self.clear_screen()
                 print(self.title)
                 print(menu_str)
                 user_input = prompt(self.text_prompt,
@@ -304,7 +306,9 @@ class NavMenu(BaseMenu):
                     finished = True
                     result = "quit"
                 else:
+                    self.clear_screen()
                     print("Incorrect User Input.")
+
         return result
 
 class StatusModMenu(BaseMenu):
@@ -446,11 +450,10 @@ class StatusModMenu(BaseMenu):
         finished = False
         result_list = ["", "", ""]
         counter = 0
+        self.clear_screen()
         while finished is not True:
-            # print(self.display_chunks)
             if counter < 3:
                 for chunk in self.display_chunks[counter]:
-                    self.clear_screen()
                     print(f"{self.title} {counter + 1}: ")
                     if chunk != self.display_chunks[counter][-1]:
                         valid_input = False
@@ -468,6 +471,7 @@ class StatusModMenu(BaseMenu):
                             if user_input == "next":
                                 valid_input = True
                             else:
+                                self.clear_screen()
                                 print("Incorrect User Input.")
                     else:
                         valid_input = False
@@ -499,8 +503,70 @@ class StatusModMenu(BaseMenu):
                             elif user_input.lower() == "repeat":
                                 valid_input = True
                             else:
+                                self.clear_screen()
                                 print("Incorrect User Input.")
             else:
                 finished = True
 
         return result_list
+
+class QualityMenu(BaseMenu):
+    """
+    A menu to handle quality mods.
+    """
+    def __init__(self, input_dict: dict, title: str, text_prompt: str):
+        """
+        Initialize an QualityMenu object.
+
+        :param input_dict: The dict of objects to be displayed for the menu.
+        :param title: The str message to display when the menu loads.
+        :param text_prompt: The str message to display as a prompt.
+        """
+
+        super().__init__(title)
+        self.input_dict = input_dict
+        self.text_prompt = text_prompt
+
+        self.menu_items = self.get_menu_items()
+        self.completer = AutoCompleteList(self.menu_items).completer
+
+    def get_menu_items(self):
+        """
+        Return a list of all the menu items to select from
+
+        :return: A list of all the menu items to select from.
+        """
+
+        return [item[1].get_name() for item in self.input_dict.items()]
+
+    def display_menu(self):
+        """
+        Generate a visual menu list of items to select
+        
+        :return: The selected menu item name or "quit" if the user quits
+        """
+
+        menu_str = "\n".join(self.menu_items)
+        finished = False
+        result = ""
+        self.clear_screen()
+        while finished is not True:
+            valid_input = False
+            while valid_input is not True:
+                print(self.title)
+                print(menu_str)
+                user_input = prompt(self.text_prompt,
+                                completer=self.completer).lower()
+                if user_input in self.input_dict:
+                    valid_input = True
+                    finished = True
+                    result = user_input
+                elif user_input.lower() == "quit":
+                    valid_input = True
+                    finished = True
+                    result = "quit"
+                else:
+                    self.clear_screen()
+                    print("Incorrect User Input.")
+
+        return result

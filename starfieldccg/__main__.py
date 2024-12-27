@@ -5,7 +5,7 @@ from os import path as OSPATH
 import sys
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
 # pylint: disable=wrong-import-position
-from .src.menu_views import ItemMenu, NavMenu, StatusModMenu
+from .src.menu_views import ItemMenu, NavMenu, StatusModMenu, QualityMenu
 from .src.data_file_reader import DataFileReader as DFR
 
 items_workbook = DFR(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
@@ -136,9 +136,9 @@ def handle_weapon_status_mods():
         Handles the Weapon Status Mods menu.
     """
 
-    resource_menu = StatusModMenu(items_workbook.weapon_status_mods_data,
+    weapon_status_menu = StatusModMenu(items_workbook.weapon_status_mods_data,
                               "Select Weapon Status Mod Type from Slot")
-    menu_result = resource_menu.display_menu()
+    menu_result = weapon_status_menu.display_menu()
     mod_choices = menu_result
 
     if "end" not in mod_choices:
@@ -154,9 +154,9 @@ def handle_armor_status_mods():
         Handles the Armor Status Mods menu.
     """
 
-    resource_menu = StatusModMenu(items_workbook.armor_status_mods_data,
+    armor_status_menu = StatusModMenu(items_workbook.armor_status_mods_data,
                               "Select Armor Status Mod Type from Slot")
-    menu_result = resource_menu.display_menu()
+    menu_result = armor_status_menu.display_menu()
     mod_choices = menu_result
 
     if "end" not in mod_choices:
@@ -167,6 +167,26 @@ def handle_armor_status_mods():
 
     return True
 
+def handle_quality_mods(title: str, prompt: str, data_dict: dict):
+    """
+    Handles a quality mod menu by passing a prompt to it.
+
+    :param prompt: A str with a prompt to display.
+    :param data_dict: A dict with the type of data to search through.
+    """
+
+    quality_menu = QualityMenu(data_dict, title,
+                              prompt)
+    print(data_dict)
+    menu_result = quality_menu.display_menu()
+    mod_choice = menu_result
+
+    if mod_choice != "quit":
+        print(data_dict[mod_choice]
+        .get_command())
+
+    return True
+
 
 def main():
     """
@@ -174,7 +194,6 @@ def main():
     """
 
     exited = False
-    not_built_str = "Option Not Built Yet. Try another."
 
     while exited is False:
         main_menu = NavMenu(items_workbook.sheet_names,
@@ -203,5 +222,13 @@ def main():
             exited = handle_armor_status_mods()
         elif menu_selection == "weapon_status_mods":
             exited = handle_weapon_status_mods()
+        elif menu_selection == "armor_quality_mods":
+            exited = handle_quality_mods("Select Armor Quality Mod Level:",
+                                         "Type Mod name or type quit to exit> ",
+                                         items_workbook.armor_quality_mods_data)
+        elif menu_selection == "weapon_quality_mods":
+            exited = handle_quality_mods("Select Weapon Quality Mod Level:",
+                                         "Type Mod name or type quit to exit> ",
+                                         items_workbook.weapon_quality_mods_data)
 
 main()
