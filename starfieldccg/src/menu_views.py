@@ -60,7 +60,7 @@ class AmountPrompt():
 
     def __init__(self):
 
-        self.prompt_text = "How many items?>"
+        self.prompt_text = "How many items?> "
     def get_amount(self):
         """
             Prompts and returns the amount chosen.
@@ -209,7 +209,7 @@ class ItemMenu(BaseMenu):
                     valid_input = False
                     while valid_input is not True:
                         print(chunk)
-                        user_input = prompt("Type Item name or type next to continue>",
+                        user_input = prompt("Type Item name or type next to continue> ",
                                         completer=self.completer).lower()
                         if user_input in self.input_dict:
                             valid_input = True
@@ -226,7 +226,7 @@ class ItemMenu(BaseMenu):
                     valid_input = False
                     while valid_input is not True:
                         print(chunk)
-                        user_input = prompt("Type Item name, repeat to continue, or end to finish>",
+                        user_input = prompt("Type Item name, repeat to continue, or end to finish> ",
                                             completer=self.completer).lower()
                         if user_input in self.input_dict:
                             finished = True
@@ -451,12 +451,12 @@ class StatusModMenu(BaseMenu):
             if counter < 3:
                 for chunk in self.display_chunks[counter]:
                     self.clear_screen()
-                    print(f"{self.title} {counter + 1}")
+                    print(f"{self.title} {counter + 1}: ")
                     if chunk != self.display_chunks[counter][-1]:
                         valid_input = False
                         while valid_input is not True:
                             print(chunk)
-                            user_input = prompt("Type Mod name or type next to continue>",
+                            user_input = prompt("Type Mod name or type next to continue> ",
                                             completer=self.completers[counter]).lower()
                             if self.trim_menu_selection(user_input) in self.input_dict:
                                 valid_input = True
@@ -474,7 +474,7 @@ class StatusModMenu(BaseMenu):
                         while valid_input is not True:
                             print(chunk)
                             prompt_str = f"Type Mod name for slot {counter + 1}\
-,\n repeat to continue,\n skip to move onto the next slot,\n or end to finish>"
+,\n repeat to continue,\n skip to move onto the next slot,\n or end to finish> "
                             user_input = prompt(prompt_str,
                                                 completer=self.completers[counter]).lower()
                             if user_input in self.input_dict:

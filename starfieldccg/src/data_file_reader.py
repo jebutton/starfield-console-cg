@@ -35,10 +35,9 @@ class DataFileReader:
         self.weapon_data = self.get_weapon_data()
         self.resource_data = self.get_resource_data()
         self.weapon_status_mods_data = self.get_weapon_status_mod_data()
-
+        self.armor_status_mods_data = self.get_armor_status_mod_data()
+        
         # To be implemented
-        self.armor_status_mods_data = {}
-
         self.armor_quality_mods_data = {}
         self.weapon_quality_mods_data = {}
 
@@ -278,6 +277,25 @@ class DataFileReader:
         output_dict = {}
         for row in range(num_rows):
             temp_row = self.datasheets["Weapon_Status_Mods"].loc[row]
+            temp_key = temp_row.iloc[0].strip().lower()
+            temp_value = StatusModType(temp_row.iloc[0].strip(),
+                                        temp_row.iloc[1].strip(),
+                                        temp_row.iloc[2].strip(),
+                                        temp_row.iloc[3])
+            output_dict[temp_key] = temp_value
+        return output_dict
+
+    def get_armor_status_mod_data(self):
+        """
+        Return a dict containing all of the Armor_Status_Mods page data.
+
+        :return: A dict with all of the Armor_Status_Mods page data
+        """
+
+        num_rows = self.datasheets["Armor_Status_Mods"].shape[0]
+        output_dict = {}
+        for row in range(num_rows):
+            temp_row = self.datasheets["Armor_Status_Mods"].loc[row]
             temp_key = temp_row.iloc[0].strip().lower()
             temp_value = StatusModType(temp_row.iloc[0].strip(),
                                         temp_row.iloc[1].strip(),

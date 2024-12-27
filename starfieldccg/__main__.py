@@ -133,7 +133,7 @@ def handle_resources():
 
 def handle_weapon_status_mods():
     """
-        Handles the weapon status mods menu.
+        Handles the Weapon Status Mods menu.
     """
 
     resource_menu = StatusModMenu(items_workbook.weapon_status_mods_data,
@@ -149,6 +149,25 @@ def handle_weapon_status_mods():
 
     return True
 
+def handle_armor_status_mods():
+    """
+        Handles the Armor Status Mods menu.
+    """
+
+    resource_menu = StatusModMenu(items_workbook.armor_status_mods_data,
+                              "Select Armor Status Mod Type from Slot")
+    menu_result = resource_menu.display_menu()
+    mod_choices = menu_result
+
+    if "end" not in mod_choices:
+        for i, choice in enumerate(mod_choices):
+            if choice != "skip":
+                print(items_workbook.armor_status_mods_data[mod_choices[i]]
+              .get_command())
+
+    return True
+
+
 def main():
     """
         Main loop of program.
@@ -158,7 +177,7 @@ def main():
     not_built_str = "Option Not Built Yet. Try another."
 
     while exited is False:
-        main_menu = NavMenu(sorted(items_workbook.sheet_names),
+        main_menu = NavMenu(items_workbook.sheet_names,
                             "Main Menu:", "Select an option or type quit to exit>")
         menu_selection = main_menu.display_menu().lower()
 
@@ -181,7 +200,7 @@ def main():
         elif menu_selection == "spacesuit_sets":
             exited = handle_spacesuit_sets()
         elif menu_selection == "armor_status_mods":
-            print(not_built_str)
+            exited = handle_armor_status_mods()
         elif menu_selection == "weapon_status_mods":
             exited = handle_weapon_status_mods()
 
