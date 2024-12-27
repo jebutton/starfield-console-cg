@@ -226,7 +226,8 @@ class ItemMenu(BaseMenu):
                     valid_input = False
                     while valid_input is not True:
                         print(chunk)
-                        user_input = prompt("Type Item name, repeat to continue, or end to finish> ",
+                        user_input = prompt("Type Item name, repeat to continue, \
+or end to finish> ",
                                             completer=self.completer).lower()
                         if user_input in self.input_dict:
                             finished = True
@@ -450,14 +451,14 @@ class StatusModMenu(BaseMenu):
         finished = False
         result_list = ["", "", ""]
         counter = 0
-        self.clear_screen()
         while finished is not True:
             if counter < 3:
                 for chunk in self.display_chunks[counter]:
-                    print(f"{self.title} {counter + 1}: ")
+                    self.clear_screen()
                     if chunk != self.display_chunks[counter][-1]:
                         valid_input = False
                         while valid_input is not True:
+                            print(f"{self.title} {counter + 1}: ")
                             print(chunk)
                             user_input = prompt("Type Mod name or type next to continue> ",
                                             completer=self.completers[counter]).lower()
@@ -476,25 +477,23 @@ class StatusModMenu(BaseMenu):
                     else:
                         valid_input = False
                         while valid_input is not True:
+                            print(f"{self.title} {counter + 1}: ")
                             print(chunk)
                             prompt_str = f"Type Mod name for slot {counter + 1}\
 ,\n repeat to continue,\n skip to move onto the next slot,\n or end to finish> "
                             user_input = prompt(prompt_str,
                                                 completer=self.completers[counter]).lower()
                             if user_input in self.input_dict:
-                                # finished = True
                                 valid_input = True
                                 result = user_input
                                 result_list[counter] = result
                                 counter += 1
                             elif user_input == "skip":
-                                # finished = True
                                 valid_input = True
                                 result = "skip"
                                 result_list[counter] = result
                                 counter += 1
                             elif user_input == "end":
-                                #finished = True
                                 valid_input = True
                                 result = "end"
                                 result_list[counter] = result

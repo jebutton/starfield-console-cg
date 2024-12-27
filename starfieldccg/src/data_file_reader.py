@@ -26,6 +26,8 @@ class DataFileReader:
             "Spacesuit_Sets", "Weapons", "Ammo", "Armor_Status_Mods", "Weapon_Status_Mods",
             "Armor_Quality_Mods", "Weapon_Quality_Mods"
         ]
+
+        self.pretty_sheet_names = [name.replace("_", " ") for name in self.sheet_names]
         self.datasheets = self.read_sheets()
         self.ammo_data = self.get_ammo_data()
         self.spacesuit_data = self.get_spacesuit_data()
@@ -40,7 +42,6 @@ class DataFileReader:
         self.armor_status_mods_data = self.get_status_mod_data("Armor_Status_Mods")
         self.armor_quality_mods_data = self.get_quality_mod_data("Armor_Quality_Mods")
         self.weapon_quality_mods_data = self.get_quality_mod_data("Weapon_Quality_Mods")
-
 
     def read_sheets(self):
         """

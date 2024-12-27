@@ -24,6 +24,7 @@ def handle_ammo():
     ammo_amount = menu_result[1]
 
     if ammo_choice != "end":
+        print("\n")
         print(items_workbook.ammo_data[ammo_choice]
               .get_command(ammo_amount))
 
@@ -41,6 +42,7 @@ def handle_spacesuits():
     spacesuit_amount = menu_result[1]
 
     if spacesuit_choice != "end":
+        print("\n")
         print(items_workbook.spacesuit_data[spacesuit_choice]
               .get_command(spacesuit_amount))
 
@@ -58,6 +60,7 @@ def handle_packs():
     pack_amount = menu_result[1]
 
     if pack_choice != "end":
+        print("\n")
         print(items_workbook.pack_data[pack_choice]
               .get_command(pack_amount))
 
@@ -75,6 +78,7 @@ def handle_helmets():
     helmet_amount = menu_result[1]
 
     if helmet_choice != "end":
+        print("\n")
         print(items_workbook.helmet_data[helmet_choice]
               .get_command(helmet_amount))
 
@@ -92,6 +96,7 @@ def handle_spacesuit_sets():
     spacesuit_set_amount = menu_result[1]
 
     if spacesuit_set_choice != "end":
+        print("\n")
         print(items_workbook.spacesuit_set_data[spacesuit_set_choice]
               .get_command(spacesuit_set_amount))
 
@@ -109,6 +114,7 @@ def handle_weapons():
     weapon_amount = menu_result[1]
 
     if weapon_choice != "end":
+        print("\n")
         print(items_workbook.weapon_data[weapon_choice]
               .get_command(weapon_amount))
 
@@ -126,6 +132,7 @@ def handle_resources():
     resource_amount = menu_result[1]
 
     if resource_choice != "end":
+        print("\n")
         print(items_workbook.resource_data[resource_choice]
               .get_command(resource_amount))
 
@@ -142,9 +149,10 @@ def handle_weapon_status_mods():
     mod_choices = menu_result
 
     if "end" not in mod_choices:
+        print("\n")
         for i, choice in enumerate(mod_choices):
             if choice != "skip":
-                print(items_workbook.weapon_status_mods_data[mod_choices[i]]
+                print(items_workbook.weapon_status_mods_data[mod_choices[i]] \
               .get_command())
 
     return True
@@ -160,6 +168,7 @@ def handle_armor_status_mods():
     mod_choices = menu_result
 
     if "end" not in mod_choices:
+        print("\n")
         for i, choice in enumerate(mod_choices):
             if choice != "skip":
                 print(items_workbook.armor_status_mods_data[mod_choices[i]]
@@ -182,6 +191,7 @@ def handle_quality_mods(title: str, prompt: str, data_dict: dict):
     mod_choice = menu_result
 
     if mod_choice != "quit":
+        print("\n")
         print(data_dict[mod_choice]
         .get_command())
 
@@ -196,7 +206,7 @@ def main():
     exited = False
 
     while exited is False:
-        main_menu = NavMenu(items_workbook.sheet_names,
+        main_menu = NavMenu(items_workbook.pretty_sheet_names,
                             "Main Menu:", "Select an option or type quit to exit>")
         menu_selection = main_menu.display_menu().lower()
 
@@ -216,17 +226,17 @@ def main():
             exited = handle_resources()
         elif menu_selection == "weapons":
             exited = handle_weapons()
-        elif menu_selection == "spacesuit_sets":
+        elif menu_selection == "spacesuit sets":
             exited = handle_spacesuit_sets()
-        elif menu_selection == "armor_status_mods":
+        elif menu_selection == "armor status mods":
             exited = handle_armor_status_mods()
-        elif menu_selection == "weapon_status_mods":
+        elif menu_selection == "weapon status mods":
             exited = handle_weapon_status_mods()
-        elif menu_selection == "armor_quality_mods":
+        elif menu_selection == "armor quality mods":
             exited = handle_quality_mods("Select Armor Quality Mod Level:",
                                          "Type Mod name or type quit to exit> ",
                                          items_workbook.armor_quality_mods_data)
-        elif menu_selection == "weapon_quality_mods":
+        elif menu_selection == "weapon quality mods":
             exited = handle_quality_mods("Select Weapon Quality Mod Level:",
                                          "Type Mod name or type quit to exit> ",
                                          items_workbook.weapon_quality_mods_data)

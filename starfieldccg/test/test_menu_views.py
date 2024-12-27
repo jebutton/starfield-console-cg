@@ -262,3 +262,25 @@ def test_statusmodmenu_weapons_chunks_three():
     assert len(weapons_status_mod_menu.display_chunks[0]) == 1
     assert len(weapons_status_mod_menu.display_chunks[1]) == 1
     assert len(weapons_status_mod_menu.display_chunks[2]) == 1
+
+def test_qualitymenu_options_weapons():
+    """
+    Tests that the quality menu has the right amount of options
+    for weapon quality options
+    """
+
+    test_reader = STC.get_a_dfr()
+    weapons_quality_menu = MV.QualityMenu(test_reader.weapon_quality_mods_data,
+                                          "Test Weapons Quality","Test Prompt")
+    assert len(weapons_quality_menu.menu_items) == 3
+
+def test_qualitymenu_options_armor():
+    """
+    Tests that the quality menu has the right amount of options
+    for armor quality options
+    """
+
+    test_reader = STC.get_a_dfr()
+    armor_quality_menu = MV.QualityMenu(test_reader.armor_quality_mods_data,
+                                          "Test Armor Quality","Test Prompt")
+    assert len(armor_quality_menu.menu_items) == 4
