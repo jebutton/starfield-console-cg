@@ -28,6 +28,14 @@ starfieldccg.src.menu\_views module
    :undoc-members:
    :show-inheritance:
 
+starfieldccg.src.settings\_io module
+------------------------------------
+
+.. automodule:: starfieldccg.src.settings_io
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

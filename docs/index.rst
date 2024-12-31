@@ -12,6 +12,7 @@ starfieldccg documentation
    :maxdepth: 3
    :caption: Contents:
    
+   source/modules
    source/starfieldccg
    source/starfieldccg.src
    source/starfieldccg.test
