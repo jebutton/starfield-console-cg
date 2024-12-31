@@ -6,4 +6,5 @@
 __all__ =[
     'data_file_reader',
     'data_objects',
-    'menu_views']
+    'menu_views',
+    'settings_io']

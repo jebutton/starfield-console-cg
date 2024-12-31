@@ -1,11 +1,15 @@
 """
     A module contain classes for menus.
 """
-from abc import ABC, abstractmethod
-import os
+from abc import abstractmethod
+import sys
+from os import path as OSPATH
+from os import system as OSSYS
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from .data_file_reader import DataFileReader as DFR
+sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
+import settings_io
 
 class AutoCompleteList:
     """
@@ -69,7 +73,7 @@ class AmountPrompt():
 
         return int(prompt(self.prompt_text))
 
-class BaseMenu(ABC):
+class BaseMenu():
     """
         Represents the most basic menu.
     """
@@ -87,7 +91,7 @@ class BaseMenu(ABC):
             Clears the screen.
         """
 
-        os.system("cls")
+        OSSYS("cls")
 
     @abstractmethod
     def display_menu(self):
@@ -253,7 +257,6 @@ or end to finish> ",
                     if finished is True:
                         break
         return result
-
 
 class NavMenu(BaseMenu):
     """
@@ -532,6 +535,7 @@ class QualityMenu(BaseMenu):
     """
     A menu to handle quality mods.
     """
+
     def __init__(self, input_dict: dict, title: str, text_prompt: str):
         """
         Initialize an QualityMenu object.
@@ -587,4 +591,171 @@ class QualityMenu(BaseMenu):
                     self.clear_screen()
                     print("Incorrect User Input.")
 
+        return result
+
+class SettingsMenu(BaseMenu):
+    """
+    A menu to handle settings.
+    """
+
+    CHUNK_SIZE = 12
+
+    def __init__(self, title: str):
+        """
+            A class to create a menu to handle setting all settings.
+            :param title: The str title for the menu.
+        """
+
+        super().__init__(title)
+        self.input_dict = {}
+        self.input_dict["dlc_load_order"] = settings_io.global_settings.settings["dlc_load_order"]
+        self.menu_items = self.get_menu_items()
+        self.completer = AutoCompleteList(self.menu_items).completer
+        self.display_chunks = self.split_menu_items()
+
+    def get_menu_items(self):
+        """
+        Return a list of all the menu items to select from
+
+        :return: A list of all the menu items to select from.
+        """
+
+        return list(self.input_dict.keys())
+
+    def split_menu_items(self):
+        """
+        Return a list containing all of the menu items split into chunks.
+
+        :return: A list of all the menu items split into str chunks with linebreaks.
+        """
+
+        # pylint: disable=too-many-branches
+        # pylint: disable=unused-variable
+
+        output_list = []
+        items_len = len(self.menu_items)
+        if items_len > self.CHUNK_SIZE:
+
+            if items_len % self.CHUNK_SIZE == 0:
+                segment_counter = 0
+                temp_segment = ""
+
+                for segment in range(int(items_len / self.CHUNK_SIZE)):
+                    if segment_counter <= self.CHUNK_SIZE:
+                        temp_segment = self.menu_items[segment_counter:
+                                                       segment_counter + self.CHUNK_SIZE]
+                        segment_counter += self.CHUNK_SIZE
+                        output_list.append("\n".join(temp_segment))
+
+                    elif segment_counter <= items_len:
+                        temp_segment = self.menu_items[segment_counter:segment_counter
+                                                        + self.CHUNK_SIZE]
+                        segment_counter += self.CHUNK_SIZE
+                        output_list.append("\n".join(temp_segment))
+
+            elif items_len / ItemMenu.CHUNK_SIZE > 1.0:
+                loop_length = int((items_len - items_len % self.CHUNK_SIZE) \
+                                   / self.CHUNK_SIZE)
+                segment_counter = 0
+                temp_segment = ""
+
+                for segment in range(loop_length):
+                    if segment_counter <= self.CHUNK_SIZE:
+                        temp_segment = self.menu_items[segment_counter:
+                                                       segment_counter + self.CHUNK_SIZE]
+                        output_list.append("\n".join(temp_segment))
+                        segment_counter += self.CHUNK_SIZE
+
+                    elif items_len - segment_counter >= self.CHUNK_SIZE:
+                        temp_segment = self.menu_items[segment_counter:segment_counter
+                                                        + self.CHUNK_SIZE]
+                        output_list.append("\n".join(temp_segment))
+                        segment_counter += self.CHUNK_SIZE
+
+                temp_segment = self.menu_items[segment_counter: items_len]
+                output_list.append("\n".join(temp_segment))
+
+        else:
+            temp_segment = self.menu_items[:items_len]
+            output_list.append("\n".join(temp_segment))
+
+        return output_list
+
+    def __repr__(self):
+        """
+        Return a str representation of the SettingsMenu object.
+
+        :return: A str representation of a SettingsMenu object.
+        """
+
+        return_str = f"SettingsMenu(menu_items='{self.menu_items}', completer={self.completer},\
+title='{self.title}')"
+        return return_str
+
+    def display_menu(self):
+        """
+        Generate a visual menu list of settings to select.
+        
+        :return: "end" if the user wants to exit.
+        """
+
+        # pylint: disable=too-many-branches
+        # pylint: disable=too-many-nested-blocks
+
+        finished = False
+        result = (False, 0)
+        self.clear_screen()
+        while finished is not True:
+            for chunk in self.display_chunks:
+                if chunk != self.display_chunks[-1]:
+                    valid_input = False
+                    while valid_input is not True:
+                        print(self.title)
+                        print(chunk)
+                        user_input = prompt("Type Setting name or type next to continue> ",
+                                        completer=self.completer).lower()
+                        if user_input in self.input_dict:
+                            valid_input = True
+                            finished = True
+                            result = prompt("Type the new value for the setting or end to exit> ")
+                            if result == "end":
+                                finished = True
+                            else:
+                                settings_io.global_settings.settings[user_input] = result
+                                settings_io.global_settings.save_settings()
+                        elif user_input == "next":
+                            valid_input = True
+                        else:
+                            self.clear_screen()
+                            print("Incorrect User Input.")
+                    if finished is True:
+                        break
+                else:
+                    valid_input = False
+                    while valid_input is not True:
+                        print(chunk)
+                        user_input = prompt("Type Setting name, repeat to continue, \
+or end to finish> ",
+                                            completer=self.completer).lower()
+                        if user_input in self.input_dict:
+                            valid_input = True
+                            finished = True
+                            result = prompt("Type the new value for the setting or end to exit> ")
+                            if result == "end":
+                                finished = True
+                            else:
+                                settings_io.global_settings.settings[user_input] = result
+                                settings_io.global_settings.save_settings()
+                        elif user_input == "end":
+                            finished = True
+                            valid_input = True
+                            result = ("end",0)
+                            break
+                        elif user_input == "repeat":
+                            valid_input = True
+                        else:
+                            self.clear_screen()
+                            print("Incorrect User Input.")
+                    if finished is True:
+                        break
         return result

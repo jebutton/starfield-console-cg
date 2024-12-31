@@ -8,6 +8,7 @@ from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem
 from .data_objects import SpacesuitSetItem, WeaponItem, ResourceItem, StatusModType
 from .data_objects import QualityModType
 
+
 class DataFileReader:
     """
         Handles the reading of all of the sheets in the datasheet.
@@ -94,14 +95,13 @@ class DataFileReader:
         return dataframe_ref.at[self.get_row_index(
             dataframe_ref, search_column_name, search_column_value), tgt_column_name]
 
+
     def get_ammo_data(self):
         """
         Return a dict containing all of the Ammo page data.
 
         :return: A dict with all of the Ammo page data.
         """
-
-        # TODO: Handle DLC Items
 
         num_rows = self.datasheets["Ammo"].shape[0]
         output_dict = {}
@@ -119,8 +119,6 @@ class DataFileReader:
 
         :return: A dict with all of the Spacesuit page data.
         """
-
-        # TODO: Handle DLC Items
 
         num_rows = self.datasheets["Spacesuits"].shape[0]
         output_dict = {}
@@ -141,8 +139,6 @@ class DataFileReader:
         :return: A dict with all of the Pack page data.
         """
 
-        # TODO: Handle DLC Items
-
         num_rows = self.datasheets["Packs"].shape[0]
         output_dict = {}
         for row in range(num_rows):
@@ -161,8 +157,6 @@ class DataFileReader:
 
         :return: A dict with all of the Helmet page data.
         """
-
-        # TODO: Handle DLC Items
 
         num_rows = self.datasheets["Helmets"].shape[0]
         output_dict = {}
@@ -187,8 +181,6 @@ class DataFileReader:
 
         :return: A dict with all of the spacesuit sets.
         """
-
-        # TODO: Handle DLC Items
 
         num_rows = self.datasheets["Spacesuit_Sets"].shape[0]
         output_dict = {}
@@ -220,7 +212,6 @@ class DataFileReader:
         :return: A dict with all of the Weapon page data.
         """
 
-        # TODO: Handle DLC Items
         num_rows = self.datasheets["Weapons"].shape[0]
         output_dict = {}
         for row in range(num_rows):

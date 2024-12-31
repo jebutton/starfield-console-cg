@@ -1,11 +1,15 @@
 """
     A module containing clases representing different types of objects.
 """
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+import sys
+from os import path as OSPATH
+sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
+import settings_io
 
-class ItemType(ABC):
+class ItemType():
     """
-        An abstract class to ensure all of the item classes
+        An class to ensure all of the item classes
         have the minimum fields to make the menus work.
     """
     @abstractmethod
@@ -33,6 +37,41 @@ class ItemType(ABC):
             
         :return: A str of the console command.
         """
+
+    def process_id(self, dlc: bool):
+        """
+        Takes an ID and modifies it so it works with the correct DLC
+        and it is the correct length.
+
+        :param dlc: A bool representing whether or not the item is from a DLC.
+
+        :return: A str with a processed id value.
+        """
+        temp_id_list = list(self.get_id())
+        dlc_prefix = settings_io.global_settings.settings["dlc_load_order"]
+
+        if len(temp_id_list) != 8:
+            # Replace placeholder chars with zeros
+            for i, char in enumerate(temp_id_list):
+                if char.lower() == "x":
+                    temp_id_list[i] = "0"
+
+            # Strip the leading zeros if there are too many.
+            if len(temp_id_list) > 8:
+                while len(temp_id_list) > 8:
+                    temp_id_list.pop(0)
+
+            # Pad the string to left with zeros if there are too few.
+            while len(temp_id_list) < 8:
+                temp_id_list.insert(0, "0")
+
+        if dlc is True:
+            # Replace the first two characters in the id with the load order.
+            temp_id_list[0] = dlc_prefix[0]
+            temp_id_list[1] = dlc_prefix[1]
+
+        return "".join(temp_id_list)
+
 
 class AmmoItem(ItemType):
     """
@@ -122,9 +161,8 @@ class SpacesuitItem(ItemType):
         """
         self.spacesuit_name = spacesuit_name
         self.spacesuit_id = spacesuit_id
-
-        # TODO: Handle DLC Items
         self.dlc = dlc
+        self.spacesuit_id = self.process_id(dlc)
 
     def __repr__(self):
         """
@@ -195,9 +233,8 @@ class PackItem(ItemType):
 
         self.pack_name = pack_name
         self.pack_id = pack_id
-
-        # TODO: Handle DLC Items
         self.dlc = dlc
+        self.pack_id = self.process_id(dlc)
 
     def __repr__(self):
         """
@@ -268,9 +305,8 @@ class HelmetItem(ItemType):
 
         self.helmet_name = helmet_name
         self.helmet_id = helmet_id
-
-        # TODO: Handle DLC Items
         self.dlc = dlc
+        self.helmet_id = self.process_id(dlc)
 
     def __repr__(self):
         """
@@ -339,10 +375,7 @@ class SpacesuitSetItem(ItemType):
         """
 
         self.spacesuit_set_name = spacesuit_set_name
-
-        # TODO: Handle DLC Items
         self.dlc = dlc
-
         self.spacesuit = None
         self.helmet = None
         self.pack = None
@@ -490,9 +523,8 @@ class WeaponItem(ItemType):
 
         self.weapon_name = weapon_name
         self.weapon_id = weapon_id
-
-        # TODO: Handle DLC Items
         self.dlc = dlc
+        self.weapon_id = self.process_id(dlc)
 
         # TODO: Handle unique weapons.
         self.unique = unique

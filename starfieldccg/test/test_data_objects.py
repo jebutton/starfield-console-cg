@@ -3,6 +3,7 @@
 """
 import pytest
 from .context import DO
+from .context import SIO
 
 
 def test_status_mod_slot_exception():
@@ -67,3 +68,57 @@ def test_quality_mod_str():
                                               "FFFFFFFF")
     assert str(test_quality_mod_type) == "QualityModType(mod_name='test_name', \
 mod_id='FFFFFFFF')"
+
+def test_spacesuit_dlc_one():
+    """
+    Test that the DLC handling function works for spacesuits.
+    """
+    test_spacesuit = DO.SpacesuitItem("Test DLC Suit", "XX000001", True)
+
+    assert test_spacesuit.get_id() == SIO.global_settings.settings["dlc_load_order"] \
+    + "000001"
+
+def test_helmet_dlc_one():
+    """
+    Test that the DLC handling function works for helmets.
+    """
+    test_obj = DO.HelmetItem("Test DLC Helmet", "XX000001", True)
+
+    assert test_obj.get_id() == SIO.global_settings.settings["dlc_load_order"] \
+    + "000001"
+
+def test_pack_dlc_one():
+    """
+    Test that the DLC handling function works for helmets.
+    """
+    test_obj = DO.PackItem("Test DLC Boost Pack", "XX000001", True)
+
+    assert test_obj.get_id() == SIO.global_settings.settings["dlc_load_order"] \
+    + "000001"
+
+def test_weapon_dlc_one():
+    """
+    Test that the DLC handling function works for weapons.
+    """
+    test_obj = DO.WeaponItem("Test DLC Weapon", "XX000001", True, True)
+
+    assert test_obj.get_id() == SIO.global_settings.settings["dlc_load_order"] \
+    + "000001"
+
+def test_process_id_one():
+    """
+    Test that the DLC handling function works for invalid values.
+    """
+    test_obj = DO.WeaponItem("Test DLC Weapon", "XX0000001", True, True)
+
+    assert test_obj.get_id() == SIO.global_settings.settings["dlc_load_order"] \
+    + "000001"
+
+def test_process_id_two():
+    """
+    Test that the DLC handling function works for invalid values.
+    """
+    test_obj = DO.WeaponItem("Test DLC Weapon", "XX00001", True, True)
+
+    assert test_obj.get_id() == SIO.global_settings.settings["dlc_load_order"] \
+    + "000001"
