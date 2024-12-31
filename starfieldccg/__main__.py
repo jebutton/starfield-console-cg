@@ -1,16 +1,18 @@
 """
     Execution part of the program.
 """
+# pylint: disable=wrong-import-position
 from os import path as OSPATH
 import sys
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
-# pylint: disable=wrong-import-position
-from .src.menu_views import ItemMenu, NavMenu, StatusModMenu, QualityMenu
+from .src.menu_views import ItemMenu, NavMenu, StatusModMenu, QualityMenu, SettingsMenu
 from .src.data_file_reader import DataFileReader as DFR
 
 items_workbook = DFR(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
                                                   './data/Starfield_Datatable.xls')))
 print("Datasheets Loaded!")
+
+
 
 def handle_ammo():
     """
@@ -184,6 +186,14 @@ def handle_quality_mods(title: str, prompt: str, data_dict: dict):
 
     return True
 
+def handle_settings_menu():
+    """
+    Handles displaying the settings menu.
+    """
+    settings_menu = SettingsMenu("Select Resource Type:")
+    settings_menu.display_menu()
+
+    return True
 
 def main():
     """
@@ -193,14 +203,18 @@ def main():
     exited = False
 
     while exited is False:
-        main_menu = NavMenu(items_workbook.pretty_sheet_names,
+        menu_options = items_workbook.pretty_sheet_names
+        menu_options.insert(0,"Settings")
+        main_menu = NavMenu(menu_options,
                             "Main Menu:", "Select an option or type quit to exit>")
         menu_selection = main_menu.display_menu().lower()
 
         if menu_selection == "quit":
             exited = True
-        if menu_selection == "exit":
+        elif menu_selection == "exit":
             exited = True
+        elif menu_selection == "settings":
+            exited = handle_settings_menu()
         elif menu_selection == "ammo":
             exited = handle_ammo()
         elif menu_selection == "spacesuits":

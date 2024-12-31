@@ -11,6 +11,7 @@ sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), '../.'))
 import src.data_file_reader as DFR
 import src.data_objects as DO
 import src.menu_views as MV
+import src.settings_io as SIO
 
 class SCCGTestContext():
     """
