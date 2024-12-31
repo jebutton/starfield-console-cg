@@ -7,7 +7,7 @@ _All game data and item names copyright ZeniMax Media._
 
 Built using python 3.12.8
 
-**Version 0.0.18**
+**Version 0.1.0**
 
 ## To Run:
 
@@ -52,3 +52,9 @@ Built using python 3.12.8
     - Armor Quality Mods support added.
     - Weapon Quality Mods suport added.
     - Fixed menu bugs and removed underscores from main menu.
+
+- Version 0.1.0:
+    - Added support for settings saved as JSON.
+    - Added DLC support for Weapons, Helmets, Spacesuits, and Packs.
+    - Updated the main menu with a new "settings" option.
+    - More tests added, and more bug fixes.

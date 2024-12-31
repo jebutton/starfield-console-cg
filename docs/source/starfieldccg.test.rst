@@ -12,6 +12,14 @@ starfieldccg.test.context module
    :undoc-members:
    :show-inheritance:
 
+starfieldccg.test.test\_data\_objects module
+--------------------------------------------
+
+.. automodule:: starfieldccg.test.test_data_objects
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 starfieldccg.test.test\_dfr module
 ----------------------------------
 

@@ -95,6 +95,25 @@ class DataFileReader:
         return dataframe_ref.at[self.get_row_index(
             dataframe_ref, search_column_name, search_column_value), tgt_column_name]
 
+    @staticmethod
+    def get_status_mods_by_mod_slot(slot: int, mod_dict: dict):
+        """
+        Return a dict containing all a StatusModType objects with 
+        a specific mod_slot value
+
+        :param slot: An int value for the target slot.
+        :param mod_dict: A dict containing the status mods.
+
+        :return: A dict with a subset of a StatusModType dict containing \
+only items with a specific modslot.
+
+        """
+
+        output_dict = {}
+        for status_mod in mod_dict.values():
+            if status_mod.get_mod_slot() == slot:
+                output_dict[status_mod.get_name().lower()] = status_mod
+        return output_dict
 
     def get_ammo_data(self):
         """
@@ -240,24 +259,6 @@ class DataFileReader:
             temp_value = ResourceItem(temp_row.iloc[0].strip(), temp_row.iloc[1].strip())
             output_dict[temp_key] = temp_value
 
-        return output_dict
-
-    @staticmethod
-    def get_status_mods_by_mod_slot(slot: int, mod_dict: dict):
-        """
-        Return a dict containing all a StatusModType objects with 
-        a specific mod_slot value
-
-        :param slot: An int value for the target slot.
-        :param mod_dict: a dict[strm StatusModType()] containing the status mods.
-        
-        :return: A dict with a subset of a StatusModType dict containing
-        only items with a specific modslot.
-        """
-        output_dict = {}
-        for status_mod in mod_dict.values():
-            if status_mod.get_mod_slot() == slot:
-                output_dict[status_mod.get_name().lower()] = status_mod
         return output_dict
 
     def get_status_mod_data(self, sheet_name: str):
