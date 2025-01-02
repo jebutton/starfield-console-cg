@@ -57,7 +57,7 @@ class AutoCompleteList:
 
 class AmountPrompt():
     """
-        This is a class to allow prompting for item amounts.
+    This is a class to allow prompting for item amounts.
     """
 
     # TODO: Make this class a function in the BaseMenu Class and remove it.
@@ -68,32 +68,60 @@ class AmountPrompt():
 
     def get_amount(self):
         """
-            Prompts and returns the amount chosen.
+        Prompts and returns the amount chosen.
         """
 
         return int(prompt(self.prompt_text))
 
 class BaseMenu():
     """
-        Represents the most basic menu.
+    Represents the most basic menu.
     """
 
     CHUNK_SIZE = 12
 
     def __init__(self, title: str):
         """
-            The constructor.
-            :param title: The str title for the menu.
+        The constructor.
+        :param title: The str title for the menu.
         """
 
-        self.title = title
+        self.title = title.strip()
 
     def clear_screen(self):
         """
-            Clears the screen.
+        Clears the screen.
         """
 
         OSSYS("cls")
+
+    def gen_horizontal_border(self):
+        """
+        Generates a horizontal border of dashes.
+        
+        :return: A str containing a border.
+        """
+        border = "-" * 80
+        border = f"{border}"
+        return border
+
+    def print_title(self):
+        """
+        Prints a structured title
+        """
+        border = self.gen_horizontal_border()
+        structured_title = f"| {self.title}{" " * (76 - len(self.title))} |"
+        title_list = [border, structured_title, border]
+        print("\n".join(title_list))
+
+    def gen_structured_prompt(self, tgt_prompt: str):
+        """
+        Modifies a prompt to include a border at the top.
+        
+        :return: A str prompt containing a border up top.
+        """
+        new_prompt_list = [self.gen_horizontal_border(), tgt_prompt]
+        return "\n".join(new_prompt_list)
 
     @abstractmethod
     def display_menu(self):
@@ -117,7 +145,6 @@ class ItemMenu(BaseMenu):
 
         super().__init__(title)
         self.input_dict = input_dict
-
         self.menu_items = self.get_menu_items()
         self.completer = AutoCompleteList(self.menu_items).completer
         self.display_chunks = self.split_menu_items()
@@ -217,9 +244,12 @@ class ItemMenu(BaseMenu):
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
-                        print(self.title)
+                        # print(self.title)
+                        self.print_title()
                         print(chunk)
-                        user_input = prompt("Type Item name or type next to continue> ",
+                        new_prompt = self.gen_structured_prompt("Type Item name or \
+type next to continue> ")
+                        user_input = prompt(new_prompt,
                                         completer=self.completer).lower()
                         if user_input in self.input_dict:
                             valid_input = True
@@ -237,10 +267,12 @@ class ItemMenu(BaseMenu):
                 else:
                     valid_input = False
                     while valid_input is not True:
-                        print(self.title)
+                        # print(self.title)
+                        self.print_title()
                         print(chunk)
-                        user_input = prompt("Type Item name, repeat to continue, \
-or end to finish> ",
+                        new_prompt = self.gen_structured_prompt("Type Item name, repeat to \
+continue, or end to finish> ")
+                        user_input = prompt(new_prompt,
                                             completer=self.completer).lower()
                         if user_input in self.input_dict:
                             finished = True
@@ -253,6 +285,7 @@ or end to finish> ",
                             result = ("end",0)
                             break
                         elif user_input == "repeat":
+                            self.clear_screen()
                             valid_input = True
                         else:
                             self.clear_screen()
@@ -306,9 +339,11 @@ class NavMenu(BaseMenu):
         while finished is not True:
             valid_input = False
             while valid_input is not True:
-                print(self.title)
+                # print(self.title)
+                self.print_title()
                 print(menu_str)
-                user_input = prompt(self.text_prompt,
+                new_prompt = self.gen_structured_prompt(self.text_prompt)
+                user_input = prompt(new_prompt,
                                 completer=self.completer)
                 if user_input.lower() in self.menu_items:
                     valid_input = True
@@ -329,9 +364,6 @@ class StatusModMenu(BaseMenu):
         This is a class to display a list of in-game mods as a menu
         and provide a prompt for the user to choose them.
     """
-
-    CHUNK_SIZE = 12
-
     def __init__(self, input_dict: dict, title: str):
         """
         Initialize an StatusModMenu object.
@@ -370,6 +402,18 @@ class StatusModMenu(BaseMenu):
 
         return f"StatusModMenu(input_dict='{self.input_dict}')"
 
+    def alt_title_print(self, counter: int):
+        """
+        Prints a structured title with a counter
+
+        :param counter: An int with a counter value.
+        """
+        border = self.gen_horizontal_border()
+        new_title = f"{self.title} {counter}"
+        structured_title = f"| {new_title}{" " * (76 - len(new_title))} |"
+        title_list = [border, structured_title, border]
+        print("\n".join(title_list))
+
     def get_menu_items(self):
         """
         Return a list of all the menu items to select from
@@ -397,43 +441,43 @@ class StatusModMenu(BaseMenu):
 
         output_list = []
         items_len = len(tgt_list)
-        if items_len > StatusModMenu.CHUNK_SIZE:
+        if items_len > self.CHUNK_SIZE:
 
-            if items_len % StatusModMenu.CHUNK_SIZE == 0:
+            if items_len % self.CHUNK_SIZE == 0:
                 segment_counter = 0
                 temp_segment = ""
 
-                for segment in range(int(items_len / StatusModMenu.CHUNK_SIZE)):
-                    if segment_counter <= StatusModMenu.CHUNK_SIZE:
+                for segment in range(int(items_len / self.CHUNK_SIZE)):
+                    if segment_counter <= self.CHUNK_SIZE:
                         temp_segment = tgt_list[segment_counter:
-                                                       segment_counter + StatusModMenu.CHUNK_SIZE]
-                        segment_counter += StatusModMenu.CHUNK_SIZE
+                                                       segment_counter + self.CHUNK_SIZE]
+                        segment_counter += self.CHUNK_SIZE
                         output_list.append("\n".join(temp_segment))
 
                     elif segment_counter <= items_len:
                         temp_segment = tgt_list[segment_counter:segment_counter
-                                                        + StatusModMenu.CHUNK_SIZE]
-                        segment_counter += StatusModMenu.CHUNK_SIZE
+                                                        + self.CHUNK_SIZE]
+                        segment_counter += self.CHUNK_SIZE
                         output_list.append("\n".join(temp_segment))
 
-            elif items_len / StatusModMenu.CHUNK_SIZE > 1.0:
-                loop_length = int((items_len - items_len % StatusModMenu.CHUNK_SIZE)\
-                                   / StatusModMenu.CHUNK_SIZE)
+            elif items_len / self.CHUNK_SIZE > 1.0:
+                loop_length = int((items_len - items_len % self.CHUNK_SIZE)\
+                                   / self.CHUNK_SIZE)
                 segment_counter = 0
                 temp_segment = ""
 
                 for segment in range(loop_length):
-                    if segment_counter <= StatusModMenu.CHUNK_SIZE:
+                    if segment_counter <= self.CHUNK_SIZE:
                         temp_segment = tgt_list[segment_counter:
-                                                       segment_counter + StatusModMenu.CHUNK_SIZE]
+                                                       segment_counter + self.CHUNK_SIZE]
                         output_list.append("\n".join(temp_segment))
-                        segment_counter += StatusModMenu.CHUNK_SIZE
+                        segment_counter += self.CHUNK_SIZE
 
-                    elif items_len - segment_counter >= StatusModMenu.CHUNK_SIZE:
+                    elif items_len - segment_counter >= self.CHUNK_SIZE:
                         temp_segment = tgt_list[segment_counter:segment_counter
-                                                        + StatusModMenu.CHUNK_SIZE]
+                                                        + self.CHUNK_SIZE]
                         output_list.append("\n".join(temp_segment))
-                        segment_counter += StatusModMenu.CHUNK_SIZE
+                        segment_counter += self.CHUNK_SIZE
 
                 temp_segment = tgt_list[segment_counter: items_len]
                 output_list.append("\n".join(temp_segment))
@@ -483,13 +527,15 @@ class StatusModMenu(BaseMenu):
                     if chunk != self.display_chunks[counter][-1]:
                         valid_input = False
                         while valid_input is not True:
-                            print(f"{self.title} {counter + 1}: ")
+                            #print(f"{self.title} {counter + 1}: ")
+                            self.alt_title_print(counter + 1)
                             print(chunk)
-                            user_input = prompt("Type Mod name or type next to continue> ",
+                            new_prompt = self.gen_structured_prompt("Type Mod name or type \
+next to continue> ")
+                            user_input = prompt(new_prompt,
                                             completer=self.completers[counter]).lower()
                             if self.trim_menu_selection(user_input) in self.input_dict:
                                 valid_input = True
-                                #finished = True
                                 result = user_input
                                 result_list[counter] = result
                                 counter += 1
@@ -502,10 +548,17 @@ class StatusModMenu(BaseMenu):
                     else:
                         valid_input = False
                         while valid_input is not True:
-                            print(f"{self.title} {counter + 1}: ")
+                            #print(f"{self.title} {counter + 1}: ")
+                            self.alt_title_print(counter + 1)
                             print(chunk)
-                            prompt_str = f"Type Mod name for slot {counter + 1}\
+                            prompt_str = ""
+                            if counter < 2:
+                                prompt_str = f"Type Mod name for slot {counter + 1}\
 ,\n repeat to continue,\n skip to move onto the next slot,\n or end to finish> "
+                            else:
+                                prompt_str = f"Type Mod name for slot {counter + 1}\
+,\n repeat to continue,\n or end to finish> "
+                            prompt_str = self.gen_structured_prompt(prompt_str)
                             user_input = prompt(prompt_str,
                                                 completer=self.completers[counter]).lower()
                             if user_input in self.input_dict:
@@ -513,7 +566,7 @@ class StatusModMenu(BaseMenu):
                                 result = user_input
                                 result_list[counter] = result
                                 counter += 1
-                            elif user_input == "skip":
+                            elif user_input == "skip" and counter < 2:
                                 valid_input = True
                                 result = "skip"
                                 result_list[counter] = result
@@ -525,6 +578,7 @@ class StatusModMenu(BaseMenu):
                                 counter = 3
                                 break
                             elif user_input.lower() == "repeat":
+                                self.clear_screen()
                                 valid_input = True
                             else:
                                 self.clear_screen()
@@ -580,7 +634,8 @@ class QualityMenu(BaseMenu):
             while valid_input is not True:
                 print(self.title)
                 print(menu_str)
-                user_input = prompt(self.text_prompt,
+                new_prompt = self.gen_structured_prompt(self.text_prompt)
+                user_input = prompt(new_prompt,
                                 completer=self.completer).lower()
                 if user_input in self.input_dict:
                     valid_input = True
@@ -600,8 +655,6 @@ class SettingsMenu(BaseMenu):
     """
     A menu to handle settings.
     """
-
-    CHUNK_SIZE = 12
 
     def __init__(self, title: str):
         """
@@ -706,26 +759,33 @@ title='{self.title}')"
         # pylint: disable=too-many-nested-blocks
 
         finished = False
-        result = (False, 0)
+        result = ()
         self.clear_screen()
         while finished is not True:
             for chunk in self.display_chunks:
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
-                        print(self.title)
+                        #print(self.title)
+                        self.print_title()
                         print(chunk)
-                        user_input = prompt("Type Setting name or type next to continue> ",
+                        new_prompt = self.gen_structured_prompt("Type Setting name \
+or type next to continue> ")
+                        user_input = prompt(new_prompt,
                                         completer=self.completer).lower()
                         if user_input in self.input_dict:
                             valid_input = True
                             finished = True
-                            result = prompt("Type the new value for the setting or end to exit> ")
+                            new_prompt = self.gen_structured_prompt("Type the new value \
+for the setting or end to exit> ")
+                            result = prompt(new_prompt)
                             if result == "end":
                                 finished = True
                             else:
-                                settings_io.global_settings.settings[user_input] = result
-                                settings_io.global_settings.save_settings()
+                                # settings_io.global_settings.settings[user_input] = result
+                                # settings_io.global_settings.save_settings()
+                                finished = True
+                                result = (user_input, result)
                         elif user_input == "next":
                             valid_input = True
                         else:
@@ -736,19 +796,30 @@ title='{self.title}')"
                 else:
                     valid_input = False
                     while valid_input is not True:
+                        self.print_title()
                         print(chunk)
-                        user_input = prompt("Type Setting name, repeat to continue, \
-or end to finish> ",
+                        new_prompt = self.gen_structured_prompt("Type Setting name,\
+repeat to continue, or end to finish> ")
+                        user_input = prompt(new_prompt,
                                             completer=self.completer).lower()
                         if user_input in self.input_dict:
                             valid_input = True
                             finished = True
-                            result = prompt("Type the new value for the setting or end to exit> ")
-                            if result == "end":
+                            new_prompt = self.gen_structured_prompt("Type the new \
+value for the setting or end to exit> ")
+                            result = (user_input, prompt(new_prompt))
+                            if result[1] == "end":
                                 finished = True
-                            else:
-                                settings_io.global_settings.settings[user_input] = result
-                                settings_io.global_settings.save_settings()
+                            elif result[0] == "dlc_load_order":
+                                try:
+                                    settings_io.global_settings.set_dlc_load_order(result[1])
+                                except ValueError:
+                                    finished = False
+                                    valid_input = False
+                                    self.clear_screen()
+                                    print("DLC Load order must be only two characters\
+ long and valid hex.")
+
                         elif user_input == "end":
                             finished = True
                             valid_input = True

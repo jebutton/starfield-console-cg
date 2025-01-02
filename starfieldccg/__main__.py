@@ -5,8 +5,11 @@
 from os import path as OSPATH
 import sys
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
+sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './src/')))
 from .src.menu_views import ItemMenu, NavMenu, StatusModMenu, QualityMenu, SettingsMenu
+from .src.menu_views import settings_io
 from .src.data_file_reader import DataFileReader as DFR
+
 
 items_workbook = DFR(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
                                                   './data/Starfield_Datatable.xls')))
@@ -90,7 +93,7 @@ def handle_settings_menu():
     
     :return: Returns True if the operation is successful.
     """
-    settings_menu = SettingsMenu("Select Resource Type:")
+    settings_menu = SettingsMenu("Select Settings Type:")
     settings_menu.display_menu()
 
     return True
