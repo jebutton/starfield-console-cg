@@ -12,131 +12,26 @@ items_workbook = DFR(OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
                                                   './data/Starfield_Datatable.xls')))
 print("Datasheets Loaded!")
 
-
-
-def handle_ammo():
+def handle_item_menu(data_dict: dict, title: str):
     """
-        Handles the ammo menu.
+    Handles a menu for an item type.
+
+    :param data_dict: A dict containing item data.
+    :param title: A str containing the title for the menu.
+
+    :return: Returns True if the operation is successful.
     """
 
-    ammo_menu = ItemMenu(items_workbook.ammo_data,
-                              "Select Ammo Type:")
-    menu_result = ammo_menu.display_menu()
-    ammo_choice = menu_result[0]
-    ammo_amount = menu_result[1]
+    item_menu = ItemMenu(data_dict,
+                              title)
+    menu_result = item_menu.display_menu()
+    item_choice = menu_result[0]
+    item_amount = menu_result[1]
 
-    if ammo_choice != "end":
+    if item_choice != "end":
         print("\n")
-        print(items_workbook.ammo_data[ammo_choice]
-              .get_command(ammo_amount))
-
-    return True
-
-def handle_spacesuits():
-    """
-        Handles the spacesuit menu.
-    """
-
-    spacesuit_menu = ItemMenu(items_workbook.spacesuit_data,
-                              "Select Spacesuit Type:")
-    menu_result = spacesuit_menu.display_menu()
-    spacesuit_choice = menu_result[0]
-    spacesuit_amount = menu_result[1]
-
-    if spacesuit_choice != "end":
-        print("\n")
-        print(items_workbook.spacesuit_data[spacesuit_choice]
-              .get_command(spacesuit_amount))
-
-    return True
-
-def handle_packs():
-    """
-        Handles the pack menu.
-    """
-
-    pack_menu = ItemMenu(items_workbook.pack_data,
-                              "Select Pack Type:")
-    menu_result = pack_menu.display_menu()
-    pack_choice = menu_result[0]
-    pack_amount = menu_result[1]
-
-    if pack_choice != "end":
-        print("\n")
-        print(items_workbook.pack_data[pack_choice]
-              .get_command(pack_amount))
-
-    return True
-
-def handle_helmets():
-    """
-        Handles the helmet menu.
-    """
-
-    helmet_menu = ItemMenu(items_workbook.helmet_data,
-                              "Select Helmet Type:")
-    menu_result = helmet_menu.display_menu()
-    helmet_choice = menu_result[0]
-    helmet_amount = menu_result[1]
-
-    if helmet_choice != "end":
-        print("\n")
-        print(items_workbook.helmet_data[helmet_choice]
-              .get_command(helmet_amount))
-
-    return True
-
-def handle_spacesuit_sets():
-    """
-        Handles the spacesuit_set menu.
-    """
-
-    spacesuit_set_menu = ItemMenu(items_workbook.spacesuit_set_data,
-                              "Select Spacesuit Set Type:")
-    menu_result = spacesuit_set_menu.display_menu()
-    spacesuit_set_choice = menu_result[0]
-    spacesuit_set_amount = menu_result[1]
-
-    if spacesuit_set_choice != "end":
-        print("\n")
-        print(items_workbook.spacesuit_set_data[spacesuit_set_choice]
-              .get_command(spacesuit_set_amount))
-
-    return True
-
-def handle_weapons():
-    """
-        Handles the weapons menu.
-    """
-
-    weapon_menu = ItemMenu(items_workbook.weapon_data,
-                              "Select Weapon Type:")
-    menu_result = weapon_menu.display_menu()
-    weapon_choice = menu_result[0]
-    weapon_amount = menu_result[1]
-
-    if weapon_choice != "end":
-        print("\n")
-        print(items_workbook.weapon_data[weapon_choice]
-              .get_command(weapon_amount))
-
-    return True
-
-def handle_resources():
-    """
-        Handles the resources menu.
-    """
-
-    resource_menu = ItemMenu(items_workbook.resource_data,
-                              "Select Resource Type:")
-    menu_result = resource_menu.display_menu()
-    resource_choice = menu_result[0]
-    resource_amount = menu_result[1]
-
-    if resource_choice != "end":
-        print("\n")
-        print(items_workbook.resource_data[resource_choice]
-              .get_command(resource_amount))
+        print(data_dict[item_choice]
+              .get_command(item_amount))
 
     return True
 
@@ -148,6 +43,7 @@ def handle_status_mods(title: str, data_dict: dict):
     :param prompt: A str with a prompt to display.
     :param data_dict: A dict with the type of data to search through.
 
+    :return: Returns True if the operation is successful.
     """
 
     status_menu = StatusModMenu(data_dict,
@@ -171,6 +67,8 @@ def handle_quality_mods(title: str, prompt: str, data_dict: dict):
     :param title: A str with the title of the prompt.
     :param prompt: A str with a prompt to display.
     :param data_dict: A dict with the type of data to search through.
+
+    :return: Returns True if the operation is successful.
     """
 
     quality_menu = QualityMenu(data_dict, title,
@@ -189,6 +87,8 @@ def handle_quality_mods(title: str, prompt: str, data_dict: dict):
 def handle_settings_menu():
     """
     Handles displaying the settings menu.
+    
+    :return: Returns True if the operation is successful.
     """
     settings_menu = SettingsMenu("Select Resource Type:")
     settings_menu.display_menu()
@@ -206,7 +106,7 @@ def main():
         menu_options = items_workbook.pretty_sheet_names
         menu_options.insert(0,"Settings")
         main_menu = NavMenu(menu_options,
-                            "Main Menu:", "Select an option or type quit to exit>")
+                            "Main Menu:", "Select an option or type quit to exit> ")
         menu_selection = main_menu.display_menu().lower()
 
         if menu_selection == "quit":
@@ -216,19 +116,26 @@ def main():
         elif menu_selection == "settings":
             exited = handle_settings_menu()
         elif menu_selection == "ammo":
-            exited = handle_ammo()
+            exited = handle_item_menu(items_workbook.ammo_data,
+                                          "Select an Ammo Type:")
         elif menu_selection == "spacesuits":
-            exited = handle_spacesuits()
+            exited = handle_item_menu(items_workbook.spacesuit_data,
+                                      "Select a Spacesuit Type:")
         elif menu_selection == "packs":
-            exited = handle_packs()
+            exited = handle_item_menu(items_workbook.pack_data,
+                                      "Select a Pack Type:")
         elif menu_selection == "helmets":
-            exited = handle_helmets()
+            exited = handle_item_menu(items_workbook.helmet_data,
+                                      "Select a Helmet Type:")
         elif menu_selection == "resources":
-            exited = handle_resources()
+            exited = handle_item_menu(items_workbook.resource_data,
+                                      "Select a Resource Type:")
         elif menu_selection == "weapons":
-            exited = handle_weapons()
+            exited = handle_item_menu(items_workbook.weapon_data,
+                                      "Select a Weapon Type:")
         elif menu_selection == "spacesuit sets":
-            exited = handle_spacesuit_sets()
+            exited = handle_item_menu(items_workbook.spacesuit_set_data,
+                                      "Select a Spacesuit Set:")
         elif menu_selection == "armor status mods":
             exited = handle_status_mods("Select Armor Status Mod Type from Slot",
                                         items_workbook.armor_status_mods_data)
