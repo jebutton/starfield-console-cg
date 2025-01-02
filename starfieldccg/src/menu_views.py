@@ -78,6 +78,8 @@ class BaseMenu():
         Represents the most basic menu.
     """
 
+    CHUNK_SIZE = 12
+
     def __init__(self, title: str):
         """
             The constructor.
@@ -105,7 +107,6 @@ class ItemMenu(BaseMenu):
         and provide a prompt for the user to choose them.
     """
 
-    CHUNK_SIZE = 12
     def __init__(self, input_dict: dict, title: str):
         """
         Initialize an ItemMenu object.
@@ -152,43 +153,43 @@ class ItemMenu(BaseMenu):
 
         output_list = []
         items_len = len(self.menu_items)
-        if items_len > ItemMenu.CHUNK_SIZE:
+        if items_len > self.CHUNK_SIZE:
 
-            if items_len % ItemMenu.CHUNK_SIZE == 0:
+            if items_len % self.CHUNK_SIZE == 0:
                 segment_counter = 0
                 temp_segment = ""
 
-                for segment in range(int(items_len / ItemMenu.CHUNK_SIZE)):
-                    if segment_counter <= ItemMenu.CHUNK_SIZE:
+                for segment in range(int(items_len / self.CHUNK_SIZE)):
+                    if segment_counter <= self.CHUNK_SIZE:
                         temp_segment = self.menu_items[segment_counter:
-                                                       segment_counter + ItemMenu.CHUNK_SIZE]
-                        segment_counter += ItemMenu.CHUNK_SIZE
+                                                       segment_counter + self.CHUNK_SIZE]
+                        segment_counter += self.CHUNK_SIZE
                         output_list.append("\n".join(temp_segment))
 
                     elif segment_counter <= items_len:
                         temp_segment = self.menu_items[segment_counter:segment_counter
-                                                        + ItemMenu.CHUNK_SIZE]
-                        segment_counter += ItemMenu.CHUNK_SIZE
+                                                        + self.CHUNK_SIZE]
+                        segment_counter += self.CHUNK_SIZE
                         output_list.append("\n".join(temp_segment))
 
-            elif items_len / ItemMenu.CHUNK_SIZE > 1.0:
-                loop_length = int((items_len - items_len % ItemMenu.CHUNK_SIZE) \
-                                   / ItemMenu.CHUNK_SIZE)
+            elif items_len / self.CHUNK_SIZE > 1.0:
+                loop_length = int((items_len - items_len % self.CHUNK_SIZE) \
+                                   / self.CHUNK_SIZE)
                 segment_counter = 0
                 temp_segment = ""
 
                 for segment in range(loop_length):
-                    if segment_counter <= ItemMenu.CHUNK_SIZE:
+                    if segment_counter <= self.CHUNK_SIZE:
                         temp_segment = self.menu_items[segment_counter:
-                                                       segment_counter + ItemMenu.CHUNK_SIZE]
+                                                       segment_counter + self.CHUNK_SIZE]
                         output_list.append("\n".join(temp_segment))
-                        segment_counter += ItemMenu.CHUNK_SIZE
+                        segment_counter += self.CHUNK_SIZE
 
-                    elif items_len - segment_counter >= ItemMenu.CHUNK_SIZE:
+                    elif items_len - segment_counter >= self.CHUNK_SIZE:
                         temp_segment = self.menu_items[segment_counter:segment_counter
-                                                        + ItemMenu.CHUNK_SIZE]
+                                                        + self.CHUNK_SIZE]
                         output_list.append("\n".join(temp_segment))
-                        segment_counter += ItemMenu.CHUNK_SIZE
+                        segment_counter += self.CHUNK_SIZE
 
                 temp_segment = self.menu_items[segment_counter: items_len]
                 output_list.append("\n".join(temp_segment))
@@ -226,6 +227,7 @@ class ItemMenu(BaseMenu):
                             amount = AmountPrompt().get_amount()
                             result = (user_input, amount)
                         elif user_input == "next":
+                            self.clear_screen()
                             valid_input = True
                         else:
                             self.clear_screen()
@@ -235,6 +237,7 @@ class ItemMenu(BaseMenu):
                 else:
                     valid_input = False
                     while valid_input is not True:
+                        print(self.title)
                         print(chunk)
                         user_input = prompt("Type Item name, repeat to continue, \
 or end to finish> ",
