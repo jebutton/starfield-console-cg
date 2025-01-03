@@ -550,7 +550,7 @@ next to continue> ")
                             prompt_str = ""
                             if counter < 2:
                                 prompt_str = f"Type Mod name for slot {counter + 1}\
-,\n repeat to continue,\n skip to move onto the next slot,\n or end to finish> "
+,\n skip to move onto the next slot,\n or end to finish> "
                             else:
                                 prompt_str = f"Type Mod name for slot {counter + 1}\
 ,\n repeat to continue,\n or end to finish> "
@@ -573,7 +573,8 @@ next to continue> ")
                                 result_list[counter] = result
                                 counter = 3
                                 break
-                            elif user_input.lower() == "repeat":
+                            elif user_input == "repeat":
+                                counter = 0
                                 self.clear_screen()
                                 valid_input = True
                             else:

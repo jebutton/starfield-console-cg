@@ -78,7 +78,6 @@ def handle_quality_mods(title: str, prompt: str, data_dict: dict):
 
     quality_menu = QualityMenu(data_dict, title,
                               prompt)
-    print(data_dict)
     menu_result = quality_menu.display_menu()
     mod_choice = menu_result
 
