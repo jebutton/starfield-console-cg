@@ -244,7 +244,6 @@ class ItemMenu(BaseMenu):
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
-                        # print(self.title)
                         self.print_title()
                         print(chunk)
                         new_prompt = self.gen_structured_prompt("Type Item name or \
@@ -267,7 +266,6 @@ type next to continue> ")
                 else:
                     valid_input = False
                     while valid_input is not True:
-                        # print(self.title)
                         self.print_title()
                         print(chunk)
                         new_prompt = self.gen_structured_prompt("Type Item name, repeat to \
@@ -339,7 +337,6 @@ class NavMenu(BaseMenu):
         while finished is not True:
             valid_input = False
             while valid_input is not True:
-                # print(self.title)
                 self.print_title()
                 print(menu_str)
                 new_prompt = self.gen_structured_prompt(self.text_prompt)
@@ -527,7 +524,6 @@ class StatusModMenu(BaseMenu):
                     if chunk != self.display_chunks[counter][-1]:
                         valid_input = False
                         while valid_input is not True:
-                            #print(f"{self.title} {counter + 1}: ")
                             self.alt_title_print(counter + 1)
                             print(chunk)
                             new_prompt = self.gen_structured_prompt("Type Mod name or type \
@@ -548,7 +544,6 @@ next to continue> ")
                     else:
                         valid_input = False
                         while valid_input is not True:
-                            #print(f"{self.title} {counter + 1}: ")
                             self.alt_title_print(counter + 1)
                             print(chunk)
                             prompt_str = ""
@@ -752,7 +747,7 @@ title='{self.title}')"
         """
         Generate a visual menu list of settings to select.
         
-        :return: "end" if the user wants to exit.
+        :return: A tuple of (True, True) if the result is successful.
         """
 
         # pylint: disable=too-many-branches
@@ -773,21 +768,16 @@ or type next to continue> ")
                         user_input = prompt(new_prompt,
                                         completer=self.completer).lower()
                         if user_input in self.input_dict:
-                            valid_input = True
-                            finished = True
                             new_prompt = self.gen_structured_prompt("Type the new value \
 for the setting or end to exit> ")
-                            result = prompt(new_prompt)
-                            if result == "end":
-                                finished = True
-                            else:
-                                finished = True
-                                result = (user_input, result)
-                        elif user_input == "next":
-                            valid_input = True
+                            result = self.process_settings_result((user_input, \
+                                                                   prompt(new_prompt)))
+                            finished = result[0]
+                            valid_input = result[1]
                         else:
-                            self.clear_screen()
-                            print("Incorrect User Input.")
+                            result = self.process_settings_result((user_input, ""))
+                            finished = result[0]
+                            valid_input = result[1]
                     if finished is True:
                         break
                 else:
@@ -800,33 +790,45 @@ repeat to continue, or end to finish> ")
                         user_input = prompt(new_prompt,
                                             completer=self.completer).lower()
                         if user_input in self.input_dict:
-                            valid_input = True
-                            finished = True
                             new_prompt = self.gen_structured_prompt("Type the new \
 value for the setting or end to exit> ")
-                            result = (user_input, prompt(new_prompt))
-                            if result[1] == "end":
-                                finished = True
-                            elif result[0] == "dlc_load_order":
-                                try:
-                                    settings_io.global_settings.set_dlc_load_order(result[1])
-                                except ValueError:
-                                    finished = False
-                                    valid_input = False
-                                    self.clear_screen()
-                                    print("DLC Load order must be only two characters\
- long and valid hex.")
-
-                        elif user_input == "end":
-                            finished = True
-                            valid_input = True
-                            result = ("end",0)
-                            break
-                        elif user_input == "repeat":
-                            valid_input = True
+                            result = self.process_settings_result((user_input, \
+                                                                   prompt(new_prompt)))
+                            finished = result[0]
+                            valid_input = result[1]
                         else:
-                            self.clear_screen()
-                            print("Incorrect User Input.")
+                            result = self.process_settings_result((user_input, ""))
+                            finished = result[0]
+                            valid_input = result[1]
                     if finished is True:
                         break
+        return result
+
+    def process_settings_result(self, selection: tuple):
+        """
+        Handles the logic for settings validation and processing.
+
+        :param result: A tuple of the result from the menu.
+        :return: A tuple with two bools with the first value being \
+True if "finished" should be true and the second value being True \
+if the input is valid.
+        """
+
+        if selection[0] == "end" or selection[1] == "end":
+            result = (True, True)
+        elif selection[0] == "repeat":
+            result = (False, True)
+        elif selection[0] == "dlc_load_order":
+            try:
+                settings_io.global_settings.set_dlc_load_order(selection[1])
+                result = (True, True)
+            except ValueError:
+                result = (False, False)
+                self.clear_screen()
+                print("DLC Load order must be only two characters \
+long and valid hex.")
+        else:
+            self.clear_screen()
+            print("Incorrect User Input.")
+            result = (False, False)
         return result

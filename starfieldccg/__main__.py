@@ -7,7 +7,6 @@ import sys
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './src/')))
 from .src.menu_views import ItemMenu, NavMenu, StatusModMenu, QualityMenu, SettingsMenu
-from .src.menu_views import settings_io
 from .src.data_file_reader import DataFileReader as DFR
 
 
