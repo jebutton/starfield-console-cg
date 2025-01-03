@@ -2,6 +2,7 @@
 A module to write and contain settings
 """
 import json
+import string
 from os import path as OSPATH
 
 
@@ -29,11 +30,13 @@ class SCCGSettings():
 
         :param load_order: a str of the load order for the dlc. 
         """
-
-        if len(load_order) == 2:
+        if len(load_order) == 2 and load_order[0] in string.hexdigits \
+        and load_order[1] in string.hexdigits:
             self.settings["dlc_load_order"] = load_order
+            self.save_settings()
         else:
-            raise ValueError("DLC Load order must be only two characters long.")
+            raise ValueError("DLC Load order must be only two characters long and valid hex.")
+
 
     def to_dict(self):
         """
