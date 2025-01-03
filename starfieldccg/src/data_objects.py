@@ -94,6 +94,7 @@ class AmmoItem(ItemType):
 
         self.ammo_name = ammo_name
         self.ammo_id = ammo_id
+        self.ammo_id = self.process_id(False)
 
     def __repr__(self):
         """
