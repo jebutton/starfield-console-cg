@@ -66,7 +66,7 @@ def test_dump_spacesuit_sets():
     """
 
     items_workbook = STC.get_a_dfr()
-    output_all_of_object_dict(items_workbook.spacesuit_set_data, "spacesuit_set_data.txt")
+    output_all_of_object_dict(items_workbook.spacesuit_set_data, "spacesuit_set_commands.txt")
 
 @pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
 def test_dump_resources():
@@ -75,13 +75,13 @@ def test_dump_resources():
     """
 
     items_workbook = STC.get_a_dfr()
-    output_all_of_object_dict(items_workbook.resource_data, "resource_data.txt")
+    output_all_of_object_dict(items_workbook.resource_data, "resource_commands.txt")
 
 @pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
 def test_dump_weapons():
     """
-        Prints all resource data commands for testing.
+        Prints all weapons data commands for testing.
     """
 
     items_workbook = STC.get_a_dfr()
-    output_all_of_object_dict(items_workbook.resource_data, "resource_data.txt")
+    output_all_of_object_dict(items_workbook.resource_data, "weapons_commands.txt")
