@@ -13,6 +13,7 @@ import src.data_objects as DO
 import src.menu_views as MV
 import src.settings_io as SIO
 
+# pylint: disable=too-few-public-methods
 class SCCGTestContext():
     """
         A class to handle all of the contextual information that the test classes need.

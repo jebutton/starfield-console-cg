@@ -7,8 +7,8 @@ from os import path as OSPATH
 from os import system as OSSYS
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
-from .data_file_reader import DataFileReader as DFR
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
+from .data_file_reader import DataFileReader as DFR
 import settings_io
 
 class AutoCompleteList:
@@ -62,26 +62,6 @@ class AutoCompleteList:
             [item.capitalize() for item in input_list]
         return result
 
-
-
-class AmountPrompt():
-    """
-    This is a class to allow prompting for item amounts.
-    """
-
-    # TODO: Make this class a function in the BaseMenu Class and remove it.
-
-    def __init__(self):
-
-        self.prompt_text = "How many items?> "
-
-    def get_amount(self):
-        """
-        Prompts and returns the amount chosen.
-        """
-
-        return int(prompt(self.prompt_text))
-
 class BaseMenu():
     """
     Represents the most basic menu.
@@ -133,6 +113,15 @@ class BaseMenu():
 
         new_prompt_list = [self.gen_horizontal_border(), tgt_prompt]
         return "\n".join(new_prompt_list)
+
+    def get_amount(self):
+        """
+        Prompts and returns the amount chosen.
+        """
+
+        prompt_text = "How many items?> "
+
+        return int(prompt(prompt_text))
 
     @abstractmethod
     def display_menu(self):
@@ -264,7 +253,7 @@ type next to continue> ")
                         if user_input in self.input_dict:
                             valid_input = True
                             finished = True
-                            amount = AmountPrompt().get_amount()
+                            amount = self.get_amount()
                             result = (user_input, amount)
                         elif user_input == "next":
                             self.clear_screen()
@@ -286,7 +275,7 @@ continue, or end to finish> ")
                         if user_input in self.input_dict:
                             finished = True
                             valid_input = True
-                            amount = AmountPrompt().get_amount()
+                            amount = self.get_amount()
                             result = (user_input, amount)
                         elif user_input == "end":
                             finished = True
@@ -319,7 +308,7 @@ class NavMenu(BaseMenu):
         """
 
         super().__init__(title)
-        
+
         self.menu_items = [item.lower() for item in menu_items]
         self.completer = AutoCompleteList(self.menu_items).completer
         self.text_prompt = text_prompt

@@ -34,7 +34,7 @@ def handle_item_menu(data_dict: dict, title: str):
         print("\n")
         print(data_dict[item_choice]
               .get_command(item_amount))
-    
+
     print("\n")
 
     return True
@@ -99,21 +99,21 @@ def handle_settings_menu():
     settings_menu = SettingsMenu("Select Settings Type:")
     settings_menu.display_menu()
     print("\n")
- 
+
     return True
 
+# pylint: disable=too-many-branches
 def main():
     """
         Main loop of program.
     """
 
     exited = False
-
+    menu_options = items_workbook.pretty_sheet_names
+    menu_options.insert(0,"Settings")
+    main_menu = NavMenu(menu_options,
+                        "Main Menu:", "Select an option or type quit to exit> ")
     while exited is False:
-        menu_options = items_workbook.pretty_sheet_names
-        menu_options.insert(0,"Settings")
-        main_menu = NavMenu(menu_options,
-                            "Main Menu:", "Select an option or type quit to exit> ")
         menu_selection = main_menu.display_menu().lower()
 
         if menu_selection == "quit":
@@ -121,7 +121,11 @@ def main():
         elif menu_selection == "exit":
             exited = True
         elif menu_selection == "settings":
-            exited = handle_settings_menu()
+            result = handle_settings_menu()
+            if result is True:
+                exited = False
+            else:
+                exited = True
         elif menu_selection == "ammo":
             exited = handle_item_menu(items_workbook.ammo_data,
                                           "Select an Ammo Type:")

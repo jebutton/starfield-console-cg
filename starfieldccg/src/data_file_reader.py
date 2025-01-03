@@ -8,7 +8,7 @@ from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem
 from .data_objects import SpacesuitSetItem, WeaponItem, ResourceItem, StatusModType
 from .data_objects import QualityModType
 
-
+# pylint: disable=too-many-instance-attributes
 class DataFileReader:
     """
         Handles the reading of all of the sheets in the datasheet.
@@ -50,6 +50,8 @@ class DataFileReader:
 
         :return: A dict where keys are sheet names and values are DataFrames.
         """
+
+        # pylint: disable=broad-exception-caught
 
         data = {}
         try:
