@@ -19,7 +19,7 @@ def output_all_of_object_dict(object_dict: dict, filename: str):
     debug_folder = OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), \
                                                   "./debug_output"))
     if OSPATH.exists(debug_folder) is not True:
-         MAKEDIRS(debug_folder)
+        MAKEDIRS(debug_folder)
 
     filepath = OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__),
                                                   f"./debug_output/{filename}"))
@@ -28,7 +28,7 @@ def output_all_of_object_dict(object_dict: dict, filename: str):
 
     output = "\n".join(output)
     with open(filepath, "w+", 1, "UTF-8") as dump_file:
-            dump_file.write(output)
+        dump_file.write(output)
 
     dump_file.close()
 
