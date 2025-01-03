@@ -60,6 +60,15 @@ def test_dump_packs():
     output_all_of_object_dict(items_workbook.pack_data, "pack_commands.txt")
 
 @pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
+def test_dump_helmets():
+    """
+        Prints all pack data commands for testing.
+    """
+
+    items_workbook = STC.get_a_dfr()
+    output_all_of_object_dict(items_workbook.helmet_data, "helmet_commands.txt")
+
+@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
 def test_dump_spacesuit_sets():
     """
         Prints all spacesuit set data commands for testing.
@@ -84,4 +93,4 @@ def test_dump_weapons():
     """
 
     items_workbook = STC.get_a_dfr()
-    output_all_of_object_dict(items_workbook.resource_data, "weapons_commands.txt")
+    output_all_of_object_dict(items_workbook.weapon_data, "weapons_commands.txt")
