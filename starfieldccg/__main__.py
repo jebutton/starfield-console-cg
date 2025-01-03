@@ -34,6 +34,8 @@ def handle_item_menu(data_dict: dict, title: str):
         print("\n")
         print(data_dict[item_choice]
               .get_command(item_amount))
+    
+    print("\n")
 
     return True
 
@@ -60,6 +62,7 @@ def handle_status_mods(title: str, data_dict: dict):
                 print(data_dict[mod_choices[i]]
               .get_command())
 
+    print("\n")
     return True
 
 def handle_quality_mods(title: str, prompt: str, data_dict: dict):
@@ -84,6 +87,7 @@ def handle_quality_mods(title: str, prompt: str, data_dict: dict):
         print(data_dict[mod_choice]
         .get_command())
 
+    print("\n")
     return True
 
 def handle_settings_menu():
@@ -94,7 +98,8 @@ def handle_settings_menu():
     """
     settings_menu = SettingsMenu("Select Settings Type:")
     settings_menu.display_menu()
-
+    print("\n")
+ 
     return True
 
 def main():
