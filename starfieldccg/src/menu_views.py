@@ -632,7 +632,7 @@ class QualityMenu(BaseMenu):
         while finished is not True:
             valid_input = False
             while valid_input is not True:
-                print(self.title)
+                self.print_title()
                 print(menu_str)
                 new_prompt = self.gen_structured_prompt(self.text_prompt)
                 user_input = prompt(new_prompt,
@@ -766,7 +766,6 @@ title='{self.title}')"
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
-                        #print(self.title)
                         self.print_title()
                         print(chunk)
                         new_prompt = self.gen_structured_prompt("Type Setting name \
@@ -782,8 +781,6 @@ for the setting or end to exit> ")
                             if result == "end":
                                 finished = True
                             else:
-                                # settings_io.global_settings.settings[user_input] = result
-                                # settings_io.global_settings.save_settings()
                                 finished = True
                                 result = (user_input, result)
                         elif user_input == "next":
