@@ -59,7 +59,11 @@ class AutoCompleteList:
         Duplicates the input list.
         """
         result = [item.lower() for item in input_list] + \
-            [item.capitalize() for item in input_list]
+            [item.title() for item in input_list] + \
+            input_list
+        result = set(result)
+        result = list(result)
+
         return result
 
 class BaseMenu():
@@ -119,9 +123,18 @@ class BaseMenu():
         Prompts and returns the amount chosen.
         """
 
-        prompt_text = "How many items?> "
+        prompt_text = "Input a positive whole number of items or 'end' to exit> "
+        result = prompt(prompt_text).lower()
+        if result != "end":
+            try:
+                result = int(result)
+                if result < 1:
+                    print("Input is a negative number or zero.")
+                    raise ValueError("Number is Negative or Zero")
+            except ValueError:
+                return False
 
-        return int(prompt(prompt_text))
+        return result
 
     @abstractmethod
     def display_menu(self):
@@ -246,21 +259,39 @@ class ItemMenu(BaseMenu):
                     while valid_input is not True:
                         self.print_title()
                         print(chunk)
-                        new_prompt = self.gen_structured_prompt("Type Item name or \
-type next to continue> ")
+                        new_prompt = self.gen_structured_prompt("Type Item name, \
+type 'next' to continue, or 'end' to finish> ")
                         user_input = prompt(new_prompt,
                                         completer=self.completer).lower()
                         if user_input in self.input_dict:
-                            valid_input = True
-                            finished = True
                             amount = self.get_amount()
-                            result = (user_input, amount)
+
+                            if amount is False:
+                                while amount is False:
+                                    amount = self.get_amount()
+                                valid_input = True
+                                finished = True
+                                result = (user_input, amount)
+                            elif amount == "end":
+                                result = ("end", 0)
+                                valid_input = True
+                                finished = True
+                            else:
+                                result = (user_input, amount)
+                                valid_input = True
+                                finished = True
+
                         elif user_input == "next":
                             self.clear_screen()
+                            valid_input = True
+                        elif user_input == "end":
+                            result = ("end", 0)
+                            finished = True
                             valid_input = True
                         else:
                             self.clear_screen()
                             print("Incorrect User Input.")
+
                     if finished is True:
                         break
                 else:
@@ -268,8 +299,8 @@ type next to continue> ")
                     while valid_input is not True:
                         self.print_title()
                         print(chunk)
-                        new_prompt = self.gen_structured_prompt("Type Item name, repeat to \
-continue, or end to finish> ")
+                        new_prompt = self.gen_structured_prompt("Type an item name, 'repeat' to \
+continue, or 'end' to finish> ")
                         user_input = prompt(new_prompt,
                                             completer=self.completer).lower()
                         if user_input in self.input_dict:
@@ -347,7 +378,7 @@ class NavMenu(BaseMenu):
                     valid_input = True
                     finished = True
                     result = user_input
-                elif user_input.lower() == "quit":
+                elif user_input.lower() == "quit" or user_input.lower() == "end":
                     valid_input = True
                     finished = True
                     result = "quit"
@@ -528,7 +559,7 @@ class StatusModMenu(BaseMenu):
                             self.alt_title_print(counter + 1)
                             print(chunk)
                             new_prompt = self.gen_structured_prompt("Type Mod name or type \
-next to continue> ")
+'next' to continue\n or 'end' to return back to the main menu> ")
                             user_input = prompt(new_prompt,
                                             completer=self.completers[counter]).lower()
                             if self.trim_menu_selection(user_input) in self.input_dict:
@@ -539,6 +570,12 @@ next to continue> ")
                                 break
                             if user_input == "next":
                                 valid_input = True
+                            elif user_input == "end":
+                                valid_input = True
+                                result = "end"
+                                result_list[counter] = result
+                                counter = 3
+                                break
                             else:
                                 self.clear_screen()
                                 print("Incorrect User Input.")
@@ -549,11 +586,11 @@ next to continue> ")
                             print(chunk)
                             prompt_str = ""
                             if counter < 2:
-                                prompt_str = f"Type Mod name for slot {counter + 1}\
-,\n skip to move onto the next slot,\n or end to finish> "
+                                prompt_str = f"Type a mod name for slot {counter + 1}\
+,\n 'skip' to move onto the next slot,\n or 'end' to return back to the main menu> "
                             else:
-                                prompt_str = f"Type Mod name for slot {counter + 1}\
-,\n repeat to continue,\n or end to finish> "
+                                prompt_str = f"Type a mod name for slot {counter + 1}\
+,\n 'repeat' to continue,\n or 'end' to return back to the main menu> "
                             prompt_str = self.gen_structured_prompt(prompt_str)
                             user_input = prompt(prompt_str,
                                                 completer=self.completers[counter]).lower()
@@ -638,7 +675,7 @@ class QualityMenu(BaseMenu):
                     valid_input = True
                     finished = True
                     result = user_input
-                elif user_input.lower() == "quit":
+                elif user_input.lower() == "end" or user_input.lower() == "quit":
                     valid_input = True
                     finished = True
                     result = "quit"
@@ -767,12 +804,12 @@ title='{self.title}')"
                         self.print_title()
                         print(chunk)
                         new_prompt = self.gen_structured_prompt("Type Setting name \
-or type next to continue> ")
+or type 'next' to continue> ")
                         user_input = prompt(new_prompt,
                                         completer=self.completer).lower()
                         if user_input in self.input_dict:
                             new_prompt = self.gen_structured_prompt("Type the new value \
-for the setting or end to exit> ")
+for the setting or 'end' to exit> ")
                             result = self.process_settings_result((user_input, \
                                                                    prompt(new_prompt)))
                             finished = result[0]
@@ -789,12 +826,12 @@ for the setting or end to exit> ")
                         self.print_title()
                         print(chunk)
                         new_prompt = self.gen_structured_prompt("Type Setting name,\
-repeat to continue, or end to finish> ")
+'repeat' to continue, or 'end' to finish> ")
                         user_input = prompt(new_prompt,
                                             completer=self.completer).lower()
                         if user_input in self.input_dict:
                             new_prompt = self.gen_structured_prompt("Type the new \
-value for the setting or end to exit> ")
+value for the setting or 'end' to exit> ")
                             result = self.process_settings_result((user_input, \
                                                                    prompt(new_prompt)))
                             finished = result[0]
