@@ -29,7 +29,7 @@ class AutoCompleteList:
         if isinstance(self.input_structure, dict):
             self.completer = self.generate_wordcompleter_list(self.input_structure)
         elif isinstance(input_structure, list):
-            self.completer = WordCompleter(self.input_structure)
+            self.completer = WordCompleter(self.duplicate_input(self.input_structure))
         else:
             raise TypeError(f"Invalid datastructure type. Type is {type(input_structure)}")
 
@@ -52,7 +52,16 @@ class AutoCompleteList:
 
         keys_list = input_dict.keys()
 
-        return WordCompleter(keys_list)
+        return WordCompleter(self.duplicate_input(keys_list))
+
+    def duplicate_input(self, input_list: list):
+        """
+        Duplicates the input list.
+        """
+        result = [item.lower() for item in input_list] + \
+            [item.capitalize() for item in input_list]
+        return result
+
 
 
 class AmountPrompt():
@@ -109,6 +118,7 @@ class BaseMenu():
         """
         Prints a structured title
         """
+
         border = self.gen_horizontal_border()
         structured_title = f"| {self.title}{" " * (76 - len(self.title))} |"
         title_list = [border, structured_title, border]
@@ -120,6 +130,7 @@ class BaseMenu():
         
         :return: A str prompt containing a border up top.
         """
+
         new_prompt_list = [self.gen_horizontal_border(), tgt_prompt]
         return "\n".join(new_prompt_list)
 
@@ -308,6 +319,7 @@ class NavMenu(BaseMenu):
         """
 
         super().__init__(title)
+        
         self.menu_items = [item.lower() for item in menu_items]
         self.completer = AutoCompleteList(self.menu_items).completer
         self.text_prompt = text_prompt
@@ -741,6 +753,7 @@ class SettingsMenu(BaseMenu):
 
         return_str = f"SettingsMenu(menu_items='{self.menu_items}', completer={self.completer},\
 title='{self.title}')"
+
         return return_str
 
     def display_menu(self):
