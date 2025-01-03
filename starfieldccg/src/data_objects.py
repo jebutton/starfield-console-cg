@@ -512,7 +512,7 @@ class WeaponItem(ItemType):
         a WeaponItem object without costly pandas overhead.
     """
 
-    def __init__(self, weapon_name: str, weapon_id: int, dlc: bool, unique: bool):
+    def __init__(self, weapon_name: str, weapon_id: int, dlc: bool, unique: bool, weapon_type: str):
         """
         Initialize an WeaponItem object.
 
@@ -526,9 +526,12 @@ class WeaponItem(ItemType):
         self.weapon_id = weapon_id
         self.dlc = dlc
         self.weapon_id = self.process_id(dlc)
-
-        # TODO: Handle unique weapons.
         self.unique = unique
+
+        if weapon_type.lower() not in self.get_valid_weapon_types():
+            raise ValueError("Invalid Type")
+
+        self.weapon_type = weapon_type.lower()
 
     def __repr__(self):
         """
@@ -580,9 +583,17 @@ class WeaponItem(ItemType):
 
         :return: A str of the console command.
         """
-
-
         return f"player.additem {self.weapon_id} {number}"
+
+    @staticmethod
+    def get_valid_weapon_types():
+        """
+        Allows other clases to get the known valid weapon types
+        to check against without having to create an instance
+        of the class.
+        """
+        valid_weapon_types = ["gun", "melee", "thrown"]
+        return valid_weapon_types
 
 class ResourceItem(ItemType):
     """

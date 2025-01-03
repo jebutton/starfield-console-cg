@@ -107,27 +107,35 @@ def handle_weapons_menu():
     Handles the weapons menu and splits weapons 
     between unique and not unique.
     """
-    options_menu_selection = ["Unique Weapons", "Normal Weapons", "All Weapons"]
+    options_menu_selection = ["Unique Weapons", "Normal Weapons", \
+                              "Melee Weapons", "Guns", "Thrown Weapons","All Weapons"]
     option_menu = NavMenu(options_menu_selection,"Select a Weapon Category",
                           "Select a category of Weapons or 'end' to return to the main menu> ")
     options_selection = option_menu.display_menu().lower()
     data_dict = {}
 
     if options_selection == "unique weapons":
-        for weapon in list(items_workbook.weapon_data.values()):
-            if weapon.unique:
-                data_dict[weapon.get_name().lower()] = weapon
-        result = handle_item_menu(data_dict, "Select a Weapon Type:")
+        result = handle_item_menu(items_workbook.get_weapons_by_unique(True),
+                                  "Select a Weapon Type:")
 
     elif options_selection == "normal weapons":
-        for weapon in list(items_workbook.weapon_data.values()):
-            if weapon.unique is False:
-                data_dict[weapon.get_name().lower()] = weapon
-        result = handle_item_menu(data_dict, "Select a Weapon Type:")
+        result = handle_item_menu(items_workbook.get_weapons_by_unique(False),
+                                  "Select a Weapon Type:")
 
     elif options_selection == "all weapons":
-        data_dict = items_workbook.weapon_data
-        result = handle_item_menu(data_dict, "Select a Weapon Type:")
+        result = handle_item_menu(items_workbook.weapon_data, "Select a Weapon Type:")
+
+    elif options_selection == "melee weapons":
+        result = handle_item_menu(items_workbook.get_weapons_by_type("melee"),
+                                  "Select a Weapon Type:")
+    elif options_selection == "guns":
+        result = handle_item_menu(items_workbook.get_weapons_by_type("gun"),
+                                  "Select a Weapon Type:")
+
+    elif options_selection == "thrown weapons":
+        result = handle_item_menu(items_workbook.get_weapons_by_type("thrown"),
+                                  "Select a Weapon Type:")
+
     else:
         result = False
 
