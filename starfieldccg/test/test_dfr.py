@@ -23,17 +23,16 @@ THROWN_WEAPONS_COUNT = 11
 GUN_WEAPONS_COUNT = 116
 MELEE_WEAPONS_COUNT = 12
 
-TEST_READER = STC.get_a_dfr()
-
 def test_dfr_get_cell_value():
     """
         Tests the get_cell_value() method of DataFileReader Class
     """
 
-    resources_data = TEST_READER.datasheets.get("Resources")
+    test_reader = STC().get_a_dfr()
+    resources_data = test_reader.datasheets.get("Resources")
     id_a = resources_data.at[resources_data["Resource_Name"]
                              .array.tolist().index("Water"), "Resource_ID"]
-    id_b = TEST_READER.get_cell_value(resources_data,
+    id_b = test_reader.get_cell_value(resources_data,
                                       "Resource_Name", "Water",
                                       "Resource_ID")
     assert id_a == id_b
@@ -43,8 +42,9 @@ def test_resources_sheet_load():
         Tests that the resources sheet loads without errors.
     """
 
-    resources_data = TEST_READER.datasheets.get("Resources")
-    test_value = TEST_READER.get_cell_value(resources_data,
+    test_reader = STC().get_a_dfr()
+    resources_data = test_reader.datasheets.get("Resources")
+    test_value = test_reader.get_cell_value(resources_data,
                                             "Resource_Name", "Titanium",
                                             "Resource_ID").strip()
     assert test_value == "0000556D"
@@ -54,8 +54,9 @@ def test_spacesuits_sheet_load():
         Tests that the spacesuits sheet loads without errors.
     """
 
-    spacesuits_data = TEST_READER.datasheets.get("Spacesuits")
-    test_value = TEST_READER.get_cell_value(spacesuits_data,
+    test_reader = STC().get_a_dfr()
+    spacesuits_data = test_reader.datasheets.get("Spacesuits")
+    test_value = test_reader.get_cell_value(spacesuits_data,
                                             "Suit_Name", 
                                             "UC Wardog Spacesuit", 
                                             "Suit_ID").strip()
@@ -66,8 +67,9 @@ def test_helmets_sheet_load():
         Tests that the helmets sheet loads without errors.
     """
 
-    helmets_data = TEST_READER.datasheets.get("Helmets")
-    test_value = TEST_READER.get_cell_value(helmets_data,
+    test_reader = STC().get_a_dfr()
+    helmets_data = test_reader.datasheets.get("Helmets")
+    test_value = test_reader.get_cell_value(helmets_data,
                                             "Helmet_Name", 
                                             "UC Urbanwar Space Helmet",
                                             "Helmet_ID").strip()
@@ -78,8 +80,9 @@ def test_packs_sheet_load():
         Tests that the packs sheet loads without errors.
     """
 
-    packs_data = TEST_READER.datasheets.get("Packs")
-    test_value = TEST_READER.get_cell_value(packs_data,
+    test_reader = STC().get_a_dfr()
+    packs_data = test_reader.datasheets.get("Packs")
+    test_value = test_reader.get_cell_value(packs_data,
                                             "Pack_Name",
                                             "UC Shock Armor Skip Pack",
                                             "Pack_ID").strip()
@@ -90,8 +93,9 @@ def test_spacesuit_sets_sheet_load():
         Tests that the spacesuits_sets sheet loads without errors.
     """
 
-    spacesuits_sets_data = TEST_READER.datasheets.get("Spacesuit_Sets")
-    test_value = TEST_READER.get_cell_value(spacesuits_sets_data,
+    test_reader = STC().get_a_dfr()
+    spacesuits_sets_data = test_reader.datasheets.get("Spacesuit_Sets")
+    test_value = test_reader.get_cell_value(spacesuits_sets_data,
                                             "Set_Name", "Deimos 1",
                                             "Suit_Name").strip()
     assert test_value == "Deimos Spacesuit"
@@ -101,8 +105,9 @@ def test_weapons_sheet_load():
         Tests that the weapons sheet loads without errors.
     """
 
-    weapons_data = TEST_READER.datasheets.get("Weapons")
-    test_value = TEST_READER.get_cell_value(weapons_data,
+    test_reader = STC().get_a_dfr()
+    weapons_data = test_reader.datasheets.get("Weapons")
+    test_value = test_reader.get_cell_value(weapons_data,
                                             "Weapon_Name", "AA-99",
                                             "Weapon_ID").strip()
     assert test_value == "002BF65B"
@@ -112,8 +117,9 @@ def test_ammo_sheet_load():
         Tests that the ammo sheet loads without errors.
     """
 
-    ammo_data = TEST_READER.datasheets.get("Ammo")
-    test_value = TEST_READER.get_cell_value(ammo_data,
+    test_reader = STC().get_a_dfr()
+    ammo_data = test_reader.datasheets.get("Ammo")
+    test_value = test_reader.get_cell_value(ammo_data,
                                             "Ammo_Name",
                                             ".43 Ultramag",
                                             "Ammo_ID").strip()
@@ -124,9 +130,9 @@ def test_armor_status_mods_sheet_load():
         Tests that the armor_status_mods sheet loads without errors.
     """
 
-    
-    armor_status_mods_data = TEST_READER.datasheets.get("Armor_Status_Mods")
-    test_value = TEST_READER.get_cell_value(armor_status_mods_data,
+    test_reader = STC().get_a_dfr()
+    armor_status_mods_data = test_reader.datasheets.get("Armor_Status_Mods")
+    test_value = test_reader.get_cell_value(armor_status_mods_data,
                                             "Armor_Status_Mod_Name",
                                             "Ablative",
                                             "Armor_Status_Mod_ID").strip()
@@ -137,8 +143,9 @@ def test_weapon_status_mods_sheet_load():
         Tests that the weapon_status_mods sheet loads without errors.
     """
 
-    weapon_status_mods_data = TEST_READER.datasheets.get("Weapon_Status_Mods")
-    test_value = TEST_READER.get_cell_value(weapon_status_mods_data,
+    test_reader = STC().get_a_dfr()
+    weapon_status_mods_data = test_reader.datasheets.get("Weapon_Status_Mods")
+    test_value = test_reader.get_cell_value(weapon_status_mods_data,
                                             "Weapon_Status_Mod_Name",
                                             "Berserker",
                                             "Weapon_Status_Mod_ID").strip()
@@ -149,56 +156,65 @@ def test_expected_sheet_names_count():
         Tests that the expected number of sheets are being tracked.
     """
 
-    assert len(TEST_READER.sheet_names) == EXPECTED_SHEETS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.sheet_names) == EXPECTED_SHEETS_COUNT
 
 def test_ammo_item_count():
     """
         Tests that the expected amount of Ammo Types is present. 
     """
 
-    assert len(TEST_READER.ammo_data) == AMMO_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.ammo_data) == AMMO_COUNT
 
 def test_spacesuits_item_count():
     """
         Tests that the expected amount of Spacesuit Types is present. 
     """
 
-    assert len(TEST_READER.spacesuit_data) == SPACESUITS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.spacesuit_data) == SPACESUITS_COUNT
 
 def test_packs_item_count():
     """
         Tests that the expected amount of Boost Pack Types is present. 
     """
 
-    assert len(TEST_READER.pack_data) == PACKS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.pack_data) == PACKS_COUNT
 
 def test_helmets_item_count():
     """
         Tests that the expected amount of Helmet Types is present. 
     """
 
-    assert len(TEST_READER.helmet_data) == HELMETS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.helmet_data) == HELMETS_COUNT
+
 
 def test_weapons_item_count():
     """
         Tests that the expected amount of Weapon Types is present. 
     """
 
-    assert len(TEST_READER.weapon_data) == WEAPONS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.weapon_data) == WEAPONS_COUNT
 
 def test_spacesuit_sets_item_count():
     """
         Tests that the expected amount of Spacesuit Set Types is present. 
     """
 
-    assert len(TEST_READER.spacesuit_set_data) == SPACESUIT_SETS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.spacesuit_set_data) == SPACESUIT_SETS_COUNT
 
 def test_resources_count():
     """
         Tests that the expected amount of Resource Types is present. 
     """
 
-    assert len(TEST_READER.resource_data) == RESOURCES_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.resource_data) == RESOURCES_COUNT
 
 def test_armor_status_mods_count():
     """
@@ -206,7 +222,8 @@ def test_armor_status_mods_count():
         Types is present. 
     """
 
-    assert len(TEST_READER.armor_status_mods_data) == ARMOR_STATUS_MODS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.armor_status_mods_data) == ARMOR_STATUS_MODS_COUNT
 
 def test_weapons_status_mods_count():
     """
@@ -214,7 +231,8 @@ def test_weapons_status_mods_count():
         Types is present. 
     """
 
-    assert len(TEST_READER.weapon_status_mods_data) == WEAPON_STATUS_MODS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.weapon_status_mods_data) == WEAPON_STATUS_MODS_COUNT
 
 def test_armor_quality_mods_count():
     """
@@ -222,7 +240,8 @@ def test_armor_quality_mods_count():
         Types is present. 
     """
 
-    assert len(TEST_READER.armor_quality_mods_data) == ARMOR_QUALITY_MODS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.armor_quality_mods_data) == ARMOR_QUALITY_MODS_COUNT
 
 def test_weapons_quality_mods_count():
     """
@@ -230,14 +249,16 @@ def test_weapons_quality_mods_count():
         Types is present. 
     """
 
-    assert len(TEST_READER.weapon_quality_mods_data) == WEAPON_QUALITY_MODS_COUNT
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.weapon_quality_mods_data) == WEAPON_QUALITY_MODS_COUNT
 
 def test_status_mods_by_slot():
     """
     Tests that the get_status_mods_by_mod_slot() function works correctly.
     """
 
-    test_dict = TEST_READER.get_status_mods_by_mod_slot(1, TEST_READER.weapon_status_mods_data)
+    test_reader = STC().get_a_dfr()
+    test_dict = test_reader.get_status_mods_by_mod_slot(1, test_reader.weapon_status_mods_data)
     assert len(test_dict) == 10
 
 def test_pretty_sheet_names_one():
@@ -245,15 +266,17 @@ def test_pretty_sheet_names_one():
     Tests that the pretty_sheet_names variable is created correctly.
     """
 
-    assert TEST_READER.pretty_sheet_names[4] == "Spacesuit Sets"
-    assert TEST_READER.pretty_sheet_names[0] == "Resources"
+    test_reader = STC().get_a_dfr()
+    assert test_reader.pretty_sheet_names[4] == "Spacesuit Sets"
+    assert test_reader.pretty_sheet_names[0] == "Resources"
 
 def test_pretty_sheet_names_two():
     """
     Tests that the pretty_sheet_names variable is created correctly.
     """
-    
-    for name in TEST_READER.pretty_sheet_names:
+
+    test_reader = STC().get_a_dfr()
+    for name in test_reader.pretty_sheet_names:
         for character in name:
             if character == "_":
                 assert False
@@ -263,7 +286,8 @@ def test_armor_qualitymods_type():
     Tests that the armor_quality_mods_data contains the correct type.
     """
 
-    for quality_mod in TEST_READER.armor_quality_mods_data.values():
+    test_reader = STC().get_a_dfr()
+    for quality_mod in test_reader.armor_quality_mods_data.values():
         if isinstance(quality_mod, DO.QualityModType) is not True:
             assert False
 
@@ -271,28 +295,38 @@ def test_gun_weapons_count():
     """
     Tests that the amount of guns is what is expected.
     """
-    assert len(TEST_READER.get_weapons_by_type("gun")) == GUN_WEAPONS_COUNT
+
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.get_weapons_by_type("gun")) == GUN_WEAPONS_COUNT
 
 def test_throw_weapons_count():
     """
     Tests that the amount of thrown weapons is what is expected.
     """
-    assert len(TEST_READER.get_weapons_by_type("thrown")) == THROWN_WEAPONS_COUNT
+
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.get_weapons_by_type("thrown")) == THROWN_WEAPONS_COUNT
 
 def test_melee_weapons_count():
     """
     Tests that the amount of melee weapons is what is expected.
     """
-    assert len(TEST_READER.get_weapons_by_type("melee")) == MELEE_WEAPONS_COUNT
+
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.get_weapons_by_type("melee")) == MELEE_WEAPONS_COUNT
 
 def test_unique_weapons_count():
     """
     Tests that the amount of unique weapons is what is expected.
     """
-    assert len(TEST_READER.get_weapons_by_unique(True)) == UNIQUE_WEAPONS_COUNT
+
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.get_weapons_by_unique(True)) == UNIQUE_WEAPONS_COUNT
 
 def test_non_unique_weapons_count():
     """
     Tests that the amount of normal, non-unique weapons is what is expected.
     """
-    assert len(TEST_READER.get_weapons_by_unique(False)) == NORMAL_WEAPONS_COUNT
+
+    test_reader = STC().get_a_dfr()
+    assert len(test_reader.get_weapons_by_unique(False)) == NORMAL_WEAPONS_COUNT

@@ -9,7 +9,7 @@ from os import makedirs as MAKEDIRS
 import pytest
 from .context import SCCGTestContext as STC
 
-TEST_DFR = STC.get_a_dfr()
+TEST_DFR = STC.get_a_dfr() # Global DataFileReader instance because we're testing the datasheet.
 
 def output_all_of_object_dict(object_dict: dict, filename: str):
     """
