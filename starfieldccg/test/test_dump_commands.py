@@ -160,7 +160,7 @@ def test_dump_resources():
 
     output_all_of_object_dict(TEST_DFR.resource_data, "resource_commands.txt")
 
-#@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
+@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
 def test_dump_weapons():
     """
         Prints to a file all weapons data commands for testing.
@@ -168,7 +168,7 @@ def test_dump_weapons():
 
     output_all_of_object_dict(TEST_DFR.weapon_data, "weapons_commands.txt")
 
-#@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
+@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
 def test_dump_weapon_status_mods():
     """
         Prints to a file all weapon status mods commands for testing.
@@ -176,7 +176,7 @@ def test_dump_weapon_status_mods():
 
     output_all_of_status_mods(TEST_DFR.weapon_status_mods_data, "weapon")
 
-#@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
+@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
 def test_dump_armor_status_mods():
     """
         Prints to a file all armor status mods commands for testing.
@@ -184,7 +184,7 @@ def test_dump_armor_status_mods():
 
     output_all_of_status_mods(TEST_DFR.armor_status_mods_data, "armor")
 
-#@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
+@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
 def test_dump_weapon_quality_mods():
     """
         Prints to a file all weapon quality commands for testing.
@@ -192,7 +192,7 @@ def test_dump_weapon_quality_mods():
 
     output_all_of_quality_mods(TEST_DFR.weapon_quality_mods_data, "weapon")
 
-#@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
+@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
 def test_dump_armor_quality_mods():
     """
         Prints to a file all armor quality commands for testing.
