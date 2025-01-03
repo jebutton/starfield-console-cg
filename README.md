@@ -11,9 +11,9 @@ Built using python 3.12.8
 
 ## To Run:
 
-1. Make sure you have a Python environment set up.
-2. Add dependencies via the _requirements.txt_ file.
-3. Run _run.bat_ in PowerShell to start the program in the correct context. 
+1. Run _run.ps1_ in PowerShell to start the program and install the prerequisites if they don't exist.
+2. Navigate the menus by typing options from them.
+3. Copy the resulting console commands and paste them into Starfield's console via the tilde (`) key.
 
 
 ## Updates:
@@ -58,3 +58,5 @@ Built using python 3.12.8
     - Added DLC support for Weapons, Helmets, Spacesuits, and Packs.
     - Updated the main menu with a new "settings" option.
     - More tests added, and more bug fixes.
+    - Menus now have better text separation.
+    - Extensively changed how the program is run so that it is easier for people to use it.
