@@ -1,7 +1,11 @@
+"""
+    Configuration file for Sphinx.
+"""
+
 from os import path
 import sys
 sys.path.insert(0, path.abspath('..'))
-print(sys.path)
+
 
 # Configuration file for the Sphinx documentation builder.
 #
@@ -14,7 +18,7 @@ print(sys.path)
 project = 'starfield-console-cg'
 copyright = '2024, Jacqueline Button'
 author = 'Jacqueline Button'
-release = '0.0.14'
+release = '0.0.16'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

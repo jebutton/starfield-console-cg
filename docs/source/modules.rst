@@ -1,7 +1,7 @@
-src
-===
+starfield-console-cg
+====================
 
 .. toctree::
    :maxdepth: 4
 
-   src
+   starfieldccg
