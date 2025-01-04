@@ -7,7 +7,6 @@ import sys
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './src/')))
 from .src.menu_views import ItemMenu, NavMenu, StatusModMenu, QualityMenu, SettingsMenu
-from .src.menu_views import settings_io
 from .src.data_file_reader import DataFileReader as DFR
 
 
@@ -31,19 +30,20 @@ def handle_item_menu(data_dict: dict, title: str):
     item_choice = menu_result[0]
     item_amount = menu_result[1]
 
+    return_value = False
     if item_choice != "end":
         print("\n")
         print(data_dict[item_choice]
               .get_command(item_amount))
+        return_value = True
 
-    return True
+    return return_value
 
 def handle_status_mods(title: str, data_dict: dict):
     """
     Handles the Status Mods menu.
 
     :param title: A str with the title of the prompt.
-    :param prompt: A str with a prompt to display.
     :param data_dict: A dict with the type of data to search through.
 
     :return: Returns True if the operation is successful.
@@ -53,6 +53,7 @@ def handle_status_mods(title: str, data_dict: dict):
                               title)
     menu_result = status_menu.display_menu()
     mod_choices = menu_result
+    return_value = False
 
     if "end" not in mod_choices:
         print("\n")
@@ -60,8 +61,9 @@ def handle_status_mods(title: str, data_dict: dict):
             if choice != "skip":
                 print(data_dict[mod_choices[i]]
               .get_command())
+        return_value = True
 
-    return True
+    return return_value
 
 def handle_quality_mods(title: str, prompt: str, data_dict: dict):
     """
@@ -76,16 +78,17 @@ def handle_quality_mods(title: str, prompt: str, data_dict: dict):
 
     quality_menu = QualityMenu(data_dict, title,
                               prompt)
-    print(data_dict)
     menu_result = quality_menu.display_menu()
     mod_choice = menu_result
+    return_value = False
 
     if mod_choice != "quit":
         print("\n")
         print(data_dict[mod_choice]
         .get_command())
+        return_value = True
 
-    return True
+    return return_value
 
 def handle_settings_menu():
     """
@@ -95,21 +98,60 @@ def handle_settings_menu():
     """
     settings_menu = SettingsMenu("Select Settings Type:")
     settings_menu.display_menu()
+    print("\n")
 
     return True
 
+def handle_weapons_menu():
+    """
+    Handles the weapons menu and splits weapons 
+    between unique and not unique.
+    """
+    options_menu_selection = ["Unique Weapons", "Normal Weapons", \
+                              "Melee Weapons", "Guns", "Thrown Weapons","All Weapons"]
+    option_menu = NavMenu(options_menu_selection,"Select a Weapon Category",
+                          "Select a category of Weapons or 'end' to return to the main menu> ")
+    options_selection = option_menu.display_menu().lower()
+
+    if options_selection == "unique weapons":
+        result = handle_item_menu(items_workbook.get_weapons_by_unique(True),
+                                  "Select a Weapon Type:")
+
+    elif options_selection == "normal weapons":
+        result = handle_item_menu(items_workbook.get_weapons_by_unique(False),
+                                  "Select a Weapon Type:")
+
+    elif options_selection == "all weapons":
+        result = handle_item_menu(items_workbook.weapon_data, "Select a Weapon Type:")
+
+    elif options_selection == "melee weapons":
+        result = handle_item_menu(items_workbook.get_weapons_by_type("melee"),
+                                  "Select a Weapon Type:")
+    elif options_selection == "guns":
+        result = handle_item_menu(items_workbook.get_weapons_by_type("gun"),
+                                  "Select a Weapon Type:")
+
+    elif options_selection == "thrown weapons":
+        result = handle_item_menu(items_workbook.get_weapons_by_type("thrown"),
+                                  "Select a Weapon Type:")
+
+    else:
+        result = False
+
+    return result
+
+# pylint: disable=too-many-branches
 def main():
     """
         Main loop of program.
     """
 
     exited = False
-
+    menu_options = items_workbook.pretty_sheet_names
+    menu_options.insert(0,"Settings")
+    main_menu = NavMenu(menu_options,
+                        "Main Menu:", "Select an option or type quit to exit> ")
     while exited is False:
-        menu_options = items_workbook.pretty_sheet_names
-        menu_options.insert(0,"Settings")
-        main_menu = NavMenu(menu_options,
-                            "Main Menu:", "Select an option or type quit to exit> ")
         menu_selection = main_menu.display_menu().lower()
 
         if menu_selection == "quit":
@@ -117,7 +159,11 @@ def main():
         elif menu_selection == "exit":
             exited = True
         elif menu_selection == "settings":
-            exited = handle_settings_menu()
+            result = handle_settings_menu()
+            if result is True:
+                exited = False
+            else:
+                exited = True
         elif menu_selection == "ammo":
             exited = handle_item_menu(items_workbook.ammo_data,
                                           "Select an Ammo Type:")
@@ -134,8 +180,7 @@ def main():
             exited = handle_item_menu(items_workbook.resource_data,
                                       "Select a Resource Type:")
         elif menu_selection == "weapons":
-            exited = handle_item_menu(items_workbook.weapon_data,
-                                      "Select a Weapon Type:")
+            exited = handle_weapons_menu()
         elif menu_selection == "spacesuit sets":
             exited = handle_item_menu(items_workbook.spacesuit_set_data,
                                       "Select a Spacesuit Set:")
@@ -147,11 +192,13 @@ def main():
                                         items_workbook.weapon_status_mods_data)
         elif menu_selection == "armor quality mods":
             exited = handle_quality_mods("Select Armor Quality Mod Level:",
-                                         "Type Mod name or type quit to exit> ",
+                                         "Type Mod name or type 'end to \
+return back to the main menu> ",
                                          items_workbook.armor_quality_mods_data)
         elif menu_selection == "weapon quality mods":
             exited = handle_quality_mods("Select Weapon Quality Mod Level:",
-                                         "Type Mod name or type quit to exit> ",
+                                         "Type Mod name or type 'end' to \
+return back to the main menu> ",
                                          items_workbook.weapon_quality_mods_data)
 
 main()

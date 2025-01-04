@@ -1,4 +1,4 @@
-# installs the correct version of python, creates a virtualenv, and installs requirements.
+# Installs the correct version of Python, creates a Virtual Environment, and installs requirements.
 
 $install_python_path = "$($env:LOCALAPPDATA)\Programs\Python\Python312\python.exe"
 $virtual_env_path = ".\starfield-console-cg-env"

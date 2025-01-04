@@ -7,8 +7,8 @@ from os import path as OSPATH
 from os import system as OSSYS
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
-from .data_file_reader import DataFileReader as DFR
 sys.path.insert(0, OSPATH.abspath(OSPATH.join(OSPATH.dirname(__file__), './')))
+from .data_file_reader import DataFileReader as DFR
 import settings_io
 
 class AutoCompleteList:
@@ -29,7 +29,7 @@ class AutoCompleteList:
         if isinstance(self.input_structure, dict):
             self.completer = self.generate_wordcompleter_list(self.input_structure)
         elif isinstance(input_structure, list):
-            self.completer = WordCompleter(self.input_structure)
+            self.completer = WordCompleter(self.duplicate_input(self.input_structure))
         else:
             raise TypeError(f"Invalid datastructure type. Type is {type(input_structure)}")
 
@@ -50,28 +50,21 @@ class AutoCompleteList:
         :return: A WordCompleter object with all the items in the input_dict
         """
 
-        keys_list = input_dict.keys()
+        keys_list = list(input_dict.keys())
 
-        return WordCompleter(keys_list)
+        return WordCompleter(self.duplicate_input(keys_list))
 
-
-class AmountPrompt():
-    """
-    This is a class to allow prompting for item amounts.
-    """
-
-    # TODO: Make this class a function in the BaseMenu Class and remove it.
-
-    def __init__(self):
-
-        self.prompt_text = "How many items?> "
-
-    def get_amount(self):
+    def duplicate_input(self, input_list: list):
         """
-        Prompts and returns the amount chosen.
+        Duplicates the input list.
         """
+        result = [item.lower() for item in input_list] + \
+            [item.title() for item in input_list] + \
+            input_list
+        result = set(result)
+        result = list(result)
 
-        return int(prompt(self.prompt_text))
+        return result
 
 class BaseMenu():
     """
@@ -109,6 +102,7 @@ class BaseMenu():
         """
         Prints a structured title
         """
+
         border = self.gen_horizontal_border()
         structured_title = f"| {self.title}{" " * (76 - len(self.title))} |"
         title_list = [border, structured_title, border]
@@ -120,8 +114,27 @@ class BaseMenu():
         
         :return: A str prompt containing a border up top.
         """
+
         new_prompt_list = [self.gen_horizontal_border(), tgt_prompt]
         return "\n".join(new_prompt_list)
+
+    def get_amount(self):
+        """
+        Prompts and returns the amount chosen.
+        """
+
+        prompt_text = "Input a positive whole number of items or 'end' to exit> "
+        result = prompt(prompt_text).lower()
+        if result != "end":
+            try:
+                result = int(result)
+                if result < 1:
+                    print("Input is a negative number or zero.")
+                    raise ValueError("Number is Negative or Zero")
+            except ValueError:
+                return False
+
+        return result
 
     @abstractmethod
     def display_menu(self):
@@ -166,7 +179,7 @@ class ItemMenu(BaseMenu):
         :return: A list of all the menu items to select from.
         """
 
-        return [item[1].get_name() for item in self.input_dict.items()]
+        return [item[1].get_name() for item in list(self.input_dict.items())]
 
     def split_menu_items(self):
         """
@@ -235,6 +248,8 @@ class ItemMenu(BaseMenu):
         """
 
         # pylint: disable=too-many-branches
+        # pylint: disable=too-many-nested-blocks
+        # pylint: disable=too-many-statements
 
         finished = False
         result = (False, 0)
@@ -244,40 +259,56 @@ class ItemMenu(BaseMenu):
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
-                        # print(self.title)
                         self.print_title()
                         print(chunk)
-                        new_prompt = self.gen_structured_prompt("Type Item name or \
-type next to continue> ")
+                        new_prompt = self.gen_structured_prompt("Type Item name, \
+type 'next' to continue, or 'end' to finish> ")
                         user_input = prompt(new_prompt,
                                         completer=self.completer).lower()
                         if user_input in self.input_dict:
-                            valid_input = True
-                            finished = True
-                            amount = AmountPrompt().get_amount()
-                            result = (user_input, amount)
+                            amount = self.get_amount()
+
+                            if amount is False:
+                                while amount is False:
+                                    amount = self.get_amount()
+                                valid_input = True
+                                finished = True
+                                result = (user_input, amount)
+                            elif amount == "end":
+                                result = ("end", 0)
+                                valid_input = True
+                                finished = True
+                            else:
+                                result = (user_input, amount)
+                                valid_input = True
+                                finished = True
+
                         elif user_input == "next":
                             self.clear_screen()
+                            valid_input = True
+                        elif user_input == "end":
+                            result = ("end", 0)
+                            finished = True
                             valid_input = True
                         else:
                             self.clear_screen()
                             print("Incorrect User Input.")
+
                     if finished is True:
                         break
                 else:
                     valid_input = False
                     while valid_input is not True:
-                        # print(self.title)
                         self.print_title()
                         print(chunk)
-                        new_prompt = self.gen_structured_prompt("Type Item name, repeat to \
-continue, or end to finish> ")
+                        new_prompt = self.gen_structured_prompt("Type an item name, 'repeat' to \
+continue, or 'end' to finish> ")
                         user_input = prompt(new_prompt,
                                             completer=self.completer).lower()
                         if user_input in self.input_dict:
                             finished = True
                             valid_input = True
-                            amount = AmountPrompt().get_amount()
+                            amount = self.get_amount()
                             result = (user_input, amount)
                         elif user_input == "end":
                             finished = True
@@ -310,6 +341,7 @@ class NavMenu(BaseMenu):
         """
 
         super().__init__(title)
+
         self.menu_items = [item.lower() for item in menu_items]
         self.completer = AutoCompleteList(self.menu_items).completer
         self.text_prompt = text_prompt
@@ -339,7 +371,6 @@ class NavMenu(BaseMenu):
         while finished is not True:
             valid_input = False
             while valid_input is not True:
-                # print(self.title)
                 self.print_title()
                 print(menu_str)
                 new_prompt = self.gen_structured_prompt(self.text_prompt)
@@ -349,7 +380,7 @@ class NavMenu(BaseMenu):
                     valid_input = True
                     finished = True
                     result = user_input
-                elif user_input.lower() == "quit":
+                elif user_input.lower() == "quit" or user_input.lower() == "end":
                     valid_input = True
                     finished = True
                     result = "quit"
@@ -527,11 +558,10 @@ class StatusModMenu(BaseMenu):
                     if chunk != self.display_chunks[counter][-1]:
                         valid_input = False
                         while valid_input is not True:
-                            #print(f"{self.title} {counter + 1}: ")
                             self.alt_title_print(counter + 1)
                             print(chunk)
                             new_prompt = self.gen_structured_prompt("Type Mod name or type \
-next to continue> ")
+'next' to continue\n or 'end' to return back to the main menu> ")
                             user_input = prompt(new_prompt,
                                             completer=self.completers[counter]).lower()
                             if self.trim_menu_selection(user_input) in self.input_dict:
@@ -542,22 +572,27 @@ next to continue> ")
                                 break
                             if user_input == "next":
                                 valid_input = True
+                            elif user_input == "end":
+                                valid_input = True
+                                result = "end"
+                                result_list[counter] = result
+                                counter = 3
+                                break
                             else:
                                 self.clear_screen()
                                 print("Incorrect User Input.")
                     else:
                         valid_input = False
                         while valid_input is not True:
-                            #print(f"{self.title} {counter + 1}: ")
                             self.alt_title_print(counter + 1)
                             print(chunk)
                             prompt_str = ""
                             if counter < 2:
-                                prompt_str = f"Type Mod name for slot {counter + 1}\
-,\n repeat to continue,\n skip to move onto the next slot,\n or end to finish> "
+                                prompt_str = f"Type a mod name for slot {counter + 1}\
+,\n 'skip' to move onto the next slot,\n or 'end' to return back to the main menu> "
                             else:
-                                prompt_str = f"Type Mod name for slot {counter + 1}\
-,\n repeat to continue,\n or end to finish> "
+                                prompt_str = f"Type a mod name for slot {counter + 1}\
+,\n 'repeat' to continue,\n or 'end' to return back to the main menu> "
                             prompt_str = self.gen_structured_prompt(prompt_str)
                             user_input = prompt(prompt_str,
                                                 completer=self.completers[counter]).lower()
@@ -577,7 +612,8 @@ next to continue> ")
                                 result_list[counter] = result
                                 counter = 3
                                 break
-                            elif user_input.lower() == "repeat":
+                            elif user_input == "repeat":
+                                counter = 0
                                 self.clear_screen()
                                 valid_input = True
                             else:
@@ -632,7 +668,7 @@ class QualityMenu(BaseMenu):
         while finished is not True:
             valid_input = False
             while valid_input is not True:
-                print(self.title)
+                self.print_title()
                 print(menu_str)
                 new_prompt = self.gen_structured_prompt(self.text_prompt)
                 user_input = prompt(new_prompt,
@@ -641,7 +677,7 @@ class QualityMenu(BaseMenu):
                     valid_input = True
                     finished = True
                     result = user_input
-                elif user_input.lower() == "quit":
+                elif user_input.lower() == "end" or user_input.lower() == "quit":
                     valid_input = True
                     finished = True
                     result = "quit"
@@ -746,13 +782,14 @@ class SettingsMenu(BaseMenu):
 
         return_str = f"SettingsMenu(menu_items='{self.menu_items}', completer={self.completer},\
 title='{self.title}')"
+
         return return_str
 
     def display_menu(self):
         """
         Generate a visual menu list of settings to select.
         
-        :return: "end" if the user wants to exit.
+        :return: A tuple of (True, True) if the result is successful.
         """
 
         # pylint: disable=too-many-branches
@@ -766,31 +803,23 @@ title='{self.title}')"
                 if chunk != self.display_chunks[-1]:
                     valid_input = False
                     while valid_input is not True:
-                        #print(self.title)
                         self.print_title()
                         print(chunk)
                         new_prompt = self.gen_structured_prompt("Type Setting name \
-or type next to continue> ")
+or type 'next' to continue> ")
                         user_input = prompt(new_prompt,
                                         completer=self.completer).lower()
                         if user_input in self.input_dict:
-                            valid_input = True
-                            finished = True
                             new_prompt = self.gen_structured_prompt("Type the new value \
-for the setting or end to exit> ")
-                            result = prompt(new_prompt)
-                            if result == "end":
-                                finished = True
-                            else:
-                                # settings_io.global_settings.settings[user_input] = result
-                                # settings_io.global_settings.save_settings()
-                                finished = True
-                                result = (user_input, result)
-                        elif user_input == "next":
-                            valid_input = True
+for the setting or 'end' to exit> ")
+                            result = self.process_settings_result((user_input, \
+                                                                   prompt(new_prompt)))
+                            finished = result[0]
+                            valid_input = result[1]
                         else:
-                            self.clear_screen()
-                            print("Incorrect User Input.")
+                            result = self.process_settings_result((user_input, ""))
+                            finished = result[0]
+                            valid_input = result[1]
                     if finished is True:
                         break
                 else:
@@ -799,37 +828,49 @@ for the setting or end to exit> ")
                         self.print_title()
                         print(chunk)
                         new_prompt = self.gen_structured_prompt("Type Setting name,\
-repeat to continue, or end to finish> ")
+'repeat' to continue, or 'end' to finish> ")
                         user_input = prompt(new_prompt,
                                             completer=self.completer).lower()
                         if user_input in self.input_dict:
-                            valid_input = True
-                            finished = True
                             new_prompt = self.gen_structured_prompt("Type the new \
-value for the setting or end to exit> ")
-                            result = (user_input, prompt(new_prompt))
-                            if result[1] == "end":
-                                finished = True
-                            elif result[0] == "dlc_load_order":
-                                try:
-                                    settings_io.global_settings.set_dlc_load_order(result[1])
-                                except ValueError:
-                                    finished = False
-                                    valid_input = False
-                                    self.clear_screen()
-                                    print("DLC Load order must be only two characters\
- long and valid hex.")
-
-                        elif user_input == "end":
-                            finished = True
-                            valid_input = True
-                            result = ("end",0)
-                            break
-                        elif user_input == "repeat":
-                            valid_input = True
+value for the setting or 'end' to exit> ")
+                            result = self.process_settings_result((user_input, \
+                                                                   prompt(new_prompt)))
+                            finished = result[0]
+                            valid_input = result[1]
                         else:
-                            self.clear_screen()
-                            print("Incorrect User Input.")
+                            result = self.process_settings_result((user_input, ""))
+                            finished = result[0]
+                            valid_input = result[1]
                     if finished is True:
                         break
+        return result
+
+    def process_settings_result(self, selection: tuple):
+        """
+        Handles the logic for settings validation and processing.
+
+        :param result: A tuple of the result from the menu.
+        :return: A tuple with two bools with the first value being \
+True if "finished" should be true and the second value being True \
+if the input is valid.
+        """
+
+        if selection[0] == "end" or selection[1] == "end":
+            result = (True, True)
+        elif selection[0] == "repeat":
+            result = (False, True)
+        elif selection[0] == "dlc_load_order":
+            try:
+                settings_io.global_settings.set_dlc_load_order(selection[1])
+                result = (True, True)
+            except ValueError:
+                result = (False, False)
+                self.clear_screen()
+                print("DLC Load order must be only two characters \
+long and valid hex.")
+        else:
+            self.clear_screen()
+            print("Incorrect User Input.")
+            result = (False, False)
         return result

@@ -94,6 +94,7 @@ class AmmoItem(ItemType):
 
         self.ammo_name = ammo_name
         self.ammo_id = ammo_id
+        self.ammo_id = self.process_id(False)
 
     def __repr__(self):
         """
@@ -511,7 +512,7 @@ class WeaponItem(ItemType):
         a WeaponItem object without costly pandas overhead.
     """
 
-    def __init__(self, weapon_name: str, weapon_id: int, dlc: bool, unique: bool):
+    def __init__(self, weapon_name: str, weapon_id: int, dlc: bool, unique: bool, weapon_type: str):
         """
         Initialize an WeaponItem object.
 
@@ -520,14 +521,19 @@ class WeaponItem(ItemType):
         :param dlc: A bool of whether the item is a DLC item or not. 
         :param unique: A bool of whether the item is a unique weapon or not.
         """
+        # pylint: disable=too-many-positional-arguments
+        # pylint: disable=too-many-arguments
 
         self.weapon_name = weapon_name
         self.weapon_id = weapon_id
         self.dlc = dlc
         self.weapon_id = self.process_id(dlc)
-
-        # TODO: Handle unique weapons.
         self.unique = unique
+
+        if weapon_type.lower() not in self.get_valid_weapon_types():
+            raise ValueError("Invalid Type")
+
+        self.weapon_type = weapon_type.lower()
 
     def __repr__(self):
         """
@@ -537,7 +543,8 @@ class WeaponItem(ItemType):
         """
 
         return f"WeaponItem(weapon_name='{self.weapon_name}', \
-          weapon_id={self.weapon_id}, dlc={self.dlc})"
+          weapon_id='{self.weapon_id}', dlc={self.dlc}, unique={self.unique}, \
+type='{self.weapon_type}')"
 
     def to_dict(self):
         """
@@ -579,9 +586,17 @@ class WeaponItem(ItemType):
 
         :return: A str of the console command.
         """
-
-
         return f"player.additem {self.weapon_id} {number}"
+
+    @staticmethod
+    def get_valid_weapon_types():
+        """
+        Allows other clases to get the known valid weapon types
+        to check against without having to create an instance
+        of the class.
+        """
+        valid_weapon_types = ["gun", "melee", "thrown"]
+        return valid_weapon_types
 
 class ResourceItem(ItemType):
     """
@@ -599,6 +614,7 @@ class ResourceItem(ItemType):
 
         self.resource_name = resource_name
         self.resource_id = resource_id
+        self.resource_id = self.process_id(False)
 
 
     def __repr__(self):

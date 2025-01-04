@@ -8,7 +8,7 @@ from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem
 from .data_objects import SpacesuitSetItem, WeaponItem, ResourceItem, StatusModType
 from .data_objects import QualityModType
 
-
+# pylint: disable=too-many-instance-attributes
 class DataFileReader:
     """
         Handles the reading of all of the sheets in the datasheet.
@@ -50,6 +50,8 @@ class DataFileReader:
 
         :return: A dict where keys are sheet names and values are DataFrames.
         """
+
+        # pylint: disable=broad-exception-caught
 
         data = {}
         try:
@@ -106,7 +108,6 @@ class DataFileReader:
 
         :return: A dict with a subset of a StatusModType dict containing \
 only items with a specific modslot.
-
         """
 
         output_dict = {}
@@ -114,6 +115,36 @@ only items with a specific modslot.
             if status_mod.get_mod_slot() == slot:
                 output_dict[status_mod.get_name().lower()] = status_mod
         return output_dict
+
+    def get_weapons_by_unique(self, want_unique: bool):
+        """
+        Selects a subset of weapons based on whether they're unique or not.
+        
+        :param want_unique: A bool of whether you want unique weapons or not unique weapons.
+        """
+
+        data_dict = {}
+        for weapon in list(self.weapon_data.values()):
+            if weapon.unique is want_unique:
+                data_dict[weapon.get_name().lower()] = weapon
+
+        return data_dict
+
+    def get_weapons_by_type(self, tgt_weapon_type: str):
+        """
+        Selects a subset of weapons based on type.
+        
+        :param tgt_weapon_type: A str of the weapon type to select for.
+        """
+
+        data_dict = {}
+        if tgt_weapon_type not in WeaponItem.get_valid_weapon_types():
+            raise ValueError("Invalid Weapon Type")
+        for weapon in list(self.weapon_data.values()):
+            if weapon.weapon_type == tgt_weapon_type:
+                data_dict[weapon.get_name().lower()] = weapon
+
+        return data_dict
 
     def get_ammo_data(self):
         """
@@ -236,10 +267,11 @@ only items with a specific modslot.
         for row in range(num_rows):
             temp_row = self.datasheets["Weapons"].loc[row]
             temp_key = temp_row.iloc[0].strip().lower()
-            temp_value = WeaponItem(temp_row.iloc[0].strip(),
+            temp_value = WeaponItem(str(temp_row.iloc[0]).strip(),
                                   str(temp_row.iloc[1]).strip(),
                                   bool(temp_row.iloc[2]),
-                                  bool(temp_row.iloc[3]))
+                                  bool(temp_row.iloc[3]),
+                                  str(temp_row.iloc[4]).strip())
             output_dict[temp_key] = temp_value
 
         return output_dict
