@@ -112,7 +112,6 @@ def handle_weapons_menu():
     option_menu = NavMenu(options_menu_selection,"Select a Weapon Category",
                           "Select a category of Weapons or 'end' to return to the main menu> ")
     options_selection = option_menu.display_menu().lower()
-    data_dict = {}
 
     if options_selection == "unique weapons":
         result = handle_item_menu(items_workbook.get_weapons_by_unique(True),

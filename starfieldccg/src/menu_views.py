@@ -50,7 +50,7 @@ class AutoCompleteList:
         :return: A WordCompleter object with all the items in the input_dict
         """
 
-        keys_list = input_dict.keys()
+        keys_list = list(input_dict.keys())
 
         return WordCompleter(self.duplicate_input(keys_list))
 
@@ -179,7 +179,7 @@ class ItemMenu(BaseMenu):
         :return: A list of all the menu items to select from.
         """
 
-        return [item[1].get_name() for item in self.input_dict.items()]
+        return [item[1].get_name() for item in list(self.input_dict.items())]
 
     def split_menu_items(self):
         """
@@ -248,6 +248,8 @@ class ItemMenu(BaseMenu):
         """
 
         # pylint: disable=too-many-branches
+        # pylint: disable=too-many-nested-blocks
+        # pylint: disable=too-many-statements
 
         finished = False
         result = (False, 0)

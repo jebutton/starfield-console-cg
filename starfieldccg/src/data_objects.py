@@ -521,6 +521,8 @@ class WeaponItem(ItemType):
         :param dlc: A bool of whether the item is a DLC item or not. 
         :param unique: A bool of whether the item is a unique weapon or not.
         """
+        # pylint: disable=too-many-positional-arguments
+        # pylint: disable=too-many-arguments
 
         self.weapon_name = weapon_name
         self.weapon_id = weapon_id
@@ -541,7 +543,8 @@ class WeaponItem(ItemType):
         """
 
         return f"WeaponItem(weapon_name='{self.weapon_name}', \
-          weapon_id={self.weapon_id}, dlc={self.dlc})"
+          weapon_id='{self.weapon_id}', dlc={self.dlc}, unique={self.unique}, \
+type='{self.weapon_type}')"
 
     def to_dict(self):
         """
@@ -611,6 +614,7 @@ class ResourceItem(ItemType):
 
         self.resource_name = resource_name
         self.resource_id = resource_id
+        self.resource_id = self.process_id(False)
 
 
     def __repr__(self):

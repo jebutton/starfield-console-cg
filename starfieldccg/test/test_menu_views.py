@@ -30,7 +30,7 @@ def test_autocompletelist_repr():
     """
     # pylint: disable=consider-using-f-string
 
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     spacesuits_data = test_reader.spacesuit_data
     test_itemmenu = MV.ItemMenu(spacesuits_data, "Test Menu")
     test_autocompletelist = MV.AutoCompleteList(test_itemmenu.input_dict)
@@ -56,11 +56,11 @@ def test_itemmenu_repr():
     """
     # pylint: disable=consider-using-f-string
 
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     spacesuits_data = test_reader.spacesuit_data
     test_itemmenu = MV.ItemMenu(spacesuits_data, "Test Menu")
 
-    expected_str = "ItemMenu(input_dict='{}')".format(str(test_itemmenu.input_dict))
+    expected_str = "ItemMenu(input_dict='{}')".format(test_itemmenu.input_dict)
     assert str(test_itemmenu) == expected_str
 
 def test_navmenu_repr():
@@ -70,7 +70,7 @@ def test_navmenu_repr():
     """
     # pylint: disable=consider-using-f-string
 
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     test_navmenu = MV.NavMenu(sorted(test_reader.sheet_names),
                             "Main Menu:", "Test Menu")
     expected_str = "NavMenu(menu_items='{}', completer={}, title='{}', prompt='{}')".format(
@@ -82,7 +82,7 @@ def test_itemmenu_chunks_resources():
     """
         Verifies that the resources menu is split into the correct number of chunks
     """
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     resources_menu = MV.ItemMenu(test_reader.resource_data,
                                   "Test Menu")
 
@@ -92,7 +92,7 @@ def test_itemmenu_chunks_spacesuits():
     """
         Verifies that the spacesuits menu is split into the correct number of chunks
     """
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     spacesuits_menu = MV.ItemMenu(test_reader.spacesuit_data,
                                   "Test Menu")
 
@@ -102,7 +102,7 @@ def test_itemmenu_chunks_helmets():
     """
         Verifies that the helmets menu is split into the correct number of chunks
     """
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     helmets_menu = MV.ItemMenu(test_reader.helmet_data,
                                 "Test Menu")
 
@@ -112,7 +112,7 @@ def test_itemmenu_chunks_packs():
     """
         Verifies that the packs menu is split into the correct number of chunks
     """
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     packs_menu = MV.ItemMenu(test_reader.pack_data,
                                   "Test Menu")
 
@@ -122,7 +122,7 @@ def test_itemmenu_chunks_spacesuit_sets():
     """
         Verifies that the spacesuit_sets menu is split into the correct number of chunks
     """
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     spacesuit_sets_menu = MV.ItemMenu(test_reader.spacesuit_set_data,
                                   "Test Menu")
 
@@ -132,7 +132,7 @@ def test_itemmenu_chunks_weapons():
     """
         Verifies that the weapons menu is split into the correct number of chunks
     """
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     weapons_menu = MV.ItemMenu(test_reader.weapon_data,
                                   "Test Menu")
 
@@ -221,7 +221,7 @@ def test_statusmodmenu_weapons_chunks_one():
     weapons status mod menu.
     """
 
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     weapons_status_mod_menu = MV.StatusModMenu(test_reader.weapon_status_mods_data,
                                   "Test Menu")
     assert len(weapons_status_mod_menu.display_chunks) == 3
@@ -232,7 +232,7 @@ def test_statusmodmenu_weapons_chunks_two():
     weapon status mods has the correct item for the first item
     """
 
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     weapons_status_mod_menu = MV.StatusModMenu(test_reader.weapon_status_mods_data,
                                   "Test Menu")
 
@@ -253,7 +253,7 @@ def test_statusmodmenu_weapons_chunks_three():
     weapon status mods has the correct number of chunks.
     """
 
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     weapons_status_mod_menu = MV.StatusModMenu(test_reader.weapon_status_mods_data,
                                   "Test Menu")
 
@@ -267,7 +267,7 @@ def test_qualitymenu_options_weapons():
     for weapon quality options
     """
 
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     weapons_quality_menu = MV.QualityMenu(test_reader.weapon_quality_mods_data,
                                           "Test Weapons Quality","Test Prompt")
     assert len(weapons_quality_menu.menu_items) == 3
@@ -278,7 +278,7 @@ def test_qualitymenu_options_armor():
     for armor quality options
     """
 
-    test_reader = STC.get_a_dfr()
+    test_reader = STC().get_a_dfr()
     armor_quality_menu = MV.QualityMenu(test_reader.armor_quality_mods_data,
                                           "Test Armor Quality","Test Prompt")
     assert len(armor_quality_menu.menu_items) == 4
