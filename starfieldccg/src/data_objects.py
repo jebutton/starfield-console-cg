@@ -1,5 +1,5 @@
 """
-    A module containing clases representing different types of objects.
+    A module containing classes representing different types of items.
 """
 from abc import abstractmethod
 import sys
@@ -9,7 +9,7 @@ import settings_io
 
 class ItemType():
     """
-        An class to ensure all of the item classes
+        A class to ensure all of the item classes
         have the minimum fields to make the menus work.
     """
     @abstractmethod
@@ -25,7 +25,7 @@ class ItemType():
         """
         Return the item id, used for console code purposes.
         
-        :return: A str of the item ID
+        :return: A str of the item id
         """
 
     @abstractmethod
@@ -40,7 +40,7 @@ class ItemType():
 
     def process_id(self, dlc: bool):
         """
-        Takes an ID and modifies it so it works with the correct DLC
+        Takes an id and modifies it so it works with the correct DLC
         and it is the correct length.
 
         :param dlc: A bool representing whether or not the item is from a DLC.
@@ -84,11 +84,11 @@ class AmmoItem(ItemType):
         The constructor for the AmmoItem Class
 
         :param ammo_name: The name of the ammunition.
-        :param ammo_id: The ID of the ammunition.
+        :param ammo_id: The id of the ammunition.
 
         to_dict(): Convert the AmmoItem object to a dict.
         get_name(): Return the name of the ammunition.
-        get_id(): Get the ID of the ammunition.
+        get_id(): Get the id of the ammunition.
         get_command(): Get the console command to add the item in game.
         """
 
@@ -128,9 +128,9 @@ class AmmoItem(ItemType):
 
     def get_id(self):
         """
-        Return the ID code of the ammunition.
+        Return the id code of the ammunition.
         
-        :return: A str of the ammo ID.
+        :return: A str of the ammo id.
         """
 
         return self.ammo_id
@@ -154,10 +154,10 @@ class SpacesuitItem(ItemType):
 
     def __init__(self, spacesuit_name: str, spacesuit_id: int, dlc: bool):
         """
-        Initialize an SpacesuitItem object.
+        Initialize a SpacesuitItem object.
 
         :param spacesuit_name: The name of the spacesuit.
-        :param spacesuit_id: The ID of the spacesuit.
+        :param spacesuit_id: The id of the spacesuit.
         :param dlc: A bool of whether the item is a DLC item or not.
         """
         self.spacesuit_name = spacesuit_name
@@ -199,9 +199,9 @@ class SpacesuitItem(ItemType):
 
     def get_id(self):
         """
-        Return the ID code of the spacesuit.
+        Return the id code of the spacesuit.
         
-        :return: A str of the spacesuit ID.
+        :return: A str of the spacesuit id.
         """
 
         return self.spacesuit_id
@@ -225,10 +225,10 @@ class PackItem(ItemType):
 
     def __init__(self, pack_name: str, pack_id: int, dlc: bool):
         """
-        Initialize an PackItem object.
+        Initialize a PackItem object.
 
         :param pack_name: The name of the pack.
-        :param pack_id: The ID of the pack.
+        :param pack_id: The id of the pack.
         :param dlc: A bool of whether the item is a DLC item or not.
         """
 
@@ -271,9 +271,9 @@ class PackItem(ItemType):
 
     def get_id(self):
         """
-        Return the ID code of the pack.
+        Return the id code of the pack.
         
-        :return: A str of the pack ID.
+        :return: A str of the pack id.
         """
 
         return self.pack_id
@@ -297,10 +297,10 @@ class HelmetItem(ItemType):
 
     def __init__(self, helmet_name: str, helmet_id: int, dlc: bool):
         """
-        Initialize an HelmetItem object.
+        Initialize a helmetItem object.
 
         :param helmet_name: The name of the helmet.
-        :param helmet_id: The ID of the helmet.
+        :param helmet_id: The id of the helmet.
         :param dlc: A bool of whether the item is a DLC item or not. 
         """
 
@@ -343,9 +343,9 @@ class HelmetItem(ItemType):
 
     def get_id(self):
         """
-        Return the ID code of the helmet.
+        Return the id code of the helmet.
         
-        :return: A str of the helmet ID.
+        :return: A str of the helmet id.
         """
 
         return self.helmet_id
@@ -369,7 +369,7 @@ class SpacesuitSetItem(ItemType):
 
     def __init__(self, spacesuit_set_name: str, dlc: bool):
         """
-        Initialize an SpacesuitSetItem object.
+        Initialize a SpacesuitSetItem object.
 
         :param spacesuit_set_name: The name of the spacesuit_set.
         :param dlc: A bool of whether the item is a DLC item or not.
@@ -466,10 +466,10 @@ class SpacesuitSetItem(ItemType):
 
     def get_id(self):
         """
-        Return the ID code of all of the 
+        Return the id code of all of the 
         items in the spacesuit_set.
         
-        :return: A str of the spacesuit_set ID.
+        :return: A str of the spacesuit_set id.
         """
 
         if self.spacesuit is not None:
@@ -514,10 +514,10 @@ class WeaponItem(ItemType):
 
     def __init__(self, weapon_name: str, weapon_id: int, dlc: bool, unique: bool, weapon_type: str):
         """
-        Initialize an WeaponItem object.
+        Initialize a WeaponItem object.
 
         :param weapon_name: The name of the weapon.
-        :param weapon_id: The ID of the weapon.
+        :param weapon_id: The id of the weapon.
         :param dlc: A bool of whether the item is a DLC item or not. 
         :param unique: A bool of whether the item is a unique weapon or not.
         """
@@ -571,9 +571,9 @@ type='{self.weapon_type}')"
 
     def get_id(self):
         """
-        Return the ID code of the weapon.
+        Return the id code of the weapon.
         
-        :return: A str of the weapon ID.
+        :return: A str of the weapon id.
         """
 
         return self.weapon_id
@@ -591,7 +591,7 @@ type='{self.weapon_type}')"
     @staticmethod
     def get_valid_weapon_types():
         """
-        Allows other clases to get the known valid weapon types
+        Allows other classes to get the known valid weapon types
         to check against without having to create an instance
         of the class.
         """
@@ -606,10 +606,10 @@ class ResourceItem(ItemType):
 
     def __init__(self, resource_name: str, resource_id: int):
         """
-        Initialize an ResourceItem object.
+        Initialize a ResourceItem object.
 
         :param resource_name: The name of the resource.
-        :param resource_id: The ID of the resource. 
+        :param resource_id: The id of the resource. 
         """
 
         self.resource_name = resource_name
@@ -650,9 +650,9 @@ class ResourceItem(ItemType):
 
     def get_id(self):
         """
-        Return the ID code of the resource.
+        Return the id code of the resource.
         
-        :return: A str of the resource ID.
+        :return: A str of the resource id.
         """
 
         return self.resource_id
@@ -677,10 +677,10 @@ class StatusModType():
     def __init__(self, status_mod_name: str, status_mod_id: int,
                  status_mod_desc: str, mod_slot: int):
         """
-        Initialize an StatusModType object.
+        Initialize a StatusModType object.
 
         :param status_mod_name: The name of the weapon status mod.
-        :param status_mod_id: The ID of the weapon status mod.
+        :param status_mod_id: The id of the weapon status mod.
         :param status_mod_desc: The description of the weapon status mod.
         :param mod_slot: The slot for the mod (one of three) 
         """
@@ -731,9 +731,9 @@ class StatusModType():
 
     def get_id(self):
         """
-        Return the ID code of the status_mod.
+        Return the id code of the status_mod.
         
-        :return: A str of the status_mod ID.
+        :return: A str of the status_mod id.
         """
 
         return self.status_mod_id
@@ -801,9 +801,9 @@ mod_id='{self.mod_id}')"
 
     def get_id(self):
         """
-        Return the ID code of the QualityModType.
+        Return the id code of the QualityModType.
         
-        :return: A str of the QualityModType ID.
+        :return: A str of the QualityModType id.
         """
 
         return self.mod_id

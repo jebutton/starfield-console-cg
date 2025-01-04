@@ -1,9 +1,9 @@
 # starfield-console-cg
-A Python-based tool to generate console commands for items, resources, and modifiers for The ZeniMax Media video gaame Starfield.
+A Python-based tool to generate console commands for items, resources, and modifiers for The ZeniMax Media video game Starfield.
 
-Initially created as an exercise to practice handling Microsoft Excel Files, but has grown more complex over development.
+Initially created as an exercise to practice handling Microsoft Excel Files but has grown more complex over development.
 
-_All game data and item names copyright ZeniMax Media._
+_All game data and item names copyright ZeniMax Media.
 
 Built using python 3.12.8
 
@@ -14,7 +14,6 @@ Built using python 3.12.8
 1. Run _run.ps1_ in PowerShell to start the program and install the prerequisites if they don't exist.
 2. Navigate the menus by typing options from them.
 3. Copy the resulting console commands and paste them into Starfield's console via the tilde (`) key.
-
 
 ## Updates:
 
@@ -50,7 +49,7 @@ Built using python 3.12.8
 - Version 0.0.18:
     - Armor Status Mods support added.
     - Armor Quality Mods support added.
-    - Weapon Quality Mods suport added.
+    - Weapon Quality Mods support added.
     - Fixed menu bugs and removed underscores from main menu.
 
 - Version 0.1.0:
@@ -60,3 +59,5 @@ Built using python 3.12.8
     - More tests added, and more bug fixes.
     - Menus now have better text separation.
     - Extensively changed how the program is run so that it is easier for people to use it.
+    - Restructured the way that console commands are printed the user so that they're standardized.
+

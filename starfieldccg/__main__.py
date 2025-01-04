@@ -1,5 +1,5 @@
 """
-    Execution part of the program.
+    Main Execution part of the program.
 """
 # pylint: disable=wrong-import-position
 from os import path as OSPATH
@@ -33,7 +33,7 @@ def handle_item_menu(data_dict: dict, title: str):
     return_value = False
     if item_choice != "end":
         print("\n")
-        print(data_dict[item_choice]
+        pretty_print_command(data_dict[item_choice]
               .get_command(item_amount))
         return_value = True
 
@@ -54,14 +54,15 @@ def handle_status_mods(title: str, data_dict: dict):
     menu_result = status_menu.display_menu()
     mod_choices = menu_result
     return_value = False
-
+    command = []
     if "end" not in mod_choices:
         print("\n")
         for i, choice in enumerate(mod_choices):
             if choice != "skip":
-                print(data_dict[mod_choices[i]]
+                command.append(data_dict[mod_choices[i]]
               .get_command())
         return_value = True
+    pretty_print_command("\n".join(command))
 
     return return_value
 
@@ -84,7 +85,7 @@ def handle_quality_mods(title: str, prompt: str, data_dict: dict):
 
     if mod_choice != "quit":
         print("\n")
-        print(data_dict[mod_choice]
+        pretty_print_command(data_dict[mod_choice]
         .get_command())
         return_value = True
 
@@ -139,6 +140,23 @@ def handle_weapons_menu():
         result = False
 
     return result
+
+def pretty_print_command(command: str):
+    """
+    Standardizes how console commands are printed.
+    
+    :param command: A str for commands to print.
+    """
+    border = "=" * 60
+    print(border)
+    print("Copy and paste these commands into the Starfield Console:")
+    print(border)
+    print("\n")
+    print(command)
+    print("\n")
+    print(f"{border}\n")
+
+
 
 # pylint: disable=too-many-branches
 def main():

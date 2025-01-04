@@ -5,23 +5,23 @@ import pytest
 from .context import SCCGTestContext as STC
 from .context import DO
 
-AMMO_COUNT = 22 # Total Expec. Types of Ammo.
-SPACESUITS_COUNT = 64   # Total Expec. Types of Spacesuits.
-HELMETS_COUNT = 48  # Total Expec. Types of Helmets.
-PACKS_COUNT = 43    # Total Expec. Types of Boost Packs.
-SPACESUIT_SETS_COUNT = 86   # Total Expec. Types of Spacesuit Sets.
-WEAPONS_COUNT = 139 # Total Expec. Types of Weapons.
-RESOURCES_COUNT = 107   # Total Expec. Types of Resources.
-ARMOR_STATUS_MODS_COUNT = 32    # Total Expec. Armor Status Mods.
-WEAPON_STATUS_MODS_COUNT = 29   # Total Expec. Weapon Status Mods.
-ARMOR_QUALITY_MODS_COUNT = 4    # Total Expec. Armor Quality Mods.
-WEAPON_QUALITY_MODS_COUNT = 3   # Total Expec. Weapon Quality Mods.
+AMMO_COUNT = 22 # Total Expected Types of Ammo.
+SPACESUITS_COUNT = 64   # Total Expected Types of Spacesuits.
+HELMETS_COUNT = 48  # Total Expected Types of Helmets.
+PACKS_COUNT = 43    # Total Expected Types of Boost Packs.
+SPACESUIT_SETS_COUNT = 86   # Total Expected Types of Spacesuit Sets.
+WEAPONS_COUNT = 139 # Total Expected Types of Weapons.
+RESOURCES_COUNT = 107   # Total Expected Types of Resources.
+ARMOR_STATUS_MODS_COUNT = 32    # Total Expected Armor Status Mods.
+WEAPON_STATUS_MODS_COUNT = 29   # Total Expected Weapon Status Mods.
+ARMOR_QUALITY_MODS_COUNT = 4    # Total Expected Armor Quality Mods.
+WEAPON_QUALITY_MODS_COUNT = 3   # Total Expected Weapon Quality Mods.
 EXPECTED_SHEETS_COUNT = 11  # Total Expected Sheet Counts.
-UNIQUE_WEAPONS_COUNT = 69
-NORMAL_WEAPONS_COUNT = 70
-THROWN_WEAPONS_COUNT = 11
-GUN_WEAPONS_COUNT = 116
-MELEE_WEAPONS_COUNT = 12
+UNIQUE_WEAPONS_COUNT = 69   # Total Expected Unique Weapons.
+NORMAL_WEAPONS_COUNT = 70   # Total Expected Normal Weapons.
+THROWN_WEAPONS_COUNT = 11   # Total Expected Thrown Weapons.
+GUN_WEAPONS_COUNT = 116 # Total Expected Gun Weapons.
+MELEE_WEAPONS_COUNT = 12    # Total Expected Melee Weapons.
 
 def test_dfr_get_cell_value():
     """
@@ -150,6 +150,32 @@ def test_weapon_status_mods_sheet_load():
                                             "Berserker",
                                             "Weapon_Status_Mod_ID").strip()
     assert test_value == "000F437E"
+
+def test_weapon_quality_mods_sheet_load():
+    """
+        Tests that the Weapon_Quality_Mods sheet loads without errors.
+    """
+
+    test_reader = STC().get_a_dfr()
+    weapon_quality_mods_data = test_reader.datasheets.get("Weapon_Quality_Mods")
+    test_value = test_reader.get_cell_value(weapon_quality_mods_data,
+                                            "Weapon_Quality_Mod_Level",
+                                            "II",
+                                            "Weapon_Quality_Mod_ID").strip()
+    assert test_value == "0028F443"
+
+def test_armor_quality_mods_sheet_load():
+    """
+        Tests that the Armor_Quality_Mods sheet loads without errors.
+    """
+
+    test_reader = STC().get_a_dfr()
+    weapon_quality_mods_data = test_reader.datasheets.get("Armor_Quality_Mods")
+    test_value = test_reader.get_cell_value(weapon_quality_mods_data,
+                                            "Armor_Quality_Mod_Level",
+                                            "II",
+                                            "Armor_Quality_Mod_ID").strip()
+    assert test_value == "0011E2BA"
 
 def test_expected_sheet_names_count():
     """

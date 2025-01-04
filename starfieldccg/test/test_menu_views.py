@@ -159,7 +159,7 @@ def test_itemmenu_chunks_two():
     assert len(test_itemmenu.display_chunks) == 1
     assert test_itemmenu.display_chunks[0][12] == "2"
 
-def test_itemmenu_chunks_chunksize():
+def test_itemmenu_chunks_chunk_size():
     """
         Verifies that a hypothetical ItemMenu with a list size of one
         has the correct chunking.

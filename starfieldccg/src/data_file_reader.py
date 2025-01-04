@@ -1,5 +1,5 @@
 """
-    A module containg classes to read from the datasheet
+    A module containing classes to read from the datasheet
     and store that information as datastructures for the rest
     of the program.
 """
@@ -107,7 +107,7 @@ class DataFileReader:
         :param mod_dict: A dict containing the status mods.
 
         :return: A dict with a subset of a StatusModType dict containing \
-only items with a specific modslot.
+only items with a specific mod slot.
         """
 
         output_dict = {}
@@ -241,7 +241,6 @@ only items with a specific modslot.
 
             temp_value = SpacesuitSetItem(temp_row.iloc[0].strip(),
                                     str(temp_row.iloc[5]).strip())
-            # print(pd.isna(temp_row.iloc[1]))
 
             if pd.isna(temp_row.iloc[1]) is not True:
                 temp_value.set_spacesuit(spacesuits[str(temp_row.iloc[1]).strip().lower()])
