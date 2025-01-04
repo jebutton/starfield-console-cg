@@ -204,8 +204,8 @@ def test_weapon_str_unique_two():
 
 def test_weapon_id_length_one():
     """
-    Tests that an weapon's id length is 8 characters
-    even if it is initailly supplied as less than 8.
+    Tests that a weapon's id length is 8 characters
+    even if it is initially supplied as less than 8.
     """
 
     test_obj = DO.WeaponItem("Test Weapon", "1", False, False, "gun")
@@ -213,8 +213,8 @@ def test_weapon_id_length_one():
 
 def test_weapon_id_length_two():
     """
-    Tests that an weapon's id is correct
-    even if it is initailly supplied as less than 8 characters.
+    Tests that a weapon's id is correct
+    even if it is initially supplied as less than 8 characters.
     """
 
     test_obj = DO.WeaponItem("Test Weapon", "1", False, False, "gun")
@@ -222,8 +222,8 @@ def test_weapon_id_length_two():
 
 def test_weapon_id_length_three():
     """
-    Tests that an weapon's id length is 8 characters
-    even if it is initailly supplied as more than 8.
+    Tests that a weapon's id length is 8 characters
+    even if it is initially supplied as more than 8.
     """
 
     test_obj = DO.WeaponItem("Test Weapon", "AAAAAAAA1", False, False, "gun")
@@ -231,8 +231,8 @@ def test_weapon_id_length_three():
 
 def test_weapon_id_length_four():
     """
-    Tests that an weapon's id is correct
-    even if it is initailly supplied as more than 8 characters.
+    Tests that a weapon's id is correct
+    even if it is initially supplied as more than 8 characters.
     """
 
     test_obj = DO.WeaponItem("Test Weapon", "AAAAAAAA1", False, False, "gun")
@@ -240,8 +240,8 @@ def test_weapon_id_length_four():
 
 def test_helmet_id_length_one():
     """
-    Tests that an helmet's id length is 8 characters
-    even if it is initailly supplied as less than 8.
+    Tests that a helmet's id length is 8 characters
+    even if it is initially supplied as less than 8.
     """
 
     test_obj = DO.HelmetItem("Test Helmet", "1", False)
@@ -249,8 +249,8 @@ def test_helmet_id_length_one():
 
 def test_helmet_id_length_two():
     """
-    Tests that an helmet's id is correct
-    even if it is initailly supplied as less than 8 characters.
+    Tests that a helmet's id is correct
+    even if it is initially supplied as less than 8 characters.
     """
 
     test_obj = DO.HelmetItem("Test Helmet", "1", False)
@@ -258,8 +258,8 @@ def test_helmet_id_length_two():
 
 def test_helmet_id_length_three():
     """
-    Tests that an helmet's id length is 8 characters
-    even if it is initailly supplied as more than 8.
+    Tests that a helmet's id length is 8 characters
+    even if it is initially supplied as more than 8.
     """
 
     test_obj = DO.HelmetItem("Test Helmet", "AAAAAAAA1", False)
@@ -267,8 +267,8 @@ def test_helmet_id_length_three():
 
 def test_helmet_id_length_four():
     """
-    Tests that an helmet's id is correct
-    even if it is initailly supplied as more than 8 characters.
+    Tests that a helmet's id is correct
+    even if it is initially supplied as more than 8 characters.
     """
 
     test_obj = DO.HelmetItem("Test Helmet", "AAAAAAAA1", False)
@@ -276,8 +276,8 @@ def test_helmet_id_length_four():
 
 def test_spacesuit_id_length_one():
     """
-    Tests that an spacesuit's id length is 8 characters
-    even if it is initailly supplied as less than 8.
+    Tests that a spacesuit's id length is 8 characters
+    even if it is initially supplied as less than 8.
     """
 
     test_obj = DO.SpacesuitItem("Test Spacesuit", "1", False)
@@ -285,8 +285,8 @@ def test_spacesuit_id_length_one():
 
 def test_spacesuit_id_length_two():
     """
-    Tests that an spacesuit's id is correct
-    even if it is initailly supplied as less than 8 characters.
+    Tests that a spacesuit's id is correct
+    even if it is initially supplied as less than 8 characters.
     """
 
     test_obj = DO.SpacesuitItem("Test Spacesuit", "1", False)
@@ -294,8 +294,8 @@ def test_spacesuit_id_length_two():
 
 def test_spacesuit_id_length_three():
     """
-    Tests that an spacesuit's id length is 8 characters
-    even if it is initailly supplied as more than 8.
+    Tests that a spacesuit's id length is 8 characters
+    even if it is initially supplied as more than 8.
     """
 
     test_obj = DO.SpacesuitItem("Test Spacesuit", "AAAAAAAA1", False)
@@ -303,16 +303,16 @@ def test_spacesuit_id_length_three():
 
 def test_spacesuit_id_length_four():
     """
-    Tests that an spacesuit's id is correct
-    even if it is initailly supplied as more than 8 characters.
+    Tests that a spacesuit's id is correct
+    even if it is initially supplied as more than 8 characters.
     """
 
     test_obj = DO.SpacesuitItem("Test Spacesuit", "AAAAAAAA1", False)
     assert test_obj.get_id() == "AAAAAAA1"
 def test_pack_id_length_one():
     """
-    Tests that an pack's id length is 8 characters
-    even if it is initailly supplied as less than 8.
+    Tests that a pack's id length is 8 characters
+    even if it is initially supplied as less than 8.
     """
 
     test_obj = DO.PackItem("Test Pack", "1", False)
@@ -320,8 +320,8 @@ def test_pack_id_length_one():
 
 def test_pack_id_length_two():
     """
-    Tests that an pack's id is correct
-    even if it is initailly supplied as less than 8 characters.
+    Tests that a pack's id is correct
+    even if it is initially supplied as less than 8 characters.
     """
 
     test_obj = DO.PackItem("Test Pack", "1", False)
@@ -329,8 +329,8 @@ def test_pack_id_length_two():
 
 def test_pack_id_length_three():
     """
-    Tests that an pack's id length is 8 characters
-    even if it is initailly supplied as more than 8.
+    Tests that a pack's id length is 8 characters
+    even if it is initially supplied as more than 8.
     """
 
     test_obj = DO.PackItem("Test Pack", "AAAAAAAA1", False)
@@ -338,16 +338,16 @@ def test_pack_id_length_three():
 
 def test_pack_id_length_four():
     """
-    Tests that an pack's id is correct
-    even if it is initailly supplied as more than 8 characters.
+    Tests that a pack's id is correct
+    even if it is initially supplied as more than 8 characters.
     """
 
     test_obj = DO.PackItem("Test Pack", "AAAAAAAA1", False)
     assert test_obj.get_id() == "AAAAAAA1"
 def test_resource_id_length_one():
     """
-    Tests that an resource's id length is 8 characters
-    even if it is initailly supplied as less than 8.
+    Tests that a resource's id length is 8 characters
+    even if it is initially supplied as less than 8.
     """
 
     test_obj = DO.ResourceItem("Test Resource", "1")
@@ -355,8 +355,8 @@ def test_resource_id_length_one():
 
 def test_resource_id_length_two():
     """
-    Tests that an resource's id is correct
-    even if it is initailly supplied as less than 8 characters.
+    Tests that a resource's id is correct
+    even if it is initially supplied as less than 8 characters.
     """
 
     test_obj = DO.ResourceItem("Test Resource", "1")
@@ -364,8 +364,8 @@ def test_resource_id_length_two():
 
 def test_resource_id_length_three():
     """
-    Tests that an resource's id length is 8 characters
-    even if it is initailly supplied as more than 8.
+    Tests that a resource's id length is 8 characters
+    even if it is initially supplied as more than 8.
     """
 
     test_obj = DO.ResourceItem("Test Resource", "AAAAAAAA1")
@@ -373,8 +373,8 @@ def test_resource_id_length_three():
 
 def test_resource_id_length_four():
     """
-    Tests that an resource's id is correct
-    even if it is initailly supplied as more than 8 characters.
+    Tests that a resource's id is correct
+    even if it is initially supplied as more than 8 characters.
     """
 
     test_obj = DO.ResourceItem("Test Resource", "AAAAAAAA1")
@@ -382,7 +382,7 @@ def test_resource_id_length_four():
 
 def test_spacesuit_set_id_one():
     """
-    Tests that spacesuit's set id is correct with valid input.
+    Tests that a spacesuit's set id is correct with valid input.
     """
 
     test_spacesuit = DO.SpacesuitItem("Test Spacesuit", "00000001", False)
@@ -400,7 +400,7 @@ def test_spacesuit_set_id_one():
 
 def test_spacesuit_set_id_two():
     """
-    Tests that spacesuit's set id is correct with
+    Tests that a spacesuit's set id is correct with
     all components having two short of ids.
     """
 
@@ -419,7 +419,7 @@ def test_spacesuit_set_id_two():
 
 def test_spacesuit_set_id_three():
     """
-    Tests that spacesuit's set id is correct with
+    Tests that a spacesuit's set id is correct with
     all components having two short of ids.
     """
 

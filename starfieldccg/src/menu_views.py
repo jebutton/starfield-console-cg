@@ -13,7 +13,7 @@ import settings_io
 
 class AutoCompleteList:
     """
-        A class to simplify and standarize how the WordCompleter class
+        A class to simplify and standardize how the WordCompleter class
         is used in the project. 
     """
 
@@ -31,7 +31,7 @@ class AutoCompleteList:
         elif isinstance(input_structure, list):
             self.completer = WordCompleter(self.duplicate_input(self.input_structure))
         else:
-            raise TypeError(f"Invalid datastructure type. Type is {type(input_structure)}")
+            raise TypeError(f"Invalid data structure type. Type is {type(input_structure)}")
 
     def __repr__(self):
         """
@@ -333,7 +333,7 @@ class NavMenu(BaseMenu):
 
     def __init__(self, menu_items: list, title: str, text_prompt: str):
         """
-        Initialize an NavMenu object.
+        Initialize a NavMenu object.
         
         :param menu_items: The list of menu items to display.
         :param title: The str message to display when the menu loads.
@@ -397,7 +397,7 @@ class StatusModMenu(BaseMenu):
     """
     def __init__(self, input_dict: dict, title: str):
         """
-        Initialize an StatusModMenu object.
+        Initialize a StatusModMenu object.
 
         :param input_dict: The dict of objects to be displayed for the menu.
         :param title: The str message to display when the menu loads.
@@ -523,7 +523,7 @@ class StatusModMenu(BaseMenu):
         """
         Removes the description from the menu option.
 
-        :param selection: A str reprensenting a menu selection
+        :param selection: A str representing a menu selection
 
         :return: A str of just the menu option
         """
@@ -631,7 +631,7 @@ class QualityMenu(BaseMenu):
 
     def __init__(self, input_dict: dict, title: str, text_prompt: str):
         """
-        Initialize an QualityMenu object.
+        Initialize a QualityMenu object.
 
         :param input_dict: The dict of objects to be displayed for the menu.
         :param title: The str message to display when the menu loads.
