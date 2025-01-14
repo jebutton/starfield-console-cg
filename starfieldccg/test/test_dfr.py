@@ -16,7 +16,7 @@ ARMOR_STATUS_MODS_COUNT = 32    # Total Expected Armor Status Mods.
 WEAPON_STATUS_MODS_COUNT = 29   # Total Expected Weapon Status Mods.
 ARMOR_QUALITY_MODS_COUNT = 4    # Total Expected Armor Quality Mods.
 WEAPON_QUALITY_MODS_COUNT = 3   # Total Expected Weapon Quality Mods.
-EXPECTED_SHEETS_COUNT = 11  # Total Expected Sheet Counts.
+EXPECTED_SHEETS_COUNT = 12  # Total Expected Sheet Counts.
 UNIQUE_WEAPONS_COUNT = 69   # Total Expected Unique Weapons.
 NORMAL_WEAPONS_COUNT = 70   # Total Expected Normal Weapons.
 THROWN_WEAPONS_COUNT = 11   # Total Expected Thrown Weapons.
@@ -176,6 +176,19 @@ def test_armor_quality_mods_sheet_load():
                                             "II",
                                             "Armor_Quality_Mod_ID").strip()
     assert test_value == "0011E2BA"
+
+def test_apparel_sheet_load():
+    """
+        Tests that the apparel sheet loads without errors.
+    """
+
+    test_reader = STC().get_a_dfr()
+    apparel_data = test_reader.datasheets.get("Apparel")
+    test_value = test_reader.get_cell_value(apparel_data,
+                                            "Apparel_Name",
+                                            "Akila Security Hat",
+                                            "Apparel_ID").strip()
+    assert test_value == "0012B4B3"
 
 def test_expected_sheet_names_count():
     """
