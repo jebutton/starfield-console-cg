@@ -6,7 +6,7 @@
 import pandas as pd
 from .data_objects import AmmoItem, SpacesuitItem, PackItem, HelmetItem
 from .data_objects import SpacesuitSetItem, WeaponItem, ResourceItem, StatusModType
-from .data_objects import QualityModType
+from .data_objects import QualityModType, ApparelItem
 
 # pylint: disable=too-many-instance-attributes
 class DataFileReader:
@@ -24,7 +24,8 @@ class DataFileReader:
         self.file_path = file_path
         self.sheet_names = [
             "Resources", "Spacesuits", "Helmets", "Packs",
-            "Spacesuit_Sets", "Weapons", "Ammo", "Armor_Status_Mods", "Weapon_Status_Mods",
+            "Spacesuit_Sets", "Apparel", "Weapons",
+            "Ammo", "Armor_Status_Mods", "Weapon_Status_Mods",
             "Armor_Quality_Mods", "Weapon_Quality_Mods"
         ]
 
@@ -43,6 +44,7 @@ class DataFileReader:
         self.armor_status_mods_data = self.get_status_mod_data("Armor_Status_Mods")
         self.armor_quality_mods_data = self.get_quality_mod_data("Armor_Quality_Mods")
         self.weapon_quality_mods_data = self.get_quality_mod_data("Weapon_Quality_Mods")
+        self.apparel_data = self.get_apparel_data()
 
     def read_sheets(self):
         """
@@ -329,4 +331,23 @@ only items with a specific mod slot.
             temp_value = QualityModType(temp_row.iloc[0].strip(),
                                         temp_row.iloc[1].strip())
             output_dict[temp_key] = temp_value
+        return output_dict
+
+    def get_apparel_data(self):
+        """
+        Return a dict containing all of the Apparel page data.
+
+        :return: A dict with all of the Apparel page data.
+        """
+
+        num_rows = self.datasheets["Apparel"].shape[0]
+        output_dict = {}
+        for row in range(num_rows):
+            temp_row = self.datasheets["Apparel"].loc[row]
+            temp_key = temp_row.iloc[0].strip().lower()
+            temp_value = ApparelItem(temp_row.iloc[0].strip(),
+                                  str(temp_row.iloc[1]).strip(),
+                                  bool(temp_row.iloc[2]))
+            output_dict[temp_key] = temp_value
+
         return output_dict

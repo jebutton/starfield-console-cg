@@ -435,3 +435,39 @@ def test_spacesuit_set_id_three():
     assert test_spacesuit_set.get_id()[0] == "00000001"
     assert test_spacesuit_set.get_id()[1] == "00000002"
     assert test_spacesuit_set.get_id()[2] == "00000003"
+
+def test_apparel_id_length_one():
+    """
+    Tests that a apparel's id length is 8 characters
+    even if it is initially supplied as less than 8.
+    """
+
+    test_obj = DO.ApparelItem("Test Apparel", "1", False)
+    assert len(test_obj.get_id()) == 8
+
+def test_apparel_id_length_two():
+    """
+    Tests that a apparel's id is correct
+    even if it is initially supplied as less than 8 characters.
+    """
+
+    test_obj = DO.ApparelItem("Test Apparel", "1", False)
+    assert test_obj.get_id() == "00000001"
+
+def test_apparel_id_length_three():
+    """
+    Tests that a apparel's id length is 8 characters
+    even if it is initially supplied as more than 8.
+    """
+
+    test_obj = DO.ApparelItem("Test Apparel", "AAAAAAAA1", False)
+    assert len(test_obj.get_id()) == 8
+
+def test_apparel_id_length_four():
+    """
+    Tests that a apparel's id is correct
+    even if it is initially supplied as more than 8 characters.
+    """
+
+    test_obj = DO.ApparelItem("Test Apparel", "AAAAAAAA1", False)
+    assert test_obj.get_id() == "AAAAAAA1"

@@ -199,3 +199,11 @@ def test_dump_armor_quality_mods():
     """
 
     output_all_of_quality_mods(TEST_DFR.armor_quality_mods_data, "armor")
+
+@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
+def test_dump_apparel():
+    """
+        Prints to a file all apparel data commands for testing.
+    """
+
+    output_all_of_object_dict(TEST_DFR.apparel_data, "apparel_commands.txt")

@@ -218,5 +218,7 @@ return back to the main menu> ",
                                          "Type Mod name or type 'end' to \
 return back to the main menu> ",
                                          items_workbook.weapon_quality_mods_data)
-
+        elif menu_selection == "apparel":
+            exited = handle_item_menu(items_workbook.apparel_data,
+                                      "Select an Apparel Item:")
 main()

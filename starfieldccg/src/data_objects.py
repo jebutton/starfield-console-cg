@@ -816,3 +816,75 @@ mod_id='{self.mod_id}')"
         """
 
         return f".amod {self.mod_id}"
+
+class ApparelItem(ItemType):
+    """
+        A class representing the data needed to deal with
+        a ApparelItem object.
+    """
+
+    def __init__(self, apparel_name: str, apparel_id: int, dlc: bool):
+        """
+        Initialize a apparelItem object.
+
+        :param apparel_name: The name of the apparel.
+        :param apparel_id: The id of the apparel.
+        :param dlc: A bool of whether the item is a DLC item or not. 
+        """
+
+        self.apparel_name = apparel_name
+        self.apparel_id = apparel_id
+        self.dlc = dlc
+        self.apparel_id = self.process_id(dlc)
+
+    def __repr__(self):
+        """
+        Return a str representation of the ApparelItem object.
+
+        :return: A str version of ApparelItem
+        """
+
+        return f"ApparelItem(apparel_name='{self.apparel_name}', \
+          apparel_id={self.apparel_id}, dlc={self.dlc})"
+
+    def to_dict(self):
+        """
+        Convert the ApparelItem object to a dict.
+
+        :return: A dict representation of the ApparelItem object.
+        """
+
+        return {
+            "apparel_name": self.apparel_name,
+            "apparel_id": self.apparel_id,
+            "dlc": self.dlc
+        }
+
+    def get_name(self):
+        """
+        Return the name of the apparel.
+        
+        :return: A str of the apparel name.
+        """
+
+        return self.apparel_name
+
+    def get_id(self):
+        """
+        Return the id code of the apparel.
+        
+        :return: A str of the apparel id.
+        """
+
+        return self.apparel_id
+
+    def get_command(self, number: int):
+        """
+        Return the console command to be generated.
+
+        :param number: A int of how many items you want to generate.
+
+        :return: A str of the console command.
+        """
+
+        return f"player.additem {self.apparel_id} {number}"
