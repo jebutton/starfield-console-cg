@@ -16,12 +16,50 @@ ARMOR_STATUS_MODS_COUNT = 32    # Total Expected Armor Status Mods.
 WEAPON_STATUS_MODS_COUNT = 29   # Total Expected Weapon Status Mods.
 ARMOR_QUALITY_MODS_COUNT = 4    # Total Expected Armor Quality Mods.
 WEAPON_QUALITY_MODS_COUNT = 3   # Total Expected Weapon Quality Mods.
-EXPECTED_SHEETS_COUNT = 12  # Total Expected Sheet Counts.
+EXPECTED_SHEETS_COUNT = 13  # Total Expected Sheet Counts.
 UNIQUE_WEAPONS_COUNT = 69   # Total Expected Unique Weapons.
 NORMAL_WEAPONS_COUNT = 70   # Total Expected Normal Weapons.
 THROWN_WEAPONS_COUNT = 11   # Total Expected Thrown Weapons.
 GUN_WEAPONS_COUNT = 116 # Total Expected Gun Weapons.
 MELEE_WEAPONS_COUNT = 12    # Total Expected Melee Weapons.
+AID_ITEMS_COUNT = 340   # Toal amount of aid items.
+APPAREL_ITEMS_COUNT = 335
+SHARED_DFR = STC().get_a_dfr()  # Shared DataFileReader instance for tests that can use it.
+
+def get_all_ids_of_data(item_data: dict):
+    """
+    Returns all the ids as a list of an input dict.
+
+    :param item_data: A dict of an item type.
+
+    :return: A list of items.
+    """
+    item_list = list(item_data.values())
+
+    return [item.get_id() for item in item_list]
+
+
+def get_dupilicate_ids(item_data: dict):
+    """
+    Returns a list of the ids that are duplicate in a 
+    dict of ItemType subclasses.
+
+    :param item_data: A dict of an ItemType sublclass.
+    
+    :return: A list of duplicate IDs.
+    """
+
+    all_ids = get_all_ids_of_data(item_data)
+    counter_dict = {}
+    output_list = []
+    for item in all_ids:
+        if item in counter_dict:
+            output_list.append(item)
+        else:
+            counter_dict[item] = True
+
+    return output_list
+
 
 def test_dfr_get_cell_value():
     """
@@ -190,6 +228,19 @@ def test_apparel_sheet_load():
                                             "Apparel_ID").strip()
     assert test_value == "0012B4B3"
 
+def test_aid_sheet_load():
+    """
+        Tests that the aaid sheet loads without errors.
+    """
+
+    test_reader = STC().get_a_dfr()
+    aid_data = test_reader.datasheets.get("Aid")
+    test_value = test_reader.get_cell_value(aid_data,
+                                            "Aid_Name",
+                                            "Velocity Blue",
+                                            "Aid_ID").strip()
+    assert test_value == "003BF793"
+
 def test_expected_sheet_names_count():
     """
         Tests that the expected number of sheets are being tracked.
@@ -203,32 +254,28 @@ def test_ammo_item_count():
         Tests that the expected amount of Ammo Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.ammo_data) == AMMO_COUNT
+    assert len(SHARED_DFR.ammo_data) == AMMO_COUNT
 
 def test_spacesuits_item_count():
     """
         Tests that the expected amount of Spacesuit Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.spacesuit_data) == SPACESUITS_COUNT
+    assert len(SHARED_DFR.spacesuit_data) == SPACESUITS_COUNT
 
 def test_packs_item_count():
     """
         Tests that the expected amount of Boost Pack Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.pack_data) == PACKS_COUNT
+    assert len(SHARED_DFR.pack_data) == PACKS_COUNT
 
 def test_helmets_item_count():
     """
         Tests that the expected amount of Helmet Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.helmet_data) == HELMETS_COUNT
+    assert len(SHARED_DFR.helmet_data) == HELMETS_COUNT
 
 
 def test_weapons_item_count():
@@ -236,24 +283,21 @@ def test_weapons_item_count():
         Tests that the expected amount of Weapon Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.weapon_data) == WEAPONS_COUNT
+    assert len(SHARED_DFR.weapon_data) == WEAPONS_COUNT
 
 def test_spacesuit_sets_item_count():
     """
         Tests that the expected amount of Spacesuit Set Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.spacesuit_set_data) == SPACESUIT_SETS_COUNT
+    assert len(SHARED_DFR.spacesuit_set_data) == SPACESUIT_SETS_COUNT
 
 def test_resources_count():
     """
         Tests that the expected amount of Resource Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.resource_data) == RESOURCES_COUNT
+    assert len(SHARED_DFR.resource_data) == RESOURCES_COUNT
 
 def test_armor_status_mods_count():
     """
@@ -261,8 +305,7 @@ def test_armor_status_mods_count():
         Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.armor_status_mods_data) == ARMOR_STATUS_MODS_COUNT
+    assert len(SHARED_DFR.armor_status_mods_data) == ARMOR_STATUS_MODS_COUNT
 
 def test_weapons_status_mods_count():
     """
@@ -270,8 +313,7 @@ def test_weapons_status_mods_count():
         Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.weapon_status_mods_data) == WEAPON_STATUS_MODS_COUNT
+    assert len(SHARED_DFR.weapon_status_mods_data) == WEAPON_STATUS_MODS_COUNT
 
 def test_armor_quality_mods_count():
     """
@@ -279,8 +321,7 @@ def test_armor_quality_mods_count():
         Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.armor_quality_mods_data) == ARMOR_QUALITY_MODS_COUNT
+    assert len(SHARED_DFR.armor_quality_mods_data) == ARMOR_QUALITY_MODS_COUNT
 
 def test_weapons_quality_mods_count():
     """
@@ -288,16 +329,28 @@ def test_weapons_quality_mods_count():
         Types is present. 
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.weapon_quality_mods_data) == WEAPON_QUALITY_MODS_COUNT
+    assert len(SHARED_DFR.weapon_quality_mods_data) == WEAPON_QUALITY_MODS_COUNT
+
+def test_apparel_items_count():
+    """
+        Tests that the expected amount of Apparel Items is present.
+    """
+
+    assert len(SHARED_DFR.apparel_data) == APPAREL_ITEMS_COUNT
+
+def test_aid_items_count():
+    """
+        Tests that the expected amount of Aid Items is present.
+    """
+
+    assert len(SHARED_DFR.aid_data) == AID_ITEMS_COUNT
+
 
 def test_status_mods_by_slot():
     """
     Tests that the get_status_mods_by_mod_slot() function works correctly.
     """
-
-    test_reader = STC().get_a_dfr()
-    test_dict = test_reader.get_status_mods_by_mod_slot(1, test_reader.weapon_status_mods_data)
+    test_dict = SHARED_DFR.get_status_mods_by_mod_slot(1, SHARED_DFR.weapon_status_mods_data)
     assert len(test_dict) == 10
 
 def test_pretty_sheet_names_one():
@@ -325,8 +378,7 @@ def test_armor_qualitymods_type():
     Tests that the armor_quality_mods_data contains the correct type.
     """
 
-    test_reader = STC().get_a_dfr()
-    for quality_mod in test_reader.armor_quality_mods_data.values():
+    for quality_mod in SHARED_DFR.armor_quality_mods_data.values():
         if isinstance(quality_mod, DO.QualityModType) is not True:
             assert False
 
@@ -335,37 +387,120 @@ def test_gun_weapons_count():
     Tests that the amount of guns is what is expected.
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.get_weapons_by_type("gun")) == GUN_WEAPONS_COUNT
+    assert len(SHARED_DFR.get_weapons_by_type("gun")) == GUN_WEAPONS_COUNT
 
 def test_throw_weapons_count():
     """
     Tests that the amount of thrown weapons is what is expected.
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.get_weapons_by_type("thrown")) == THROWN_WEAPONS_COUNT
+    assert len(SHARED_DFR.get_weapons_by_type("thrown")) == THROWN_WEAPONS_COUNT
 
 def test_melee_weapons_count():
     """
     Tests that the amount of melee weapons is what is expected.
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.get_weapons_by_type("melee")) == MELEE_WEAPONS_COUNT
+    assert len(SHARED_DFR.get_weapons_by_type("melee")) == MELEE_WEAPONS_COUNT
 
 def test_unique_weapons_count():
     """
     Tests that the amount of unique weapons is what is expected.
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.get_weapons_by_unique(True)) == UNIQUE_WEAPONS_COUNT
+    assert len(SHARED_DFR.get_weapons_by_unique(True)) == UNIQUE_WEAPONS_COUNT
 
 def test_non_unique_weapons_count():
     """
     Tests that the amount of normal, non-unique weapons is what is expected.
     """
 
-    test_reader = STC().get_a_dfr()
-    assert len(test_reader.get_weapons_by_unique(False)) == NORMAL_WEAPONS_COUNT
+    assert len(SHARED_DFR.get_weapons_by_unique(False)) == NORMAL_WEAPONS_COUNT
+
+def test_aid_ids_are_unique():
+    """
+    Tests that all AidItem ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.aid_data)
+    assert len(duplicates) == 0
+
+def test_ammo_ids_are_unique():
+    """
+    Tests that all AmmoItem ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.ammo_data)
+    assert len(duplicates) == 0
+
+def test_helmet_ids_are_unique():
+    """
+    Tests that all HelmetItem ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.helmet_data)
+    assert len(duplicates) == 0
+
+def test_packs_ids_are_unique():
+    """
+    Tests that all PackItem ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.pack_data)
+    assert len(duplicates) == 0
+
+def test_spacesuit_ids_are_unique():
+    """
+    Tests that all SpacesuitItem ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.aid_data)
+    assert len(duplicates) == 0
+
+def test_weapon_ids_are_unique():
+    """
+    Tests that all WeaponItem ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.weapon_data)
+    assert len(duplicates) == 0
+
+def test_resource_ids_are_unique():
+    """
+    Tests that all ResourceItem ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.resource_data)
+    assert len(duplicates) == 0
+
+def test_weapon_statusmod_ids_are_unique():
+    """
+    Tests that all weapon StatusModType ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.weapon_status_mods_data)
+    assert len(duplicates) == 0
+
+def test_armor_statusmod_ids_are_unique():
+    """
+    Tests that all armor StatusModType ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.armor_status_mods_data)
+    assert len(duplicates) == 0
+
+def test_weapon_qualitymod_ids_are_unique():
+    """
+    Tests that all weapon QualityModType ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.weapon_quality_mods_data)
+    assert len(duplicates) == 0
+
+def test_armor_qualitymod_ids_are_unique():
+    """
+    Tests that all armor QualityModType ids are unique.
+    """
+
+    duplicates = get_dupilicate_ids(SHARED_DFR.armor_quality_mods_data)
+    assert len(duplicates) == 0

@@ -438,7 +438,7 @@ def test_spacesuit_set_id_three():
 
 def test_apparel_id_length_one():
     """
-    Tests that a apparel's id length is 8 characters
+    Tests that an apparel's id length is 8 characters
     even if it is initially supplied as less than 8.
     """
 
@@ -447,7 +447,7 @@ def test_apparel_id_length_one():
 
 def test_apparel_id_length_two():
     """
-    Tests that a apparel's id is correct
+    Tests that an apparel's id is correct
     even if it is initially supplied as less than 8 characters.
     """
 
@@ -456,7 +456,7 @@ def test_apparel_id_length_two():
 
 def test_apparel_id_length_three():
     """
-    Tests that a apparel's id length is 8 characters
+    Tests that an apparel's id length is 8 characters
     even if it is initially supplied as more than 8.
     """
 
@@ -465,9 +465,45 @@ def test_apparel_id_length_three():
 
 def test_apparel_id_length_four():
     """
-    Tests that a apparel's id is correct
+    Tests that an apparel's id is correct
     even if it is initially supplied as more than 8 characters.
     """
 
     test_obj = DO.ApparelItem("Test Apparel", "AAAAAAAA1", False)
+    assert test_obj.get_id() == "AAAAAAA1"
+
+def test_aid_id_length_one():
+    """
+    Tests that an aid's id length is 8 characters
+    even if it is initially supplied as less than 8.
+    """
+
+    test_obj = DO.AidItem("Test Aid", "1", False)
+    assert len(test_obj.get_id()) == 8
+
+def test_aid_id_length_two():
+    """
+    Tests that an aid's id is correct
+    even if it is initially supplied as less than 8 characters.
+    """
+
+    test_obj = DO.AidItem("Test Aid", "1", False)
+    assert test_obj.get_id() == "00000001"
+
+def test_aid_id_length_three():
+    """
+    Tests that an aid's id length is 8 characters
+    even if it is initially supplied as more than 8.
+    """
+
+    test_obj = DO.AidItem("Test Aid", "AAAAAAAA1", False)
+    assert len(test_obj.get_id()) == 8
+
+def test_aid_id_length_four():
+    """
+    Tests that an aid's id is correct
+    even if it is initially supplied as more than 8 characters.
+    """
+
+    test_obj = DO.AidItem("Test Aid", "AAAAAAAA1", False)
     assert test_obj.get_id() == "AAAAAAA1"

@@ -888,3 +888,75 @@ class ApparelItem(ItemType):
         """
 
         return f"player.additem {self.apparel_id} {number}"
+
+class AidItem(ItemType):
+    """
+        A class representing the data needed to deal with
+        a AidItem object.
+    """
+
+    def __init__(self, aid_name: str, aid_id: int, dlc: bool):
+        """
+        Initialize a aidItem object.
+
+        :param aid_name: The name of the aid.
+        :param aid_id: The id of the aid.
+        :param dlc: A bool of whether the item is a DLC item or not. 
+        """
+
+        self.aid_name = aid_name
+        self.aid_id = aid_id
+        self.dlc = dlc
+        self.aid_id = self.process_id(dlc)
+
+    def __repr__(self):
+        """
+        Return a str representation of the AidItem object.
+
+        :return: A str version of AidItem
+        """
+
+        return f"AidItem(aid_name='{self.aid_name}', \
+          aid_id={self.aid_id}, dlc={self.dlc})"
+
+    def to_dict(self):
+        """
+        Convert the AidItem object to a dict.
+
+        :return: A dict representation of the AidItem object.
+        """
+
+        return {
+            "aid_name": self.aid_name,
+            "aid_id": self.aid_id,
+            "dlc": self.dlc
+        }
+
+    def get_name(self):
+        """
+        Return the name of the aid.
+        
+        :return: A str of the aid name.
+        """
+
+        return self.aid_name
+
+    def get_id(self):
+        """
+        Return the id code of the aid.
+        
+        :return: A str of the aid id.
+        """
+
+        return self.aid_id
+
+    def get_command(self, number: int):
+        """
+        Return the console command to be generated.
+
+        :param number: A int of how many items you want to generate.
+
+        :return: A str of the console command.
+        """
+
+        return f"player.additem {self.aid_id} {number}"
