@@ -207,3 +207,11 @@ def test_dump_apparel():
     """
 
     output_all_of_object_dict(TEST_DFR.apparel_data, "apparel_commands.txt")
+
+@pytest.mark.skip(reason="only needs to be run sparingly for testing datasheet accuracy")
+def test_dump_aid():
+    """
+        Prints to a file all aid data commands for testing.
+    """
+
+    output_all_of_object_dict(TEST_DFR.aid_data, "aid_commands.txt")
