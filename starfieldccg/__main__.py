@@ -141,6 +141,28 @@ def handle_weapons_menu():
 
     return result
 
+def handle_subtype_menu(input_dict: dict, item_type_name: str):
+    """
+    Handles a menu where there are sub options based on subtypes of items.
+
+    :param input_dict: A dict containing the items to display.
+    :param item_type_name: A str containing the name of the item type.
+    """
+
+    menu_options = items_workbook.get_subtype_list(input_dict)
+
+    option_menu = NavMenu(menu_options,f"Select a {item_type_name.capitalize()} Category",
+                          f"Select a category of {item_type_name.capitalize()} or \
+'end' to return to the main menu> ")
+    options_selection = option_menu.display_menu().lower()
+
+    items = items_workbook.get_item_by_subtype(input_dict, options_selection)
+
+    result = handle_item_menu(items,
+                                  f"Select the {item_type_name} Type:")
+
+    return result
+
 def pretty_print_command(command: str):
     """
     Standardizes how console commands are printed.
@@ -219,6 +241,7 @@ return back to the main menu> ",
 return back to the main menu> ",
                                          items_workbook.weapon_quality_mods_data)
         elif menu_selection == "apparel":
-            exited = handle_item_menu(items_workbook.apparel_data,
-                                      "Select an Apparel Item:")
+            exited = handle_subtype_menu(items_workbook.apparel_data, "Apparel")
+        elif menu_selection == "aid":
+            exited = handle_subtype_menu(items_workbook.aid_data, "Aid")
 main()

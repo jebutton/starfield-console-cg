@@ -823,18 +823,20 @@ class ApparelItem(ItemType):
         a ApparelItem object.
     """
 
-    def __init__(self, apparel_name: str, apparel_id: int, dlc: bool):
+    def __init__(self, apparel_name: str, apparel_id: int, dlc: bool, subtype: str):
         """
         Initialize a apparelItem object.
 
         :param apparel_name: The name of the apparel.
         :param apparel_id: The id of the apparel.
-        :param dlc: A bool of whether the item is a DLC item or not. 
+        :param dlc: A bool of whether the item is a DLC item or not.
+        :param subtype: A str of the subtype of item it is. 
         """
 
         self.apparel_name = apparel_name
         self.apparel_id = apparel_id
         self.dlc = dlc
+        self.subtype = subtype
         self.apparel_id = self.process_id(dlc)
 
     def __repr__(self):
@@ -889,24 +891,34 @@ class ApparelItem(ItemType):
 
         return f"player.additem {self.apparel_id} {number}"
 
+    def get_type(self):
+        """
+        Returns the subtype of the item.
+
+        :return: the subtype of the apparel.
+        """
+        return self.subtype
+
 class AidItem(ItemType):
     """
         A class representing the data needed to deal with
         a AidItem object.
     """
 
-    def __init__(self, aid_name: str, aid_id: int, dlc: bool):
+    def __init__(self, aid_name: str, aid_id: int, dlc: bool, subtype: str):
         """
         Initialize a aidItem object.
 
         :param aid_name: The name of the aid.
         :param aid_id: The id of the aid.
-        :param dlc: A bool of whether the item is a DLC item or not. 
+        :param dlc: A bool of whether the item is a DLC item or not.
+        :param subtype: A str of the subtype of item it is. 
         """
 
         self.aid_name = aid_name
         self.aid_id = aid_id
         self.dlc = dlc
+        self.subtype = subtype
         self.aid_id = self.process_id(dlc)
 
     def __repr__(self):
@@ -960,3 +972,11 @@ class AidItem(ItemType):
         """
 
         return f"player.additem {self.aid_id} {number}"
+
+    def get_type(self):
+        """
+        Returns the subtype of the item.
+
+        :return: the subtype of the apparel.
+        """
+        return self.subtype

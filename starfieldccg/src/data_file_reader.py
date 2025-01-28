@@ -346,9 +346,10 @@ only items with a specific mod slot.
         for row in range(num_rows):
             temp_row = self.datasheets["Apparel"].loc[row]
             temp_key = temp_row.iloc[0].strip().lower()
-            temp_value = ApparelItem(temp_row.iloc[0].strip(),
+            temp_value = ApparelItem(str(temp_row.iloc[0]).strip(),
                                   str(temp_row.iloc[1]).strip(),
-                                  bool(temp_row.iloc[2]))
+                                  bool(temp_row.iloc[2]),
+                                  str(temp_row.iloc[3]).strip().replace("_", " "))
             output_dict[temp_key] = temp_value
 
         return output_dict
@@ -365,9 +366,43 @@ only items with a specific mod slot.
         for row in range(num_rows):
             temp_row = self.datasheets["Aid"].loc[row]
             temp_key = temp_row.iloc[0].strip().lower()
-            temp_value = AidItem(temp_row.iloc[0].strip(),
+            temp_value = AidItem(str(temp_row.iloc[0]).strip(),
                                   str(temp_row.iloc[1]).strip(),
-                                  bool(temp_row.iloc[2]))
+                                  bool(temp_row.iloc[2]),
+                                  str(temp_row.iloc[3]).strip().replace("_", " "))
             output_dict[temp_key] = temp_value
 
+        return output_dict
+
+    def get_subtype_list(self, input_dict: dict):
+        """
+        Gets all of the subtypes of an item type.
+
+        :param input_dict: A dict collection of an item type.
+
+        :return: A list containing all of the unique subtypes.
+        """
+
+        values = list(input_dict.values())
+        values_list = []
+        for item in values:
+            if item.get_type() not in values_list:
+                values_list.append(item.get_type())
+
+
+
+        return sorted(values_list)
+
+    def get_item_by_subtype(self, input_dict: dict, tgt_subtype: str):
+        """
+        Returns all items with a specific subtype.
+
+        :param input_dict: The dict of items.
+
+        :return: A dict of all the items that have that subtype.
+        """
+        output_dict = {}
+        for item in list(input_dict.values()):
+            if item.get_type().lower() == tgt_subtype.lower():
+                output_dict[item.get_name().lower()] = item
         return output_dict
