@@ -342,7 +342,7 @@ class NavMenu(BaseMenu):
 
         super().__init__(title)
 
-        self.menu_items = [item.lower() for item in menu_items]
+        self.menu_items = [item.lower().strip().replace("_", " ") for item in menu_items]
         self.completer = AutoCompleteList(self.menu_items).completer
         self.text_prompt = text_prompt
 
